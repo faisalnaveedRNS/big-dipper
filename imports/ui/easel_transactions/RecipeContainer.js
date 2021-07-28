@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';  
-import { Recipes } from '/imports/api/recipes/recipes.js';
+import { Recipes } from '/imports/api/recipes/recipes.js'; 
 
-import Recipe from './Recipe.jsx';
+
+import Recipe from './Recipe.jsx'; 
 
 export default RecipeContainer = withTracker((props) => {
-     
-
+      
     let chainHandle, recipe, recipeExist;
     let loading = true;
 
@@ -23,7 +23,7 @@ export default RecipeContainer = withTracker((props) => {
         } else {
             recipeExist = !loading && !!recipe;
         }
-    }
+    } 
 
     return {
         loading,

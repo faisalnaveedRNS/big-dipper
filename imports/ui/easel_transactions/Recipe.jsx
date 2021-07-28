@@ -12,6 +12,7 @@ import posed from 'react-pose';
 import i18n from 'meteor/universe:i18n';
 import { Meteor } from 'meteor/meteor';
 import { ProposalStatusIcon } from '../components/Icons';
+import ChainStates from '../components/ChainStatesContainer.js'
 
 const T = i18n.createComponent();
 
@@ -29,15 +30,11 @@ const CookbookeRow = (props) => {
 const Result = posed.div({
     closed: { height: 0},
     open: { height: 'auto'}
-});
-
-function setTitleString() {
-    global.Recipe = "snipshots";
-}
+}); 
 
 export default class Recipe extends Component{
     constructor(props){
-        super(props);  
+        super(props);   
         var copies = 0;
         var price = "No Price"
         if(this.props.recipe != null){
@@ -80,7 +77,7 @@ export default class Recipe extends Component{
     } 
 
     componentDidUpdate(prevState){
-        global.Recipe = "snipshots";
+        
         if (this.props.recipe != prevState.recipe){ 
             if (this.props.recipe != null){ 
                 var copies = 0;
@@ -134,6 +131,10 @@ export default class Recipe extends Component{
         else{
             if (this.props.recipe != null){ 
                 return<div>
+                     <Row> 
+                        <Col md={3} xs={12}><h1 className="d-none d-lg-block">{"Recipe Detail"}</h1></Col> 
+                        <Col md={9} xs={12} className="text-md-right"><ChainStates /></Col>
+                    </Row>
                     <Helmet>
                         <title>{this.state.content} | Big Dipper</title>
                         <meta name="description" content={this.state.content} />
@@ -187,7 +188,7 @@ export default class Recipe extends Component{
                         </Row>
                     </div>
                     <Row className='clearfix'>
-                        <Link to="/easel_transactions" className="btn btn-primary" onClick={setTitleString} style={{margin: 'auto'}}><i className="fas fa-caret-up"></i> <T>common.backToList</T></Link>
+                        <Link to="/easel_transactions" className="btn btn-primary" style={{margin: 'auto'}}><i className="fas fa-caret-up"></i> <T>common.backToList</T></Link>
                     </Row>
                 </div>
             }

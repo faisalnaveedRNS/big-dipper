@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Table, Spinner } from 'reactstrap';
+import React, { Component } from 'react'; 
 import { Link } from 'react-router-dom'; 
 import numbro from 'numbro';
 import i18n from 'meteor/universe:i18n';
@@ -7,27 +6,91 @@ import Coin from '../../../both/utils/coins.js';
 import TimeStamp from '../components/TimeStamp.jsx'; 
 import voca from 'voca';
 import { Meteor } from 'meteor/meteor';  
+import { Markdown } from 'react-showdown';
+import { Helmet } from 'react-helmet';
+import { ProposalStatusIcon } from '../components/Icons';
+import ChainStates from '../components/ChainStatesContainer.js'
+import { Row, Col, Card, CardText, Table, CardTitle, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Spinner } from 'reactstrap';
+
 const T = i18n.createComponent();
 
 const RecipeRow = (props) => { 
-    return <tr>  
-        <td className="title"><a href={""+props.recipe.deeplink+""} target="_blank">{props.recipe.Name}</a></td>   
-        <td className="title"><Link to={"/easel_transactions/"+props.recipe.ID} onClick={setTitleString()}>{props.recipe.cookbook_owner}</Link></td>  
+    return <tr>   
+        <tr>
+        <td className="title">
+            {/* <a href={""+props.recipe.deeplink+""} target="_blank"> */} 
+            <img src={props.recipe.img} style={{width:'24px', height:'24px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px'}} className="moniker-avatar-list img-fluid rounded-circle"/> {props.recipe.Name}  
+            {/* </a> */}
+            
+        </td> 
+        <td className="title"><Link to={"/easel_transactions/"+props.recipe.ID} >{props.recipe.cookbook_owner}</Link></td>  
         <td className="title">{props.recipe.price}</td> 
         <td className="voting-start">{props.recipe.Description}</td>
         {window.orientation == undefined && <td className="title" style={{paddingLeft:'36px'}}>{props.recipe.copies}</td> }
         {window.orientation != undefined && <td className="title">{props.recipe.copies}</td> } 
         {/* <td className="voting-start text-right"><a href={""+props.recipe.deeplink+""} target="_blank">{props.recipe.deeplink}</a></td>  */}
+        </tr>
+        <tr>
+        <div>  
+                <div className="proposal bg-light">
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.no</T></Col>
+                        <Col md={9} className="value">{props.recipe.NO}</Col> 
+                    </Row>
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.recipeID</T></Col>
+                        <Col md={9} className="value">{props.recipe.ID}</Col> 
+                    </Row>
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.name</T></Col>
+                        <Col md={9} className="value">{props.recipe.Name}</Col>
+                    </Row>
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.description</T></Col>
+                        <Col md={9} className="value" style={{paddingRight:'15px'}}><Markdown markup={props.recipe.Description} /></Col>
+                    </Row>
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.price</T></Col>
+                        <Col md={9} className="value">{props.recipe.price}</Col>
+                    </Row> 
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.status</T></Col> 
+                        <Col md={9} className="value"><ProposalStatusIcon status={props.recipe.Disabled ? 'PROPOSAL_STATUS_REJECTED' : 'PROPOSAL_STATUS_PASSED'}/> {props.recipe.Disabled ? "Disalbed" : "Enabled"}</Col>
+
+                    </Row> 
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.sender</T></Col>
+                        <Col md={9} className="value">{props.recipe.Sender}</Col>
+                    </Row>
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
+                        <Col md={9} className="value">{props.recipe.CookbookID}</Col>
+                    </Row>
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.cookbookowner</T></Col>
+                        <Col md={9} className="value">{props.recipe.cookbook_owner}</Col>
+                    </Row> 
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.deeplinks</T></Col>
+                        <Col md={9} className="value"><a href={""+props.recipe.deeplink+""} target="_blank">{props.recipe.deeplink}</a></Col>
+                    </Row> 
+                    <Row className="mb-2 border-top">
+                        <Col md={3} className="label"><T>recipes.total_copies</T></Col>
+                        <Col md={9} className="value">{'state.copies'}</Col>
+                    </Row>
+                </div>
+                <Row className='clearfix'>
+                    <Link to="/easel_transactions" className="btn btn-primary" style={{margin: 'auto'}}><i className="fas fa-caret-up"></i> <T>common.backToList</T></Link>
+                </Row>
+            </div> 
+            </tr>
     </tr>
 }
-
-function setTitleString() {
-    global.Recipe = "detail";
-}
+ 
 
 export default class List extends Component{
     constructor(props){
-        super(props); 
+        super(props);  
         if (Meteor.isServer){
             if (this.props.recipes.length > 0){
                 this.state = {
@@ -38,6 +101,7 @@ export default class List extends Component{
                             price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
                         }
                         var copies = 0;
+                        var img = "/img/buy_icon.png";
                         const entries = recipe.Entries;
                         if(entries != null){
                             const itemOutputs = entries.ItemOutputs;
@@ -50,9 +114,26 @@ export default class List extends Component{
                                     }
                                 }
                             }
+                           
+                            let strings = itemOutputs[0].Strings
+                            for (i = 0; i < strings.length; i++) {
+                                try {
+                                    var values = strings[i].Value;
+                                    if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
+                                        img = values; 
+                                        break;
+                                    }
+                                } catch (e) {
+                                    console.log('strings[i].Value', e)
+                                    break;
+                                }
+
+                            }
                         } 
                         recipe.price = price;
                         recipe.copies = copies; 
+                        recipe.img = img;  
+                        
                         return <RecipeRow key={i} index={i} recipe={recipe}/>
                     })
                 }
@@ -65,7 +146,7 @@ export default class List extends Component{
         }
     }
     
-    componentDidUpdate(prevState){  
+    componentDidUpdate(prevState){   
         if (this.props.recipes && this.props.recipes != prevState.recipes){ 
             if (this.props.recipes.length > 0){ 
                 this.setState({
@@ -76,6 +157,7 @@ export default class List extends Component{
                             price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
                         }
                         var copies = 0;
+                        var img = "/img/buy_icon.png";
                         const entries = recipe.Entries;
                         if(entries != null){
                             const itemOutputs = entries.ItemOutputs;
@@ -88,9 +170,26 @@ export default class List extends Component{
                                     }
                                 }
                             }
+
+                            let strings = itemOutputs[0].Strings
+                            for (i = 0; i < strings.length; i++) {
+                                try {
+                                    var values = strings[i].Value;
+                                    if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
+                                        img = values; 
+                                        break;
+                                    }
+                                } catch (e) {
+                                    console.log('strings[i].Value', e)
+                                    break;
+                                }
+
+                            }
                         } 
                         recipe.price = price;
                         recipe.copies = copies;  
+                        recipe.img = img;  
+                        
                         return <RecipeRow key={i} index={i} recipe={recipe} />
                     }),  
                 }) 
