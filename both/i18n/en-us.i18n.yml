@@ -14,6 +14,7 @@ common:
     precommits: 'precommits'
     last: 'last'
     backToList: 'Back to List'
+    collapse: 'Collapse' 
     information: 'Information'
     time: 'Time'
     hash: 'Hash'
@@ -142,6 +143,7 @@ blocks:
 nfts:
     id: 'ID'
     purchase_nfts: 'Purchased NFTs'
+    notFound: 'No Nfts data found.'
     residual: 'Residual'
     quanitiy: 'Quantity'
     noBlock: 'No block.'

@@ -1,33 +1,39 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';  
-import { Recipes } from '/imports/api/recipes/recipes.js'; 
+import { Nfts } from '/imports/api/nfts/nfts.js';
 
 
 import Recipe from './Recipe.jsx'; 
 
 export default RecipeContainer = withTracker((props) => {
-      
-    let chainHandle, recipe, recipeExist;
+
+    let nftsHandle, nfts, nftsExist = false;
     let loading = true;
 
     if (Meteor.isClient) {
-        recipesHandle = Meteor.subscribe('recipes.list', props.match.params.ID);
-        loading = !recipesHandle.ready();
+        nftsHandle = Meteor.subscribe('nfts.list', 10);
+        loading = !nftsHandle.ready();
+
+        if (!loading) {
+            nfts = Nfts.find({Sender: props.match.params.sender}, { sort: { ID: -1 } }).fetch();
+            nftsExist = !loading && !!nfts;
+        }
     }
- 
+
     if (Meteor.isServer || !loading) {
-        recipe =  Recipes.findOne({ ID: props.match.params.ID });
+        nfts = Nfts.find({Sender: props.match.params.sender}, { sort: { ID: -1 } }).fetch();
         if (Meteor.isServer) {
             loading = false;
-            recipeExist = !!recipe;
+            nftsExist = !!nfts;
         } else {
-            recipeExist = !loading && !!recipe;
-        }
-    } 
+            nftsExist = !loading && !!nfts;
+        } 
+    }
 
     return {
         loading,
-        recipeExist,
-        recipe: recipeExist ? recipe : null, 
+        nftsExist,
+        nfts: nftsExist ? nfts : {},
     };
+ 
 })(Recipe);

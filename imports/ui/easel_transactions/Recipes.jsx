@@ -41,7 +41,7 @@ export default class Recipes extends Component{
             <Switch>
                 <Route exact path="/easel_transactions" component={RecipeList}/>
                 {/* <Route path="/easel_transactions/:cookbook_owner" component={Cookbook} /> */}
-                <Route path="/easel_transactions/:ID" component={Recipe}/>
+                <Route path="/easel_transactions/:sender" component={Recipe}/>
             </Switch>
         </div>
     }

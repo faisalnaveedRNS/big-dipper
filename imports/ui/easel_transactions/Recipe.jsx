@@ -1,200 +1,121 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import { Row, Col, Progress, Card, CardHeader, CardBody, Spinner,
-    TabContent, TabPane, Nav, NavLink, NavItem, Table } from 'reactstrap';
-import { Link } from 'react-router-dom'; 
-import Account from '../components/Account.jsx';
-import PChart from '../components/Chart.jsx';
-import numbro from 'numbro';
-import { Markdown } from 'react-showdown';
-import { Helmet } from 'react-helmet';
-import posed from 'react-pose';
+import { Row, Col, Spinner } from 'reactstrap';
+import { NftRow } from '../nfts/NftRow.jsx';
 import i18n from 'meteor/universe:i18n';
-import { Meteor } from 'meteor/meteor';
-import { ProposalStatusIcon } from '../components/Icons';
-import ChainStates from '../components/ChainStatesContainer.js'
+import { repeat } from 'lodash';
 
 const T = i18n.createComponent();
-
-const CookbookeRow = (props) => {  
-    return <tr> 
-        <td className="d-none d-sm-table-cell counter">{props.cookbook.ID}</td>
-        {/* <td className="title">{props.cookbook.Name}</td> */}
-        <td className="title">{props.recipe.Description}</td>  
-        <td className="title">{props.recipe.Developer}</td> 
-        <td className="title">{props.recipe.Sender}</td> 
-        <td className="title">{props.recipe.SupportEmail}</td>  
-    </tr>
-}
-
-const Result = posed.div({
-    closed: { height: 0},
-    open: { height: 'auto'}
-}); 
-
-export default class Recipe extends Component{
+export default class Nfts extends Component{
     constructor(props){
-        super(props);   
-        var copies = 0;
-        var price = "No Price"
-        if(this.props.recipe != null){
-            if (this.props.recipe.CoinInputs.length > 0) {
-                price = this.props.recipe.CoinInputs[0].Count + ' ' + this.props.recipe.CoinInputs[0].Coin
-            }
-            
-            const entries = this.props.recipe.Entries;
-            if(entries != null){
-                const itemOutputs = entries.ItemOutputs;
-                if(itemOutputs != null && itemOutputs[0] != null){
-                    const longs = itemOutputs[0].Longs;
-                    if(longs != null && longs[0] != null){
-                        const quantity = longs[0].WeightRanges;
-                        if(quantity != null && quantity[0] != null){ 
-                            copies = quantity[0].Lower * quantity[0].Weight
-                        }
-                    }
-                }
-            } 
-        }
-        
+        super(props); 
         this.state = {
-            recipe: null, 
-            content: "Reipe Detail",
-            copies: copies,
-            price: price,
+            txs: "",
+            homepage:  window?.location?.pathname === '/' ? true : false,
+            page: -1,
+            page_size: 5,
         }
+    }
 
-        if (Meteor.isServer){
-            this.state.recipe = this.props.recipe;
-        } 
-    }  
-
-    static getDerivedStateFromProps(props, state) {
-        if (state.user !== localStorage.getItem(CURRENTUSERADDR)) {
-            return {user: localStorage.getItem(CURRENTUSERADDR)};
-        }
-        return null;
-    } 
-
-    componentDidUpdate(prevState){
-        
-        if (this.props.recipe != prevState.recipe){ 
-            if (this.props.recipe != null){ 
-                var copies = 0;
-                var price = "No Price" 
-                if (this.props.recipe.CoinInputs.length > 0) {
-                    price = this.props.recipe.CoinInputs[0].Count + ' ' + this.props.recipe.CoinInputs[0].Coin
-                }
-                
-                const entries = this.props.recipe.Entries;
-                if(entries != null){
-                    const itemOutputs = entries.ItemOutputs;
-                    if(itemOutputs != null && itemOutputs[0] != null){
-                        const longs = itemOutputs[0].Longs;
-                        if(longs != null && longs[0] != null){
-                            const quantity = longs[0].WeightRanges;
-                            if(quantity != null && quantity[0] != null){ 
-                                copies = quantity[0].Lower * quantity[0].Weight
-                            }
-                        }
-                    }
-                }  
+    componentDidUpdate(prevProps){
+        if (this.props != prevProps){
+            if (this.props.nfts.length > 0){ 
+                this.state.page++; 
+                let page_size = (this.state.page + this.state.page_size) > this.props.nfts.length ? this.props.nfts.length : (this.state.page + this.state.page_size);
+                let nfts = this.props.nfts.slice(this.state.page, page_size)
                 this.setState({
-                    recipe: this.props.recipe,
-                    price: price,
-                    copies: copies,
-                })  
+                    txs: nfts.map((tx, i) => {
+                        return <NftRow 
+                            key={i} 
+                            index={i} 
+                            tx={tx} 
+                        />
+                    })
+                })    
             }
         }
     }
- 
-    handleClick = (i,e) => {
-        e.preventDefault();
 
-        this.setState({
-            open: this.state.open === i ? false : i
-        });
+    onBack= () => {
+        if (this.props.nfts.length > 0){ 
+            this.state.page -= this.state.page_size; 
+            if(this.state.page < 0){
+                this.state.page = 0
+            }
+            let page_size = (this.state.page + this.state.page_size) > this.props.nfts.length ? this.props.nfts.length : (this.state.page + this.state.page_size);
+            let nfts = this.props.nfts.slice(this.state.page, page_size)
+            this.setState({
+                txs: nfts.map((tx, i) => {
+                    return <NftRow 
+                        key={i} 
+                        index={i} 
+                        tx={tx} 
+                    />
+                })
+            })    
+        }
     }
 
-    toggleDir(e) {
-        e.preventDefault();
-        this.setState({
-            orderDir: this.state.orderDir * -1
-        });
+    onNext= () => { 
+        if (this.props.nfts.length > 0){ 
+            this.state.page += this.state.page_size; 
+            if(this.props.nfts.length < this.state.page){
+                this.state.page -= this.state.page_size;
+            }
+            let page_size = (this.state.page + this.state.page_size) > this.props.nfts.length ? this.props.nfts.length : (this.state.page + this.state.page_size); 
+            let nfts = this.props.nfts.slice(this.state.page, page_size) 
+
+            this.setState({
+                txs: nfts.map((tx, i) => {
+                    return <NftRow 
+                        key={i} 
+                        index={i} 
+                        tx={tx} 
+                    />
+                })
+            })    
+        }
     }
-  
 
     render(){
         if (this.props.loading){
             return <Spinner type="grow" color="primary" />
         }
+        else if (this.props.nfts.length == 0){
+            return <div className="transactions-list"><T>nfts.notFound</T></div>
+        }
         else{
-            if (this.props.recipe != null){ 
-                return<div>
-                     <Row> 
-                        <Col md={3} xs={12}><h1 className="d-none d-lg-block">{"Recipe Detail"}</h1></Col> 
-                        <Col md={9} xs={12} className="text-md-right"><ChainStates /></Col>
-                    </Row>
-                    <Helmet>
-                        <title>{this.state.content} | Big Dipper</title>
-                        <meta name="description" content={this.state.content} />
-                    </Helmet>
+            return <div className="transactions-list">
+                <Row className="header text-nowrap d-none d-lg-flex">
+                    <Col xs={9} lg={this.state.homepage ? 7 : 7}><i className="material-icons">message</i> <span className="d-none d-md-inline-block"><T>nfts.purchase_nfts</T></span></Col>
+                    {/* <Col xs={3} lg={!this.state.homepage ? { size: 1, order: "last" } : { size: 2, order: "last" }}><span className={this.state.homepage ? "ml-5" : null}><i className="fas fa-hashtag"></i> <span className="d-none d-md-inline-block"><T>transactions.txHash</T></span></span></Col>
+                    <Col xs={4} md={2} lg={1}><i className="fas fa-database"></i> <span className="d-none d-md-inline-block"><T>common.height</T></span></Col>
+                     */}
 
-                    <div className="proposal bg-light">
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.no</T></Col>
-                            <Col md={9} className="value">{this.props.recipe.NO}</Col> 
-                        </Row>
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.recipeID</T></Col>
-                            <Col md={9} className="value">{this.props.recipe.ID}</Col> 
-                        </Row>
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.name</T></Col>
-                            <Col md={9} className="value">{this.props.recipe.Name}</Col>
-                        </Row>
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.description</T></Col>
-                            <Col md={9} className="value" style={{paddingRight:'15px'}}><Markdown markup={this.props.recipe.Description} /></Col>
-                        </Row>
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.price</T></Col>
-                            <Col md={9} className="value">{this.state.price}</Col>
-                        </Row> 
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.status</T></Col> 
-                            <Col md={9} className="value"><ProposalStatusIcon status={this.props.recipe.Disabled ? 'PROPOSAL_STATUS_REJECTED' : 'PROPOSAL_STATUS_PASSED'}/> {this.props.recipe.Disabled ? "Disalbed" : "Enabled"}</Col>
-
-                        </Row> 
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.sender</T></Col>
-                            <Col md={9} className="value">{this.props.recipe.Sender}</Col>
-                        </Row>
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
-                            <Col md={9} className="value">{this.props.recipe.CookbookID}</Col>
-                        </Row>
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.cookbookowner</T></Col>
-                            <Col md={9} className="value">{this.props.recipe.cookbook_owner}</Col>
-                        </Row> 
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.deeplinks</T></Col>
-                            <Col md={9} className="value"><a href={""+this.props.recipe.deeplink+""} target="_blank">{this.props.recipe.deeplink}</a></Col>
-                        </Row> 
-                        <Row className="mb-2 border-top">
-                            <Col md={3} className="label"><T>recipes.total_copies</T></Col>
-                            <Col md={9} className="value">{this.state.copies}</Col>
-                        </Row>
-                    </div>
-                    <Row className='clearfix'>
-                        <Link to="/easel_transactions" className="btn btn-primary" style={{margin: 'auto'}}><i className="fas fa-caret-up"></i> <T>common.backToList</T></Link>
-                    </Row>
+                    {/* <Col xs={3} lg={!this.state.homepage ? { size: 1, order: "last" } : { size: 2, order: "last" }}><span className={this.state.homepage ? "ml-5" : null}><i className="fas fa-hashtag"></i> <span className="d-none d-md-inline-block"><T>nfts.name</T></span></span></Col> */}
+                </Row>
+                <div style={{gap:'10px', display:'grid', gridTemplateColumns: window.orientation == undefined ? "repeat(5, 1fr)" : "repeat(1)"}}>
+                    {this.state.txs}
                 </div>
-            }
-            else{
-                return <div><T>recipes.notFound</T></div>
-            }
+                <div style={{display:'flex', minWidth:'77vw'}}>
+                     <ul class='jss123' style={{margin:'auto', borderWidth:'1px', borderStyle:'solid', borderColor:'#E5E5E5', display:'flex', padding:'0', borderRadius:'9px'}}>
+                         <li>
+                             <button type='button' title='first' style={{minWidth:'46px'}} onClick={this.onBack}>
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 14L4 9.5L9 5" stroke="#464255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14 14L9 9.5L14 5" stroke="#B9BBBD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                             </button>
+                         </li>
+                         <li>
+                             <button type='button' title='first' style={{minWidth:'46px'}}>
+                                 {(this.state.page + this.state.page_size) / this.state.page_size}
+                             </button>
+                         </li>
+                         <li>
+                             <button type='button' title='last' style={{minWidth:'46px'}} onClick={this.onNext}>
+                                 <svg style={{transform:'rotateZ(180deg)'}} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 14L4 9.5L9 5" stroke="#464255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14 14L9 9.5L14 5" stroke="#B9BBBD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            </button>
+                         </li>
+                     </ul>
+                </div>
+            </div>
         }
     }
 }
