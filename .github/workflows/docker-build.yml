@@ -22,7 +22,7 @@ jobs:
         uses: docker/login-action@v1 
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get version
@@ -35,4 +35,6 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ github.sha }},${{ steps.get_version.outputs.version-without-v }},latest
+          tags: |
+            ghcr.io/pylons-tech/big-dipper:${{ github.sha }}
+            ghcr.io/pylons-tech/big-dipper:${{ steps.get_version.outputs.version-without-v }},latest
