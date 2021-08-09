@@ -40,7 +40,7 @@ export default HomeContainer = withTracker((props) => {
                 const itemoutputs = entries.ItemOutputs; 
                 if (itemoutputs.length > 0) {
                     let strings = itemoutputs[0].Strings
-                    for (i = 0; i < string.length; i++) {
+                    for (i = 0; i < strings.length; i++) {
                         try {
                             var values = strings[i].Value;
                             if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
