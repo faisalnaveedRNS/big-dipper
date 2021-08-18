@@ -35,8 +35,6 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           tags: |
             ghcr.io/pylons-tech/big-dipper:${{ github.sha }}
             ghcr.io/pylons-tech/big-dipper:${{ steps.get_version.outputs.version-without-v }}
