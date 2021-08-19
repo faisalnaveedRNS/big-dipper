@@ -73,7 +73,7 @@ getRecipes = () => {
             console.log("get recipe: %o", error);
         }
         if (result) {
-            console.log("get recipe: %o", result);
+            console.log("get recipe: true");
         }
     });
 }
