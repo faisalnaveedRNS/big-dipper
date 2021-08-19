@@ -8,6 +8,7 @@ import PopupModal from '../popup/popup';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { FlowRouterMeta, FlowRouterTitle } from 'meteor/ostrio:flow-router-meta';
 
+
 FlowRouter.route('/', {
   action() { /* ... */ },
   title: 'Title'
@@ -31,7 +32,7 @@ export default class EaselBuy extends Component{
             price: this.props.price,
             img: this.props.img,
         }  
-        if(DocHead != null){
+        if(false){//if(DocHead != null){
             DocHead.setTitle("Big-Dipper");
             var metaInfo = {name: "description", content: "Wallet deep link"};
             DocHead.removeDocHeadAddedTags();
@@ -91,7 +92,7 @@ export default class EaselBuy extends Component{
             });  
             
         }
-        if(DocHead != null){
+        if(false){//if(DocHead != null){
             DocHead.setTitle("Big-Dipper");
             var metaInfo = {name: "description", content: "Wallet deep link"};
             DocHead.removeDocHeadAddedTags();

@@ -82,7 +82,7 @@ Meteor.methods({
                     .update({ $set: { Disabled: false } });
                 bulkRecipes.execute();
             }
-            return true
+            return recipes
         } catch (e) {
             console.log(url);
             console.log(e);
