@@ -14,6 +14,7 @@ export default HomeContainer = withTracker((props) => {
     var img = '';
     var url = props.url;
     var price = '0 Pylon';
+    var selectedRecipe = null;
     recipe_id = props.recipe_id
 
     if (Meteor.isClient) {
@@ -23,42 +24,44 @@ export default HomeContainer = withTracker((props) => {
 
     let status; 
 
-    if (Meteor.isServer || !loading) {
+    if (Meteor.isServer || !loading) { 
         selectedRecipe = Recipes.findOne({ ID: recipe_id });
-        if (selectedRecipe != null) {
-            name = selectedRecipe.Name
-            description = selectedRecipe.Description;
-            // if (description.length > 15) {
-            //     description = description.substring(0, 12) + '...';
-            // }
-            const coinInputs = selectedRecipe.CoinInputs;
-            if (coinInputs.length > 0) {
-                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
-            }
-            const entries = selectedRecipe.Entries;
-            if (entries != null) {
-                const itemoutputs = entries.ItemOutputs; 
-                if (itemoutputs.length > 0) {
-                    let strings = itemoutputs[0].Strings
-                    for (i = 0; i < strings.length; i++) {
-                        try {
-                            var values = strings[i].Value;
-                            if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                img = values; 
-                                break;
-                            }
-                        } catch (e) {
-                            console.log('strings[i].Value', e)
+    }
+    else{
+        selectedRecipe = Recipes.findOne({ ID: recipe_id });
+    } 
+
+    if (selectedRecipe != null) {
+        name = selectedRecipe.Name
+        description = selectedRecipe.Description;
+        // if (description.length > 15) {
+        //     description = description.substring(0, 12) + '...';
+        // }
+        const coinInputs = selectedRecipe.CoinInputs;
+        if (coinInputs.length > 0) {
+            price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+        }
+        const entries = selectedRecipe.Entries;
+        if (entries != null) {
+            const itemoutputs = entries.ItemOutputs; 
+            if (itemoutputs.length > 0) {
+                let strings = itemoutputs[0].Strings
+                for (i = 0; i < strings.length; i++) {
+                    try {
+                        var values = strings[i].Value;
+                        if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
+                            img = values; 
                             break;
                         }
-
+                    } catch (e) {
+                        console.log('strings[i].Value', e)
+                        break;
                     }
+
                 }
-                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin 
             }
+            price = coinInputs[0].Count + ' ' + coinInputs[0].Coin 
         }
-
-
     }
  
     return {
