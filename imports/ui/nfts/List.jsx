@@ -87,16 +87,11 @@ export default class Nfts extends Component{
             return <div className="transactions-list">
                 <Row className="header text-nowrap d-none d-lg-flex">
                     <Col xs={9} lg={this.state.homepage ? 7 : 7}><i className="material-icons">message</i> <span className="d-none d-md-inline-block"><T>nfts.purchase_nfts</T></span></Col>
-                    {/* <Col xs={3} lg={!this.state.homepage ? { size: 1, order: "last" } : { size: 2, order: "last" }}><span className={this.state.homepage ? "ml-5" : null}><i className="fas fa-hashtag"></i> <span className="d-none d-md-inline-block"><T>transactions.txHash</T></span></span></Col>
-                    <Col xs={4} md={2} lg={1}><i className="fas fa-database"></i> <span className="d-none d-md-inline-block"><T>common.height</T></span></Col>
-                     */}
-
-                    {/* <Col xs={3} lg={!this.state.homepage ? { size: 1, order: "last" } : { size: 2, order: "last" }}><span className={this.state.homepage ? "ml-5" : null}><i className="fas fa-hashtag"></i> <span className="d-none d-md-inline-block"><T>nfts.name</T></span></span></Col> */}
                 </Row>
                 <div style={{gap:'10px', display:'grid', gridTemplateColumns: window.orientation == undefined ? "repeat(5, 1fr)" : "repeat(1)"}}>
                     {this.state.txs}
                 </div>
-                <div style={{display:'flex', minWidth:'77vw'}}>
+                {this.props.nftsExist && <div style={{display:'flex', minWidth:'77vw'}}>
                      <ul class='jss123' style={{margin:'auto', borderWidth:'1px', borderStyle:'solid', borderColor:'#E5E5E5', display:'flex', padding:'0', borderRadius:'9px'}}>
                          <li>
                              <button type='button' title='first' style={{minWidth:'46px'}} onClick={this.onBack}>
@@ -114,7 +109,7 @@ export default class Nfts extends Component{
                             </button>
                          </li>
                      </ul>
-                </div>
+                </div>}
             </div>
         }
     }

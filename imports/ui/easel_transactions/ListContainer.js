@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Recipes } from '/imports/api/recipes/recipes.js';
+import { Recipes } from '/imports/api/recipes/recipes.js'; 
+import { Nfts } from '/imports/api/nfts/nfts.js';
 import List from './List.jsx';
 
 export default RecipesListContainer = withTracker((props) => {
@@ -23,10 +24,33 @@ export default RecipesListContainer = withTracker((props) => {
         }
     }
 
+    var nftLoading = false;
+    var nftsExist = false;
+    var nfts;
+    if (Meteor.isClient) {
+        let nftsHandle = Meteor.subscribe('nfts.list', 10);
+        nftLoading = !nftsHandle.ready();
+
+        if (!nftLoading) { 
+            nfts = Nfts.find({}, { sort: { ID: -1 } }).fetch(); 
+            nftsExist = !nftLoading && !!nfts;
+        }
+    } 
+    if ((Meteor.isServer || !nftLoading)) { 
+        nfts = Nfts.find({}, { sort: { ID: -1 } }).fetch(); 
+        if (Meteor.isServer) {
+            nftLoading = false;
+            nftsExist = !!nfts;
+        } else {
+            nftsExist = !nftLoading && !!nfts;
+        } 
+    } 
+
     return {
         loading,
         recipesExist,
         recipes: recipesExist ? recipes : {},
-        history: props.history
+        history: props.history, 
+        nfts: nfts,
     };
 })(List);
