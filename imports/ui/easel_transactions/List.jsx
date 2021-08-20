@@ -10,8 +10,7 @@ import { Markdown } from 'react-showdown';
 import { Helmet } from 'react-helmet';
 import { ProposalStatusIcon } from '../components/Icons';
 import ChainStates from '../components/ChainStatesContainer.js'
-import { Row, Col, Card, CardText, Table, CardTitle, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Spinner } from 'reactstrap';
-
+import { Row, Col, Card, CardText, Table, CardTitle, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Spinner } from 'reactstrap'; 
 const T = i18n.createComponent();  
 
 const RecipeRow = (props) => { 
@@ -20,12 +19,17 @@ const RecipeRow = (props) => {
     return <><tr >   
         <td className="title">
             {/* <a href={""+props.recipe.deeplink+""} target="_blank"> */} 
-            <img src={props.recipe.img} style={{width:'24px', height:'24px', marginTop:'10px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px'}} className="moniker-avatar-list img-fluid rounded-circle"/> {props.recipe.Name}  
+            <img src={props.recipe.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/> {props.recipe.Name}  
             {/* </a> */} 
             <Link to="/easel_transactions" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
 
         </td>    
-        <td className="title"><Link to={"/easel_transactions/"+props.recipe.Sender} style={{display:'inline-block', paddingTop:'10px'}}>{props.recipe.cookbook_owner}</Link></td>  
+        {props.recipe.nftsExist && <td className="title">
+            <Link to={"/easel_transactions/"+props.recipe.Sender} style={{display:'inline-block', paddingTop:'10px'}}>{props.recipe.cookbook_owner}</Link>  
+        </td>}
+        {!props.recipe.nftsExist && <td className="title" style={{paddingTop:'22px'}}>
+            {props.recipe.cookbook_owner}
+        </td>}
         <td className="title" style={{paddingTop:'22px'}}>{props.recipe.price}</td> 
         <td className="voting-start" style={{paddingTop:'22px'}}>{props.recipe.Description}</td>
         {window.orientation == undefined && <td className="title" style={{paddingLeft:'36px', paddingTop:'22px'}}>{props.recipe.copies}</td> }
@@ -133,10 +137,16 @@ export default class List extends Component{
                                 }
 
                             }
-                        } 
+                        }  
+                        let nfts = null;
+                        if(this.props.nfts != null){
+                            nfts = this.props.nfts.filter((nft) => nft.Sender == recipe.Sender); 
+                        }
+
                         recipe.price = price;
                         recipe.copies = copies; 
                         recipe.img = img;  
+                        recipe.nftsExist = (nfts != null && nfts.length > 0);
                         
                         return <RecipeRow key={i} index={i} recipe={recipe}/>
                     }),
@@ -193,10 +203,17 @@ export default class List extends Component{
 
                             }
                         } 
+                        
+                        let nfts = null;
+                        if(this.props.nfts != null){
+                            nfts = this.props.nfts.filter((nft) => nft.Sender == recipe.Sender); 
+                        } 
                         recipe.price = price;
-                        recipe.copies = copies;  
+                        recipe.copies = copies; 
                         recipe.img = img;  
-                        recipe.bCollapse = this.state.bCollapse;
+                        recipe.nftsExist = (nfts != null && nfts.length > 0);
+
+                        
                         
                         return <RecipeRow key={i} index={i} recipe={recipe} />
                     }),  
