@@ -36,9 +36,9 @@ export const NftRow = (props) => {
             tx.Currency = strings[i].Value;
         }
         else if(strings[i].Key == 'Price'){
-            tx.Price = strings[i].Value;
-        }
-    }
+            tx.Price = strings[i].Value; 
+        } 
+    } 
     
     return <SentryBoundary><NftTool msg={tx} /></SentryBoundary>
 }

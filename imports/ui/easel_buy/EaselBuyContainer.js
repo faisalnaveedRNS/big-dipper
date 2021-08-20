@@ -39,7 +39,12 @@ export default HomeContainer = withTracker((props) => {
         // }
         const coinInputs = selectedRecipe.CoinInputs;
         if (coinInputs.length > 0) {
-            price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+            if(coinInputs[0].Coin == "USD"){
+                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+            }
+            else{
+                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+            }
         }
         const entries = selectedRecipe.Entries;
         if (entries != null) {
@@ -59,8 +64,7 @@ export default HomeContainer = withTracker((props) => {
                     }
 
                 }
-            }
-            price = coinInputs[0].Count + ' ' + coinInputs[0].Coin 
+            } 
         }
     }
  
