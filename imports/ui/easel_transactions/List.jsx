@@ -25,7 +25,7 @@ const RecipeRow = (props) => {
 
         </td>    
         {props.recipe.nftsExist && <td className="title">
-            <Link to={"/easel_transactions/"+props.recipe.Sender} style={{display:'inline-block', paddingTop:'10px'}}>{props.recipe.cookbook_owner}</Link>  
+            <Link to={"/easel_transactions/"+props.recipe.Sender} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}}>{props.recipe.cookbook_owner}</Link>  
         </td>}
         {!props.recipe.nftsExist && <td className="title" style={{paddingTop:'22px'}}>
             {props.recipe.cookbook_owner}
@@ -106,7 +106,12 @@ export default class List extends Component{
                         const coinInputs = recipe.CoinInputs;
                         var price = "No Price"
                         if (coinInputs.length > 0) {
-                            price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                            if(coinInputs[0].Coin == "USD"){
+                                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+                            }
+                            else{
+                                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                            }
                         }
                         var copies = 0;
                         var img = "/img/buy_icon.png";
@@ -171,7 +176,12 @@ export default class List extends Component{
                         const coinInputs = recipe.CoinInputs;
                         var price = "No Price"
                         if (coinInputs.length > 0) {
-                            price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                            if(coinInputs[0].Coin == "USD"){
+                                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+                            }
+                            else{
+                                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                            }
                         }
                         var copies = 0;
                         var img = "/img/buy_icon.png";
