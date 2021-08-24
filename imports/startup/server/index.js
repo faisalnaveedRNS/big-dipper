@@ -13,7 +13,8 @@ import { Helmet } from 'react-helmet';
 // import App from '../../ui/App.jsx';
 var siteName = 'Big-Dipper';
 var descriptiion = 'Wallet deep link';
-const defaultImage = '/img/buy_icon.png';
+var price = "No Price"
+const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
 <meta property="og:description" content="${descriptiion}" />
@@ -69,7 +70,18 @@ Meteor.startup(() => {
                 if(selectedRecipe.Description != undefined && selectedRecipe.Description != ""){ 
                     descriptiion = selectedRecipe.Description;
                 }
+
+                const coinInputs = selectedRecipe.CoinInputs; 
+                if (coinInputs.length > 0) {
+                    if(coinInputs[0].Coin == "USD"){
+                        price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+                    }
+                    else{
+                        price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                    }
+                }
                 
+                descriptiion = descriptiion + "\n\n" + price;
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
@@ -91,7 +103,7 @@ Meteor.startup(() => {
                 } 
                 const MetaTags = `
                 <meta property="og:title"       content="${siteName}" />
-                <meta property="og:description" content="${descriptiion}" />
+                <meta property="og:description" content="${descriptiion}" data-rh="true"/>
                 <meta property="og:url"         content="${Meteor.absoluteUrl() + url}" />
                 <meta property="og:image"       content="${img}" />`;
                 sink.appendToHead(MetaTags);
@@ -99,7 +111,7 @@ Meteor.startup(() => {
             
         } 
         else
-        {
+        { 
             sink.appendToHead(defaultMetaTags); 
         } 
         // sink.appendToHead(sheet.getStyleTags());
