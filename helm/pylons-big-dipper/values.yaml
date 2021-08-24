@@ -17,3 +17,4 @@ ingress:
 
 host: wallet.pylons.tech
 mongoURL: mongodb://pylons-mongodb:27017/meteor
+settings: settings.json
