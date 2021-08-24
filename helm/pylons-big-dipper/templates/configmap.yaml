@@ -8,5 +8,5 @@ metadata:
     {{- include "chart.labels" . | indent 4 }}
 data:
   settings.json: |-
-{{ .Files.Get "settings.json" | indent 4}}
+{{ .Files.Get .Values.settings | indent 4}}
 {{- end }}
