@@ -11,11 +11,12 @@ import { BrowserRouter as Router, StaticRouter} from 'react-router-dom'
 // import { ServerStyleSheet } from "styled-components"
 import { Helmet } from 'react-helmet'; 
 // import App from '../../ui/App.jsx';
-const siteName = 'Big-Dipper';
+var siteName = 'Big-Dipper';
+var descriptiion = 'Wallet deep link';
 const defaultImage = '/img/buy_icon.png';
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
-<meta property="og:description" content="Wallet deep link" />
+<meta property="og:description" content="${descriptiion}" />
 <meta property="og:image"       content="${defaultImage}" />
 <meta property="og:url"         content="https://api.testnet.pylons.tech" />
 `;
@@ -61,6 +62,14 @@ Meteor.startup(() => {
             if (selectedRecipe != undefined && selectedRecipe != null) {                 
                 const entries = selectedRecipe.Entries;
                 
+                if(selectedRecipe.Name != undefined && selectedRecipe.Name != ""){
+                    siteName = selectedRecipe.Name; 
+                }
+
+                if(selectedRecipe.Description != undefined && selectedRecipe.Description != ""){ 
+                    descriptiion = selectedRecipe.Description;
+                }
+                
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
@@ -82,7 +91,7 @@ Meteor.startup(() => {
                 } 
                 const MetaTags = `
                 <meta property="og:title"       content="${siteName}" />
-                <meta property="og:description" content="Wallet deep link" />
+                <meta property="og:description" content="${descriptiion}" />
                 <meta property="og:url"         content="${Meteor.absoluteUrl() + url}" />
                 <meta property="og:image"       content="${img}" />`;
                 sink.appendToHead(MetaTags);
