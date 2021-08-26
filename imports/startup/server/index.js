@@ -6,18 +6,21 @@ import './create-indexes.js';
 import queryString from 'querystring'; 
 import { HTTP } from 'meteor/http';
 import { onPageLoad } from 'meteor/server-render'; 
-import { Meteor } from 'meteor/meteor'; 
-import { BrowserRouter as Router, StaticRouter} from 'react-router-dom'
+import { Meteor } from 'meteor/meteor';  
+ 
 // import { ServerStyleSheet } from "styled-components"
 import { Helmet } from 'react-helmet'; 
 // import App from '../../ui/App.jsx';
+
 var siteName = 'Big-Dipper';
-var descriptiion = 'Wallet deep link';
+var description = 'Wallet deep link';
 var price = "No Price"
+var picWidth = 1200;
+var picHeight = 800;
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
-<meta property="og:description" content="${descriptiion}" />
+<meta property="og:description" content="${description}" />
 <meta property="og:image"       content="${defaultImage}" />
 <meta property="og:url"         content="https://api.testnet.pylons.tech" />
 `;
@@ -68,7 +71,10 @@ Meteor.startup(() => {
                 }
 
                 if(selectedRecipe.Description != undefined && selectedRecipe.Description != ""){ 
-                    descriptiion = selectedRecipe.Description;
+                    description = selectedRecipe.Description;
+                    if (description.length > 20) {
+                        description = description.substring(0, 20) + '...';
+                    }
                 }
 
                 const coinInputs = selectedRecipe.CoinInputs; 
@@ -81,16 +87,31 @@ Meteor.startup(() => {
                     }
                 }
                 
-                descriptiion = descriptiion + "\n\n" + price;
+                //description = description + "\n\n" + price;
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
-                        let strings = itemoutputs[0].Strings
+                        let strings = itemoutputs[0].Strings;
+                        var img_rat = 0.7;
+                        for (i = 0; i < strings.length; i++) { 
+                            if(strings[i].Key == "Img_Rat"){
+                                if(strings[i].Value != undefined && strings[i].Value != ""){
+                                    img_rat = strings[i].Value; 
+                                }
+                               
+                            }
+                        }
+
                         for (i = 0; i < strings.length; i++) {
                             try {
                                 var values = strings[i].Value;
                                 if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                    img = values; 
+                                    img = values;  
+                                    // var refImg = new Image();
+                                    // refImg.src = values;   
+                                    // picWidth = refImg.width;
+                                    // picHeight = refImg.height
+                                    picHeight = picWidth * img_rat;   
                                     break;
                                 }
                             } catch (e) {
@@ -100,12 +121,20 @@ Meteor.startup(() => {
         
                         }
                     } 
-                } 
+                }    
                 const MetaTags = `
-                <meta property="og:title"       content="${siteName}" />
-                <meta property="og:description" content="${descriptiion}" data-rh="true"/>
-                <meta property="og:url"         content="${Meteor.absoluteUrl() + url}" />
-                <meta property="og:image"       content="${img}" />`;
+                <meta property="og:title"             content="${siteName}" />
+                <meta property="og:description"       content="${description}" data-rh="true"/>
+                <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
+                <meta property="og:image"             content="${img}" />
+                <meta property="og:image:width"       content="${picWidth}" />
+                <meta property="og:image:height"      content="${picHeight}" />
+                <meta name="twitter:card"             content="summary_large_image" />
+                <meta name="twitter:label1"           content="${price}" />
+                
+                `;
+
+
                 sink.appendToHead(MetaTags);
             }
             

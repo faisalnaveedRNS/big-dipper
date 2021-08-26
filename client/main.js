@@ -46,6 +46,7 @@ Meteor.startup(() => {
                 <App />
             </Router>, document.getElementById('app')
         ); 
+ 
         // const querys = queryString.parse(this.location.search);
         // var name = '';
         // var description = '';
