@@ -29,7 +29,7 @@ export default HomeContainer = withTracker((props) => {
     }
     else{
         selectedRecipe = Recipes.findOne({ ID: recipe_id });
-    } 
+    }  
 
     if (selectedRecipe != null) {
         name = selectedRecipe.Name
@@ -55,7 +55,7 @@ export default HomeContainer = withTracker((props) => {
                     try {
                         var values = strings[i].Value;
                         if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                            img = values; 
+                            img = values;   
                             break;
                         }
                     } catch (e) {

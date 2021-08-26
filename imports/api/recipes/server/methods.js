@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import { Recipes } from '../recipes.js';
+import { image } from 'd3-fetch';
 
 Meteor.methods({
     'recipes.getRecipes': function() {
@@ -18,7 +19,7 @@ Meteor.methods({
 
             let recipeIds = [];
             if (recipes.length > 0) {
-
+                 
                 const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp();
                 for (let i in recipes) {
                     let recipe = recipes[i];
