@@ -123,6 +123,7 @@ Meteor.startup(() => {
                     } 
                 }    
                 const MetaTags = `
+                <meta property="og:type"              content="article">
                 <meta property="og:title"             content="${siteName}" />
                 <meta property="og:description"       content="${description}" data-rh="true"/>
                 <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
@@ -131,7 +132,10 @@ Meteor.startup(() => {
                 <meta property="og:image:height"      content="${picHeight}" />
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:label1"           content="${price}" />
-                
+                <meta name="twitter:data1"            content="">
+                <meta name="twitter:label2"           content="Price" />
+                <meta name="twitter:data2"            content="${price}">
+                <meta property="article:published_time" content="2020-06-26T10:49:47+00:00">
                 `;
 
 
