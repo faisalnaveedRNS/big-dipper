@@ -132,10 +132,10 @@ Meteor.startup(() => {
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />
                 <meta property="article:Price"        content="${price}">
-                <meta property="article:published_time" content="${price}>
+                <meta property="article:published_time" content="${price}">
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:label1"           content="${price}" />
-                <meta name="twitter:data1"            content="">
+                <meta name="twitter:data1"            content="${price}">
                 <meta name="twitter:label2"           content="Price" />
                 <meta name="twitter:data2"            content="${price}">
                 
