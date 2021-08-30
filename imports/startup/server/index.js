@@ -123,12 +123,15 @@ Meteor.startup(() => {
                     } 
                 }    
                 const MetaTags = `  
+                <meta name="description"              content="${description}">
+                <meta property="og:type"              content="article">
                 <meta property="og:title"             content="${siteName}" />
                 <meta property="og:description"       content="${description}" data-rh="true"/>
                 <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
                 <meta property="og:image"             content="${img}" />
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
+                <meta name="twitter:card"             content="summary_large_image" />
                 `;
 
 
