@@ -19,7 +19,8 @@ const RecipeRow = (props) => {
     return <><tr >   
         <td className="title">
             {/* <a href={""+props.recipe.deeplink+""} target="_blank"> */} 
-            <img src={props.recipe.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/> {props.recipe.Name}  
+            <img src={props.recipe.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/>
+            <Link to={"/easel_transactions/"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.recipe.Name} </Link>
             {/* </a> */} 
             <Link to="/easel_transactions" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
 

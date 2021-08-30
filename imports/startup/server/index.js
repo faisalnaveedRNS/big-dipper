@@ -75,6 +75,7 @@ Meteor.startup(() => {
                     if (description.length > 20) {
                         description = description.substring(0, 20) + '...';
                     }
+                    description = description + "\n";
                 }
 
                 const coinInputs = selectedRecipe.CoinInputs; 
@@ -131,13 +132,10 @@ Meteor.startup(() => {
                 <meta property="og:image"             content="${img}" />
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />
-                <meta property="article:Price"        content="${price}">
-                <meta property="article:published_time" content="${price}">
-                <meta name="twitter:card"             content="summary_large_image" />
-                <meta name="twitter:label1"           content="${price}" />
+                <meta property="article:Price"        content="${price}">                
+                <meta name="twitter:card"             content="summary_large_image" /> 
+                <meta name="twitter:label1"           content="Price" />
                 <meta name="twitter:data1"            content="${price}">
-                <meta name="twitter:label2"           content="Price" />
-                <meta name="twitter:data2"            content="${price}">
                 
                 `;
 
