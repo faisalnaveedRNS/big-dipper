@@ -92,7 +92,7 @@ Meteor.startup(() => {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
                         let strings = itemoutputs[0].Strings;
-                        var img_rat = 0.7;
+                        var img_rat = 1.5;
                         for (i = 0; i < strings.length; i++) { 
                             if(strings[i].Key == "Img_Rat"){
                                 if(strings[i].Value != undefined && strings[i].Value != ""){
@@ -111,7 +111,7 @@ Meteor.startup(() => {
                                     // refImg.src = values;   
                                     // picWidth = refImg.width;
                                     // picHeight = refImg.height
-                                    picHeight = picWidth * img_rat;   
+                                    picWidth = picHeight * img_rat;   
                                     break;
                                 }
                             } catch (e) {
@@ -126,7 +126,9 @@ Meteor.startup(() => {
                 <meta property="og:title"             content="${siteName}" />
                 <meta property="og:description"       content="${description}" data-rh="true"/>
                 <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
-                <meta property="og:image"             content="${img}" /> 
+                <meta property="og:image"             content="${img}" />
+                <meta property="og:image:width"       content="${picWidth}" />
+                <meta property="og:image:height"      content="${picHeight}" />   
                 `;
 
 
