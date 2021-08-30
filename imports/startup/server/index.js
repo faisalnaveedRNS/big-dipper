@@ -74,8 +74,7 @@ Meteor.startup(() => {
                     description = selectedRecipe.Description;
                     if (description.length > 20) {
                         description = description.substring(0, 20) + '...';
-                    }
-                    description = description + "\n";
+                    } 
                 }
 
                 const coinInputs = selectedRecipe.CoinInputs; 
@@ -88,7 +87,7 @@ Meteor.startup(() => {
                     }
                 }
                 
-                //description = description + "\n\n" + price;
+                description = description + "\n\n" + "Price\n" + price;
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
@@ -123,20 +122,11 @@ Meteor.startup(() => {
                         }
                     } 
                 }    
-                const MetaTags = `
-                <meta name="description"              content="${description}">
-                <meta property="og:type"              content="article">
+                const MetaTags = `  
                 <meta property="og:title"             content="${siteName}" />
                 <meta property="og:description"       content="${description}" data-rh="true"/>
                 <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
-                <meta property="og:image"             content="${img}" />
-                <meta property="og:image:width"       content="${picWidth}" />
-                <meta property="og:image:height"      content="${picHeight}" />
-                <meta property="article:Price"        content="${price}">                
-                <meta name="twitter:card"             content="summary_large_image" /> 
-                <meta name="twitter:label1"           content="Price" />
-                <meta name="twitter:data1"            content="${price}">
-                
+                <meta property="og:image"             content="${img}" /> 
                 `;
 
 
