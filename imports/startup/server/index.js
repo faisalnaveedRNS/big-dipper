@@ -126,7 +126,7 @@ Meteor.startup(() => {
                 const MetaTags = `  
                 <meta name="description"              content="${description}">
                 <meta property="og:type"              content="article">
-                <meta property="og:title"             content="${siteName}" />
+                <meta property="og:title"             content="${browser ? browser.name : browser}" />
                 <meta property="og:description"       content="${description}" data-rh="true"/>
                 <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
                 <meta property="og:image"             content="${img}" />
