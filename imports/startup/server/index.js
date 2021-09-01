@@ -122,6 +122,7 @@ Meteor.startup(() => {
                         }
                     } 
                 }    
+                const { headers, browser } = sink.request;
                 const MetaTags = `  
                 <meta name="description"              content="${description}">
                 <meta property="og:type"              content="article">
@@ -132,6 +133,14 @@ Meteor.startup(() => {
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
+                <meta name="twitter:label1"           content="${sink.arch}" />
+                <meta name="twitter:data1"           content="${sink.request.httpVersion}" />
+                <meta name="twitter:label2"           content="${headers.host}" />
+                <meta name="twitter:data2"           content="${browser ? browser.name : browser}" />
+                <meta name="twitter:label3"           content="${headers.pragma}" />
+                <meta name="twitter:data3"           content="${headers.header}" />
+                <meta name="twitter:label4"           content="${headers.referer}" />
+                <meta name="twitter:data4"           content="${headers.location}" />
                 `;
 
 
