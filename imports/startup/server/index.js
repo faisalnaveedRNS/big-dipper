@@ -25,6 +25,14 @@ const defaultMetaTags = `
 <meta property="og:url"         content="https://api.testnet.pylons.tech" />
 `;
 
+const SLACK_BOT = 0;
+const FACEBOOK_BOT = 1;
+const TWITTER_BOT = 2;
+const INSTAGRAM_BOT = 3;
+const DISCORD_BOT = 4;
+ 
+var botType = SLACK_BOT;
+
 async function  getRecipeData(recipe_id){
     selectedRecipe = await Recipes.findOne({ ID: recipe_id });
     return selectedRecipe
@@ -86,8 +94,29 @@ Meteor.startup(() => {
                         price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
                     }
                 }
+
+                //slackbot-linkexpanding
+                //discordbot
+                //facebookbot
+                //twitterbot
+                const { headers, browser } = sink.request;
+                if(browser && browser.name.includes("slackbot")){
+                    botType = SLACK_BOT;
+                }
+                else if(browser && browser.name.includes("facebookbot")){
+                    botType = FACEBOOK_BOT;
+                }
+                else if(browser && browser.name.includes("twitterbot")){
+                    botType = TWITTER_BOT;
+                }
+                else if(browser && browser.name.includes("discordbot")){
+                    botType = DISCORD_BOT;
+                } 
+
+                if(botType != SLACK_BOT){
+                    description = description + "\n\n" + "Price\n" + price;
+                }
                 
-                description = description + "\n\n" + "Price\n" + price;
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
@@ -122,27 +151,21 @@ Meteor.startup(() => {
                         }
                     } 
                 }    
-                const { headers, browser } = sink.request;
+                
                 const MetaTags = `  
                 <meta name="description"              content="${description}">
                 <meta property="og:type"              content="article">
-                <meta property="og:title"             content="${browser ? browser.name : browser}" />
+                <meta property="og:title"             content="${siteName}" />
                 <meta property="og:description"       content="${description}" data-rh="true"/>
                 <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
                 <meta property="og:image"             content="${img}" />
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
-                <meta name="twitter:label1"           content="${sink.arch}" />
-                <meta name="twitter:data1"           content="${sink.request.httpVersion}" />
-                <meta name="twitter:label2"           content="${headers.host}" />
-                <meta name="twitter:data2"           content="${browser ? browser.name : browser}" />
-                <meta name="twitter:label3"           content="${headers.pragma}" />
-                <meta name="twitter:data3"           content="${headers.header}" />
-                <meta name="twitter:label4"           content="${headers.referer}" />
-                <meta name="twitter:data4"           content="${headers.location}" />
+                <meta name="twitter:label1"           content="Price" />
+                <meta name="twitter:data1"            content="${price}">
                 `;
-
+                
 
                 sink.appendToHead(MetaTags);
             }
