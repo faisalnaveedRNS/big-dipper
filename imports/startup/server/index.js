@@ -25,13 +25,14 @@ const defaultMetaTags = `
 <meta property="og:url"         content="https://api.testnet.pylons.tech" />
 `;
 
-const SLACK_BOT = 0;
-const FACEBOOK_BOT = 1;
-const TWITTER_BOT = 2;
-const INSTAGRAM_BOT = 3;
-const DISCORD_BOT = 4;
+const BROWSER_BOT = 0;
+const SLACK_BOT = 1;
+const FACEBOOK_BOT = 2;
+const TWITTER_BOT = 3;
+const INSTAGRAM_BOT = 4;
+const DISCORD_BOT = 5;
  
-var botType = SLACK_BOT;
+var botType = BROWSER_BOT;
 
 async function  getRecipeData(recipe_id){
     selectedRecipe = await Recipes.findOne({ ID: recipe_id });
@@ -112,10 +113,19 @@ Meteor.startup(() => {
                 else if(browser && browser.name.includes("discordbot")){
                     botType = DISCORD_BOT;
                 } 
-
-                if(botType != SLACK_BOT){
-                    description = description + "\n\n" + "Price\n" + price;
+                else{
+                    botType = BROWSER_BOT;
                 }
+
+                if(botType == TWITTER_BOT){
+                    description = description + "<h4>" + price + "</h4>";
+                }
+                else if(botType == FACEBOOK_BOT){
+                    siteName = siteName + "<h4>" + price + "</h4>";
+                }
+                else if(botType != SLACK_BOT){
+                    description = description + "\n\n" + "Price\n" + price;
+                } 
                 
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
@@ -164,8 +174,7 @@ Meteor.startup(() => {
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:label1"           content="Price" />
                 <meta name="twitter:data1"            content="${price}">
-                `;
-                
+                `;                
 
                 sink.appendToHead(MetaTags);
             }
