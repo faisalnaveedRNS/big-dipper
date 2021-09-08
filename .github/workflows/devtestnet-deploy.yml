@@ -24,5 +24,6 @@ jobs:
               --install \
               --namespace pylons \
               --set image=ghcr.io/pylons-tech/big-dipper:${{ github.sha }} \
+              --set host=devwallet.pylons.tech \
               --set pullSecret=regcred \
               ./helm/pylons-big-dipper
