@@ -1,9 +1,9 @@
-name: Deploy for Testnet
+name: Deploy for Dev Testnet
 
 on:
   workflow_run:
     workflows: ["Build Docker Image"]
-    branches: [staging]
+    branches: [master]
     types:
       - completed
 
@@ -18,7 +18,7 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+          kubeconfig: '${{ secrets.KUBECONFIG_DEV }}'
           exec: |
             helm upgrade pylons-big-dipper \
               --install \

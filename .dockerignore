@@ -2,3 +2,4 @@
 **/.meteor/local
 **/.github
 .git
+.envrc
