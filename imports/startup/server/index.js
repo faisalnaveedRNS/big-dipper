@@ -12,11 +12,14 @@ import { Meteor } from 'meteor/meteor';
 import { Helmet } from 'react-helmet'; 
 // import App from '../../ui/App.jsx';
 
+const IMAGE_WIDTH = 1200;
+const IMAGE_HEIGHT = 800;
+
 var siteName = 'Big-Dipper';
 var description = 'Wallet deep link';
 var price = "No Price"
-var picWidth = 1200;
-var picHeight = 800;
+var picWidth = IMAGE_WIDTH;
+var picHeight = IMAGE_HEIGHT;
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
@@ -130,27 +133,32 @@ Meteor.startup(() => {
                 if (entries != null) {
                     const itemoutputs = entries.ItemOutputs; 
                     if (itemoutputs.length > 0) {
-                        let strings = itemoutputs[0].Strings;
-                        var img_rat = 1.5;
-                        for (i = 0; i < strings.length; i++) { 
-                            if(strings[i].Key == "Img_Rat"){
-                                if(strings[i].Value != undefined && strings[i].Value != ""){
-                                    img_rat = strings[i].Value; 
+                        let longs = itemoutputs[0].Longs; 
+                        if(longs != null)
+                        {
+                            for (i = 0; i < longs.length; i++) { 
+                                let weightRanges = longs[i].WeightRanges;
+                                if(longs[i].Key == "Width"){
+                                    if(weightRanges != null){
+                                        picWidth = weightRanges[0].Lower * weightRanges[0].Weight;  
+                                    } 
                                 }
-                               
+                                else if(longs[i].Key == "Height"){
+                                    if(weightRanges != null){
+                                        picHeight = weightRanges[0].Lower * weightRanges[0].Weight;   
+                                    } 
+                                }
                             }
+                            picHeight = IMAGE_WIDTH * picHeight / picWidth;
+                            picWidth = IMAGE_WIDTH;
                         }
 
+                        let strings = itemoutputs[0].Strings; 
                         for (i = 0; i < strings.length; i++) {
                             try {
                                 var values = strings[i].Value;
                                 if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                    img = values;  
-                                    // var refImg = new Image();
-                                    // refImg.src = values;   
-                                    // picWidth = refImg.width;
-                                    // picHeight = refImg.height
-                                    picWidth = picHeight * img_rat;   
+                                    img = values;     
                                     break;
                                 }
                             } catch (e) {
