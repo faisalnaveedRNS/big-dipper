@@ -8,10 +8,16 @@ Meteor.methods({
         this.unblock();
 
         let url = API + '/custom/pylons/list_recipe/';
+        if(Meteor.settings.public.cosmos_sdk == 44){
+            url = API + '/pylons/recipes/'; 
+        }
         try {
             let response = HTTP.get(url);
 
             let recipes = JSON.parse(response.content).recipes;
+            if(Meteor.settings.public.cosmos_sdk == 44){
+                recipes = JSON.parse(response.content).Recipes;
+            }
             let finishedRecipeIds = new Set(Recipes.find({ "Disabled": { $in: [true, false] } }).fetch().map((p) => p.ID));
 
 
@@ -26,22 +32,28 @@ Meteor.methods({
                     let deeplink = 'https://wallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + '&nft_amount=1';  
                     recipe.deeplink = deeplink;
 
-                    let cookbook_rul = API + '/custom/pylons/list_cookbook/';
+                    let cookbook_rul = API + '/custom/pylons/list_cookbook/'; 
+                    if(Meteor.settings.public.cosmos_sdk == 44){
+                        cookbook_rul = API + '/pylons/cookbooks/'; 
+                    }
+                     
                     let cookbook_response = HTTP.get(cookbook_rul);
                     var cookbook_owner = ""
-                    try {
-                        let cookbooks = JSON.parse(cookbook_response.content).Cookbooks;
-                        if (cookbooks.length > 0) {
-                            for (let j in cookbooks) {
-                                let cookbook = cookbooks[j];
-                                if (cookbook.ID == recipe.CookbookID) {
-                                    cookbook_owner = recipe.Sender;
-                                    break;
+                    if (cookbook_response.statusCode == 200){  
+                        try {
+                            let cookbooks = JSON.parse(cookbook_response.content).Cookbooks;
+                            if (cookbooks.length > 0) {
+                                for (let j in cookbooks) {
+                                    let cookbook = cookbooks[j];
+                                    if (cookbook.ID == recipe.CookbookID) {
+                                        cookbook_owner = recipe.Sender;
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    } catch (e) {
-                        console.log(e);
+                        } catch (e) {
+                            console.log(e);
+                        } 
                     }
                     recipe.cookbook_owner = cookbook_owner;
                     recipeIds.push(recipe.ID);

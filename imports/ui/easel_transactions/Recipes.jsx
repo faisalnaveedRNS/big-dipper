@@ -6,18 +6,17 @@ import Cookbook from './CookbookContainer.js';
 import Recipe from './RecipeContainer.js';
 import ChainStates from '../components/ChainStatesContainer.js'
 import { Helmet } from 'react-helmet';
-import i18n from 'meteor/universe:i18n';
-import Test from './../proposals/ProposalContainer.js';
+import i18n from 'meteor/universe:i18n'; 
 
 const T = i18n.createComponent();
 
 const RecipeList = (props) => { 
     return <div>
         <Row> 
-                <Col md={3} xs={12}><h1 className="d-none d-lg-block">{"Snapshots"}</h1></Col> 
-                <Col md={9} xs={12} className="text-md-right"><ChainStates /></Col>
+            <Col md={3} xs={12}><h1 className="d-none d-lg-block">{"Snapshots"}</h1></Col> 
+            <Col md={9} xs={12} className="text-md-right"><ChainStates /></Col>
         </Row>
-        <p className="lead"><T>recipes.listOfRecipes</T></p>
+        <p className="lead"><T>recipes.listOfItems</T></p>
         <Row>
             <Col md={12}>
                 <List {...props}/>

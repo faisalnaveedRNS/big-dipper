@@ -56,10 +56,17 @@ Meteor.startup(() => {
         var recipes = null; 
         if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
             const recipe_id = querys['recipe_id']   
-            let getRecipesUrl ='https://api.testnet.pylons.tech/custom/pylons/list_recipe/';   
+            let getRecipesUrl ='https://api.testnet.pylons.tech/custom/pylons/list_recipe/';  
+            if(Meteor.settings.public.cosmos_sdk == 44){
+                getRecipesUrl ='https://api.testnet.pylons.tech/pylons/recipes/';   
+            }
             try {
                 let response = HTTP.get(getRecipesUrl); 
                 recipes = JSON.parse(response.content).recipes;  
+                if(Meteor.settings.public.cosmos_sdk == 44){
+                    recipes = JSON.parse(response.content).Recipes;  
+                }
+                
             } catch (e) {
                 console.log(url);
                 console.log(e);

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { CoinStats } from '../coin-stats.js';
 import { HTTP } from 'meteor/http';
+import { string } from 'prop-types';
 
 Meteor.methods({
     'coinStats.getCoinStats': function(){
@@ -10,11 +11,29 @@ Meteor.methods({
             try{
                 let now = new Date();
                 now.setMinutes(0);
-                let url = "https://api.coingecko.com/api/v3/simple/price?ids="+coinId+"&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true";
-                let response = HTTP.get(url);
-                if (response.statusCode == 200){
-                    // console.log(JSON.parse(response.content));
-                    let data = JSON.parse(response.content);
+                let url = API + '/custom/pylons/items_by_sender/';
+                if(Meteor.settings.public.cosmos_sdk == 44){
+                    url = API + '/pylons/items/';  
+                } 
+                let response = HTTP.get(url);  
+                if (response.statusCode == 200){ 
+                    let items = JSON.parse(response.content).Items;
+                    let strings = items.Strings;
+                    let price = 0.0, currency = "USD";
+                    for (i = 0; i < strings.length; i++) {
+                        if(strings.Key == "Currency"){
+                            currency = strings.Value;
+                        }
+                        else if(strings.Key == "Price"){
+                            price = strings.Value;
+                        }
+                    }
+                    if(currency == "pylon"){
+                        price = price * 100;
+                    }
+                    else{
+                        price = price / 100;
+                    }
                     data = data[coinId];
                     // console.log(coinStats);
                     return CoinStats.upsert({last_updated_at:data.last_updated_at}, {$set:data});

@@ -207,6 +207,7 @@ recipes:
     purchase_message: 'Please use the Pylons app to purchase!'
     notFound: 'No Recipe data found.'
     listOfRecipes: 'Here is a list of recipes.' 
+    listOfItems: 'Here is a list of items for sale.' 
     recipe: 'Recipe'
     recipes: 'Recipes' 
     snapshots: 'Snapshots'

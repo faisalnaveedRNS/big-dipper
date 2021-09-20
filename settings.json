@@ -47,11 +47,12 @@
         },
         "coingeckoId": "cosmos",
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
-        "banners": false
+        "banners": false,
+        "cosmos_sdk": 44
     },
     "remote":{
         "rpc":"https://rpc.testnet.pylons.tech/",   
-        "api":"https://api.testnet.pylons.tech/"    
+        "api":"https://api.testnet.pylons.tech/" 
     },
     "debug": {
         "startTimer": true

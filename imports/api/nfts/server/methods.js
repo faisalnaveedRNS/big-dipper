@@ -7,9 +7,15 @@ Meteor.methods({
         this.unblock();
 
         let url = API + '/custom/pylons/items_by_sender/';
-        try {
-            let response = HTTP.get(url);
-
+        if(Meteor.settings.public.cosmos_sdk == 44){
+            url = API + '/pylons/items/';
+        } 
+        
+        try { 
+            let response = HTTP.get(url); 
+            if (response.statusCode != 200){ 
+                return false;
+            }
             let nfts = JSON.parse(response.content).Items;
             let finishedNftIds = new Set(Nfts.find({ "Tradable": { $in: [true, false] } }).fetch().map((p) => p.ID));
 

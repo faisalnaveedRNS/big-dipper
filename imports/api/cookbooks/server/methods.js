@@ -7,9 +7,14 @@ Meteor.methods({
         this.unblock();
 
         let url = API + '/custom/pylons/list_cookbook/';
+        if(Meteor.settings.public.cosmos_sdk == 44){
+            url = API + '/pylons/cookbooks/'; 
+        }  
         try {
             let response = HTTP.get(url);
-
+            if (response.statusCode != 200){ 
+                return false;
+            }
             let cookbooks = JSON.parse(response.content).Cookbooks;
             let finishedCookbookIds = new Set(Cookbooks.find({}).fetch().map((p) => p.ID));
 
