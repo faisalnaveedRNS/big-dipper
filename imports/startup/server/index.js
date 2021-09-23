@@ -188,6 +188,146 @@ Meteor.startup(() => {
             }
             
         } 
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
+            var trades = null;
+            const recipe_id = querys['recipe_id']   
+            let getTradeUrl ='https://api.testnet.pylons.tech/custom/pylons/list_trade/';   
+            try {
+                let response = HTTP.get(getTradeUrl); 
+                trades = JSON.parse(response.content).trades;  
+                if(Meteor.settings.public.cosmos_sdk == 44){
+                    trades = JSON.parse(response.content).Trades;  
+                }
+                
+            } catch (e) {
+                console.log(url);
+                console.log(e);
+            }
+            
+            if (trades != null && trades.length > 0) {   
+                for (let i in trades) {
+                    selectedTrade = trades[i];
+                    if(selectedTrade.ID == recipe_id){
+                        break;
+                    }
+                    selectedTrade = null;
+                }
+            }
+            
+            if (selectedTrade != undefined && selectedTrade != null) {                 
+                const itemOutputs = selectedTrade.ItemOutputs; 
+                var priceValue = "";
+                var priceCurrency = "pylon";  
+                if (itemOutputs != undefined && itemOutputs != null && itemOutputs.length > 0) {
+                    let strings = itemOutputs[0].Strings; 
+                    if(strings != null)
+                    {
+                        for (j = 0; j < strings.length; j++) { 
+                            let key = strings[j].Key;
+                            let value = strings[j].Value;
+                            if(key == "Price"){
+                                priceValue = value;
+                            }
+                            else if(key == "Currency"){
+                                priceCurrency = value;
+                            }
+                            else if(key == "NFT_URL"){
+                                img = value;
+                            }
+                            else if(key == "Description"){
+                                description = value;
+                            }  
+                            else if(key == "Name"){
+                                siteName = value;
+                            } 
+                            
+                        } 
+                    }
+                    let longs = itemOutputs.Longs; 
+                    if(longs != null)
+                    {
+                        for (j = 0; j < longs.length; j++) { 
+                            let key = longs[j].Key;
+                            let value = longs[j].Value; 
+                            if(key == "Width"){
+                                picWidth = value; 
+                            }
+                            else if(key == "Height"){
+                                picHeight = value
+                            }
+                        } 
+                        picHeight = IMAGE_WIDTH * picHeight / picWidth;
+                        picWidth = IMAGE_WIDTH;
+                    } 
+                }    
+                
+                if(selectedTrade.Strings != undefined && selectedTrade.Strings != ""){
+                    siteName = selectedTrade.Name; 
+                }
+
+                if(selectedTrade.Description != undefined && selectedTrade.Description != ""){ 
+                    description = selectedTrade.Description;
+                    if (description.length > 20) {
+                        description = description.substring(0, 20) + '...';
+                    } 
+                }
+
+                if(priceCurrency == "USD"){
+                    price = Math.floor(priceValue / 100) + '.' + (priceValue % 100) + ' ' + priceCurrency;
+                }
+                else{
+                    price = priceValue + ' ' + priceCurrency;
+                }
+                //slackbot-linkexpanding
+                //discordbot
+                //facebookbot
+                //twitterbot
+                const { headers, browser } = sink.request;
+                if(browser && browser.name.includes("slackbot")){
+                    botType = SLACK_BOT;
+                }
+                else if(browser && browser.name.includes("facebookbot")){
+                    botType = FACEBOOK_BOT;
+                }
+                else if(browser && browser.name.includes("twitterbot")){
+                    botType = TWITTER_BOT;
+                }
+                else if(browser && browser.name.includes("discordbot")){
+                    botType = DISCORD_BOT;
+                } 
+                else{
+                    botType = BROWSER_BOT;
+                }
+
+                if(botType == TWITTER_BOT){
+                    description = description + "<h4>" + price + "</h4>";
+                }
+                else if(botType == FACEBOOK_BOT){
+                    siteName = siteName + "<h4>" + price + "</h4>";
+                }
+                else if(botType != SLACK_BOT){
+                    description = description + "\n\n" + "Price\n" + price;
+                } 
+                
+               
+                
+                const MetaTags = `  
+                <meta name="description"              content="${description}">
+                <meta property="og:type"              content="article">
+                <meta property="og:title"             content="${siteName}" />
+                <meta property="og:description"       content="${description}" data-rh="true"/>
+                <meta property="og:url"               content="${Meteor.absoluteUrl() + url}" />
+                <meta property="og:image"             content="${img}" />
+                <meta property="og:image:width"       content="${picWidth}" />
+                <meta property="og:image:height"      content="${picHeight}" />   
+                <meta name="twitter:card"             content="summary_large_image" />
+                <meta name="twitter:label1"           content="Price" />
+                <meta name="twitter:data1"            content="${price}">
+                `;                
+
+                sink.appendToHead(MetaTags);
+            }
+        }
         else
         { 
             sink.appendToHead(defaultMetaTags); 

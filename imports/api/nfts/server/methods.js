@@ -27,28 +27,9 @@ Meteor.methods({
                         try {
                             let date = new Date();
                             nft.NO = date.getFullYear() * 1000 * 360 * 24 * 30 * 12 + date.getMonth() * 1000 * 360 * 24 * 30 + date.getDay() * 1000 * 360 * 24 + date.getHours() * 1000 * 360 + date.getMinutes() * 1000 * 60 + date.getSeconds() * 1000 + date.getMilliseconds();
-                            nft.nftId = nft.NO;
-                            if (activeNfts.has(nft.ID)) {
-                                let validators = []
-                                let page = 0;
-
-                                // do {
-                                //     url = RPC + `/validators?page=${++page}&per_page=100`;
-                                //     let response = HTTP.get(url);
-                                //     result = JSON.parse(response.content).result;
-                                //     validators = [...validators, ...result.validators];
-
-                                // }
-                                // while (validators.length < parseInt(result.total))
-
-                                // let activeVotingPower = 0;
-                                // for (v in validators) {
-                                //     activeVotingPower += parseInt(validators[v].voting_power);
-                                // }
-                                // recipe.activeVotingPower = activeVotingPower;
-
-                            }
-                            //Recipes.insert(recipe);
+                            nft.nftId = nft.NO; 
+			                let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + nft.ID + '&nft_amount=1';  
+                            nft.resalelink = resalelink; 
                             bulkNfts.find({ ID: nft.ID }).upsert().updateOne({ $set: nft });
 
                         } catch (e) {
