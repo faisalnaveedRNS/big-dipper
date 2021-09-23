@@ -51,8 +51,8 @@
         "cosmos_sdk": 44
     },
     "remote":{
-        "rpc":"https://rpc.testnet.pylons.tech/",   
-        "api":"https://api.testnet.pylons.tech/" 
+        "rpc":"https://rpc.devtestnet.pylons.tech/",   
+        "api":"https://api.devtestnet.pylons.tech/" 
     },
     "debug": {
         "startTimer": true

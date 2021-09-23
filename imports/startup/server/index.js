@@ -20,12 +20,16 @@ var description = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
 var picHeight = IMAGE_HEIGHT;
+var apiUrl = "https://api.testnet.pylons.tech";
+if(Meteor.settings.public.cosmos_sdk == 44){
+    apiUrl = "https://api.devtestnet.pylons.tech/";
+}
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image"       content="${defaultImage}" />
-<meta property="og:url"         content="https://api.testnet.pylons.tech" />
+<meta property="og:url"         content="${apiUrl}" />
 `;
 
 const BROWSER_BOT = 0;
@@ -58,7 +62,7 @@ Meteor.startup(() => {
             const recipe_id = querys['recipe_id']   
             let getRecipesUrl ='https://api.testnet.pylons.tech/custom/pylons/list_recipe/';  
             if(Meteor.settings.public.cosmos_sdk == 44){
-                getRecipesUrl ='https://api.testnet.pylons.tech/pylons/recipes/';   
+                getRecipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';   
             }
             try {
                 let response = HTTP.get(getRecipesUrl); 

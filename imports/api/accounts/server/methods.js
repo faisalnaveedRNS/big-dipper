@@ -15,8 +15,9 @@ const fetchFromUrl = (url) => {
 
 Meteor.methods({
     'accounts.getAccountDetail': function(address) {
-        this.unblock();
+        this.unblock(); 
         let url = API + '/auth/accounts/' + address;
+        
         try {
             let available = HTTP.get(url);
             if (available.statusCode == 200) {
