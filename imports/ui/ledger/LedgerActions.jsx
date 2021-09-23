@@ -396,7 +396,7 @@ class LedgerButton extends Component {
             break;
 
 
-        }
+        } 
         callback(txMsg, this.getSimulateBody(txMsg))
     }
 
@@ -455,7 +455,7 @@ class LedgerButton extends Component {
             this.ledger.sign(bytesToSign, this.state.transportBLE).then((sig) => {
                 try {
                     Ledger.applySignature(txMsg, txContext, sig);
-                    Meteor.call('transaction.submit', txMsg, (err, res) => {
+                    Meteor.call('transaction.submit', txMsg, (err, res) => { 
                         if (err) {
                             this.setStateOnError('signing', err.reason)
                         } else if (res) {

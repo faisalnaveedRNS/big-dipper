@@ -12,7 +12,7 @@ Meteor.methods({
         const timestamp = new Date().getTime();
         console.log(`submitting transaction${timestamp} ${url} with data ${JSON.stringify(data)}`)
 
-        let response = HTTP.post(url, {data});
+        let response = HTTP.post(url, {data}); 
         console.log(`response for transaction${timestamp} ${url}: ${JSON.stringify(response)}`)
         if (response.statusCode == 200) {
             let data = response.data

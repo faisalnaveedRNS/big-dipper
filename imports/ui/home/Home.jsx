@@ -27,6 +27,10 @@ export default class Home extends Component{
             this.state.recipe_id = querys['recipe_id'];
             this.setState({recipeExist: true});
         }
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) {
+            this.state.recipe_id = querys['recipe_id'];
+            this.setState({recipeExist: true});
+        }
         else{
             this.setState({recipeExist: false}); 
         }
