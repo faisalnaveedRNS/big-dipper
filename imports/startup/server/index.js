@@ -20,10 +20,7 @@ var description = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
 var picHeight = IMAGE_HEIGHT;
-var apiUrl = "https://api.testnet.pylons.tech";
-if(Meteor.settings.public.cosmos_sdk == 44){
-    apiUrl = "https://api.devtestnet.pylons.tech/";
-}
+var apiUrl = "https://api.devtestnet.pylons.tech/"; 
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
@@ -60,16 +57,10 @@ Meteor.startup(() => {
         var recipes = null; 
         if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
             const recipe_id = querys['recipe_id']   
-            let getRecipesUrl ='https://api.testnet.pylons.tech/custom/pylons/list_recipe/';  
-            if(Meteor.settings.public.cosmos_sdk == 44){
-                getRecipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';   
-            }
+            let getRecipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';    
             try {
                 let response = HTTP.get(getRecipesUrl); 
-                recipes = JSON.parse(response.content).recipes;  
-                if(Meteor.settings.public.cosmos_sdk == 44){
-                    recipes = JSON.parse(response.content).Recipes;  
-                }
+                recipes = JSON.parse(response.content).Recipes;   
                 
             } catch (e) {
                 console.log(url);
@@ -202,16 +193,10 @@ Meteor.startup(() => {
         else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
             var trades = null;
             const recipe_id = querys['recipe_id']   
-            let getTradeUrl ='https://api.testnet.pylons.tech/custom/pylons/list_trade/';  
-            if(Meteor.settings.public.cosmos_sdk == 44){
-                getTradeUrl ='https://api.devtestnet.pylons.tech/pylons/trades/';   
-            }
+            let getTradeUrl ='https://api.devtestnet.pylons.tech/pylons/trades/';    
             try {
                 let response = HTTP.get(getTradeUrl); 
-                trades = JSON.parse(response.content).trades;  
-                if(Meteor.settings.public.cosmos_sdk == 44){
-                    trades = JSON.parse(response.content).Trades;  
-                }
+                trades = JSON.parse(response.content).Trades;   
                 
             } catch (e) {
                 console.log(url);

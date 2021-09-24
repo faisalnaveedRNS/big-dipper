@@ -7,17 +7,12 @@ Meteor.methods({
     'recipes.getRecipes': function() {
         this.unblock();
 
-        let url = API + '/custom/pylons/list_recipe/';
-        if(Meteor.settings.public.cosmos_sdk == 44){
-            url = API + '/pylons/recipes/'; 
-        }
+        let url = API + '/pylons/recipes/'; 
+        
         try {
             let response = HTTP.get(url);
 
-            let recipes = JSON.parse(response.content).recipes;
-            if(Meteor.settings.public.cosmos_sdk == 44){
-                recipes = JSON.parse(response.content).Recipes;
-            }
+            let recipes = JSON.parse(response.content).Recipes; 
             let finishedRecipeIds = new Set(Recipes.find({ "Disabled": { $in: [true, false] } }).fetch().map((p) => p.ID));
 
 
@@ -29,13 +24,10 @@ Meteor.methods({
                 const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp();
                 for (let i in recipes) {
                     let recipe = recipes[i];
-                    let deeplink = 'https://wallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + '&nft_amount=1';  
+                    let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + '&nft_amount=1';  
                     recipe.deeplink = deeplink;
 
-                    let cookbook_rul = API + '/custom/pylons/list_cookbook/'; 
-                    if(Meteor.settings.public.cosmos_sdk == 44){
-                        cookbook_rul = API + '/pylons/cookbooks/'; 
-                    }
+                    let cookbook_rul = API + '/pylons/cookbooks/';  
                      
                     let cookbook_response = HTTP.get(cookbook_rul);
                     var cookbook_owner = ""

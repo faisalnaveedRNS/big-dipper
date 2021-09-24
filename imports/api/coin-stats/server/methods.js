@@ -11,10 +11,7 @@ Meteor.methods({
             try{
                 let now = new Date();
                 now.setMinutes(0);
-                let url = API + '/custom/pylons/items_by_sender/';
-                if(Meteor.settings.public.cosmos_sdk == 44){
-                    url = API + '/pylons/item/';  
-                } 
+                let url = API + '/pylons/item/';  
                 let response = HTTP.get(url);  
                 if (response.statusCode == 200){ 
                     let items = JSON.parse(response.content).Items;

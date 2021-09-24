@@ -6,10 +6,7 @@ Meteor.methods({
     'cookbooks.getCookbooks': function() {
         this.unblock();
 
-        let url = API + '/custom/pylons/list_cookbook/';
-        if(Meteor.settings.public.cosmos_sdk == 44){
-            url = API + '/pylons/cookbooks/'; 
-        }  
+        let url = API + '/pylons/cookbooks/';  
         try {
             let response = HTTP.get(url);
             if (response.statusCode != 200){ 
