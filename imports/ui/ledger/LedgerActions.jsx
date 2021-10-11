@@ -393,10 +393,8 @@ class LedgerButton extends Component {
                 this.getTxContext(),
                 this.props.proposalId,
                 this.state.depositAmount.amount);
-            break;
-
-
-        } 
+            break; 
+        }  
         callback(txMsg, this.getSimulateBody(txMsg))
     }
 

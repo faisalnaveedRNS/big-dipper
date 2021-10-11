@@ -1,18 +1,41 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import { Cookbooks } from '../cookbooks.js';
+import { Transactions } from '/imports/api/transactions/transactions.js';
 
 Meteor.methods({
     'cookbooks.getCookbooks': function() {
         this.unblock();
+        let transactionsHandle, transactions, transactionsExist;
+        let loading = true;
+        try {  
 
-        let url = API + '/pylons/cookbooks/';  
-        try {
-            let response = HTTP.get(url);
-            if (response.statusCode != 200){ 
+            if (Meteor.isClient){
+                transactionsHandle = Meteor.subscribe('transactions.validator', props.validator, props.delegator, props.limit);
+                loading = !transactionsHandle.ready();
+            }
+        
+            if (Meteor.isServer || !loading){
+                transactions = Transactions.find({}, {sort:{height:-1}});
+        
+                if (Meteor.isServer){
+                    loading = false;
+                    transactionsExist = !!transactions;
+                }
+                else{
+                    transactionsExist = !loading && !!transactions;
+                }
+            }
+
+            if(!transactionsExist){
                 return false;
             }
-            let cookbooks = JSON.parse(response.content).Cookbooks;
+            let cookbooks = Transactions.find({
+                $or: [
+                    {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateCookbook"}
+                ]
+            }).fetch();
+            
             let finishedCookbookIds = new Set(Cookbooks.find({}).fetch().map((p) => p.ID));
 
             let activeCookbooks = finishedCookbookIds;

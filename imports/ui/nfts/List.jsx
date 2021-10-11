@@ -91,7 +91,7 @@ export default class Nfts extends Component{
                 <div style={{gap:'10px', display:'grid', gridTemplateColumns: window.orientation == undefined ? "repeat(5, 1fr)" : "repeat(1)"}}>
                     {this.state.txs}
                 </div>
-                {this.props.nftsExist && <div style={{display:'flex', minWidth:'77vw'}}>
+                {this.props.nftsExist && this.props.nfts.length > 0 && <div style={{display:'flex', minWidth:'77vw'}}>
                      <ul class='jss123' style={{margin:'auto', borderWidth:'1px', borderStyle:'solid', borderColor:'#E5E5E5', display:'flex', padding:'0', borderRadius:'9px'}}>
                          <li>
                              <button type='button' title='first' style={{minWidth:'46px'}} onClick={this.onBack}>

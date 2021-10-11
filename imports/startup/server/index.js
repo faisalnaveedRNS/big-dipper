@@ -7,6 +7,7 @@ import queryString from 'querystring';
 import { HTTP } from 'meteor/http';
 import { onPageLoad } from 'meteor/server-render'; 
 import { Meteor } from 'meteor/meteor';  
+import { Transactions } from '/imports/api/transactions/transactions.js';
  
 // import { ServerStyleSheet } from "styled-components"
 import { Helmet } from 'react-helmet'; 
@@ -56,12 +57,40 @@ Meteor.startup(() => {
         var selectedRecipe = null;
         var recipes = null; 
         if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
-            const recipe_id = querys['recipe_id']   
-            let getRecipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';    
-            try {
-                let response = HTTP.get(getRecipesUrl); 
-                recipes = JSON.parse(response.content).Recipes;   
-                
+            const recipe_id = querys['recipe_id']    
+             let transactionsHandle, transactions, transactionsExist;
+             let loading = true;
+        
+            try { 
+                if (Meteor.isClient){
+                    transactionsHandle = Meteor.subscribe('transactions.validator', props.validator, props.delegator, props.limit);
+                    loading = !transactionsHandle.ready();
+                }
+            
+                if (Meteor.isServer || !loading){
+                    transactions = Transactions.find({}, {sort:{height:-1}});
+            
+                    if (Meteor.isServer){
+                        loading = false;
+                        transactionsExist = !!transactions;
+                    }
+                    else{
+                        transactionsExist = !loading && !!transactions;
+                    }
+                }
+
+                if(!transactionsExist){
+                    return false;
+                }
+                let recipes = Transactions.find({
+                    $or: [
+                        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
+                    ]
+                }).fetch(); 
+
+                if(recipes == null || recipes.length == 0){
+                    return false;
+                }  
             } catch (e) {
                 console.log(url);
                 console.log(e);
@@ -192,11 +221,13 @@ Meteor.startup(() => {
         } 
         else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
             var trades = null;
-            const recipe_id = querys['recipe_id']   
-            let getTradeUrl ='https://api.devtestnet.pylons.tech/pylons/trades/';    
+            const recipe_id = querys['recipe_id']       
             try {
-                let response = HTTP.get(getTradeUrl); 
-                trades = JSON.parse(response.content).Trades;   
+                trades = Transactions.find({
+                    $or: [
+                        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateTrade"}
+                    ]
+                }).fetch();   
                 
             } catch (e) {
                 console.log(url);

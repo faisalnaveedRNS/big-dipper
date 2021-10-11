@@ -1,20 +1,47 @@
 import { Meteor } from 'meteor/meteor';
 import { CoinStats } from '../coin-stats.js';
 import { HTTP } from 'meteor/http';
+import { Transactions } from '/imports/api/transactions/transactions.js';
 import { string } from 'prop-types';
 
 Meteor.methods({
     'coinStats.getCoinStats': function(){
         this.unblock();
+        let transactionsHandle, transactions, transactionsExist;
+        let loading = true;
         let coinId = Meteor.settings.public.coingeckoId;
         if (coinId){
             try{
                 let now = new Date();
-                now.setMinutes(0);
-                let url = API + '/pylons/item/';  
-                let response = HTTP.get(url);  
-                if (response.statusCode == 200){ 
-                    let items = JSON.parse(response.content).Items;
+                now.setMinutes(0); 
+
+                if (Meteor.isClient){
+                    transactionsHandle = Meteor.subscribe('transactions.validator', props.validator, props.delegator, props.limit);
+                    loading = !transactionsHandle.ready();
+                }
+            
+                if (Meteor.isServer || !loading){
+                    transactions = Transactions.find({}, {sort:{height:-1}});
+            
+                    if (Meteor.isServer){
+                        loading = false;
+                        transactionsExist = !!transactions;
+                    }
+                    else{
+                        transactionsExist = !loading && !!transactions;
+                    }
+                }
+    
+                if(!transactionsExist){
+                    return false;
+                }
+                let items = Transactions.find({
+                    $or: [
+                        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.QueryListItemByOwner"}
+                    ]
+                }).fetch();
+
+                if (items.length > 0){  
                     let strings = items.Strings;
                     if(strings == null){
                         return;

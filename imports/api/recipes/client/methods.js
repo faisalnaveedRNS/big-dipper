@@ -1,21 +1,48 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import { Recipes } from '../recipes.js';
+import { Transactions } from '/imports/api/transactions/transactions.js';
 
 Meteor.methods({
     'recipes.getRecipes': function() {
         this.unblock();
          
-        let url = API + '/pylons/recipes/';  
-      
-        try {
-            let response = HTTP.get(url); 
-            let recipes = JSON.parse(response.content).Recipes;  
+        let transactionsHandle, transactions, transactionsExist;
+        let loading = true;
+        
+        try { 
+            if (Meteor.isClient){
+                transactionsHandle = Meteor.subscribe('transactions.validator', props.validator, props.delegator, props.limit);
+                loading = !transactionsHandle.ready();
+            }
+        
+            if (Meteor.isServer || !loading){
+                transactions = Transactions.find({}, {sort:{height:-1}});
+        
+                if (Meteor.isServer){
+                    loading = false;
+                    transactionsExist = !!transactions;
+                }
+                else{
+                    transactionsExist = !loading && !!transactions;
+                }
+            }
+
+            if(!transactionsExist){
+                return false;
+            }
+            let recipes = Transactions.find({
+                $or: [
+                    {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
+                ]
+            }).fetch();
+
+            if(recipes == null || recipes.length == 0){
+                return false;
+            }  
             
-            let finishedRecipeIds = new Set(Recipes.find({ "Disabled": { $in: [true, false] } }).fetch().map((p) => p.ID));
-
-
-            let activeRecipes = new Set(Recipes.find({ "Disabled": { $in: [false] } }).fetch().map((p) => p.ID));
+            let finishedRecipeIds = new Set(Recipes.find({ "Enabled": { $in: [true, false] } }).fetch().map((p) => p.ID)); 
+            let activeRecipes = new Set(Recipes.find({ "Enabled": { $in: [true] } }).fetch().map((p) => p.ID));
 
             let recipeIds = [];
           
@@ -25,15 +52,15 @@ Meteor.methods({
                 for (let i in recipes) {
                     let recipe = recipes[i];
                     let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + '&nft_amount=1';  
-                    recipe.deeplink = deeplink;
-
-                    let cookbook_rul = API + '/pylons/cookbooks/'; 
-                 
-                    let cookbook_response = HTTP.get(cookbook_rul);
+                    recipe.deeplink = deeplink; 
                     var cookbook_owner = ""
-                    if (cookbook_response.statusCode == 200){  
+                    if (transactionsExist){  
                         try {
-                            let cookbooks = JSON.parse(cookbook_response.content).Cookbooks;
+                            let cookbooks = Transactions.find({
+                                $or: [
+                                    {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateCookbook"}
+                                ]
+                            }).fetch();
                             if (cookbooks.length > 0) {
                                 for (let j in cookbooks) {
                                     let cookbook = cookbooks[j];
@@ -114,8 +141,8 @@ Meteor.methods({
                     }
                 }
 
-                bulkRecipes.find({ ID: { $nin: recipeIds }, Disabled: { $nin: [true, false] } })
-                    .update({ $set: { Disabled: false } });
+                bulkRecipes.find({ ID: { $nin: recipeIds }, Enabled: { $nin: [true, false] } })
+                    .update({ $set: { Enabled: true } });
                 bulkRecipes.execute();
             }
             return recipes

@@ -1,22 +1,48 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import { Nfts } from '../nfts.js';
+import { Transactions } from '/imports/api/transactions/transactions.js';
 
 Meteor.methods({
     'nfts.getNfts': function() {
         this.unblock();
 
-        let url = API + '/pylons/item/'; 
+        let transactionsHandle, transactions, transactionsExist;
+        let loading = true;
         
         try { 
-            let response = HTTP.get(url); 
-            if (response.statusCode != 200){ 
+            if (Meteor.isClient){
+                transactionsHandle = Meteor.subscribe('transactions.validator', props.validator, props.delegator, props.limit);
+                loading = !transactionsHandle.ready();
+            }
+        
+            if (Meteor.isServer || !loading){
+                transactions = Transactions.find({}, {sort:{height:-1}});
+        
+                if (Meteor.isServer){
+                    loading = false;
+                    transactionsExist = !!transactions;
+                }
+                else{
+                    transactionsExist = !loading && !!transactions;
+                }
+            }
+
+            if(!transactionsExist){
                 return false;
             }
-            let nfts = JSON.parse(response.content).Items;
-            let finishedNftIds = new Set(Nfts.find({ "Tradable": { $in: [true, false] } }).fetch().map((p) => p.ID));
+            let items = Transactions.find({
+                $or: [
+                    {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.QueryListItemByOwner"}
+                ]
+            }).fetch();
 
+            if(items == null || items.length == 0){
+                return false;
+            }
 
+            let nfts = items.Items;
+            let finishedNftIds = new Set(Nfts.find({ "Tradable": { $in: [true, false] } }).fetch().map((p) => p.ID)); 
             let activeNfts = new Set(Nfts.find({ "Tradable": { $in: [true] } }).fetch().map((p) => p.ID));
 
             let nftIds = [];

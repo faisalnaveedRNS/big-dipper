@@ -32,6 +32,9 @@ export default class Nfts extends Component{
                     })
                 })    
             }
+            else{
+                this.state.page = 0;
+            }
         }
     }
 

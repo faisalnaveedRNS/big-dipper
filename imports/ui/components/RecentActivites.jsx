@@ -39,29 +39,30 @@ export default class RecentActivites extends Component {
         var strName = '';
         var isSender = false;
         var imgName = '/img/ico_quest.png'
+        console.log('---', props.msg)
         if(props.msg['@type'] == '/pylons.MsgCreateRecipe'){
-            strName = props.msg.Sender;
+            strName = props.msg.from_address;
             isSender = true;
         }
         else if(props.msg['@type'] == '/pylons.MsgCreateCookbook'){
             isSender = true;
-            strName = props.msg.Sender
+            strName = props.msg.from_address
             imgName = '/img/ico_artwork.png'
         }
         else if(props.msg['@type'] == '/pylons.MsgCreateAccount'){ 
-            strName = props.msg.Requester
+            strName = props.msg.to_address
             imgName = '/img/ico_battleresult.png'
         }
         else if(props.msg['@type'] == '/pylons.MsgGetPylons'){ 
-            strName = props.msg.Requester
+            strName = props.msg.to_address
             imgName = '/img/ico_sold.png'
         } 
         else{
             if(props.msg.Sender == null){
-                strName = props.msg.Requester 
+                strName = props.msg.to_address 
             }
             else{
-                strName = props.msg.Sender
+                strName = props.msg.from_address
                 isSender = true; 
             }
         }

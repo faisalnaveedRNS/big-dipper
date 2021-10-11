@@ -287,6 +287,8 @@ activities:
     withAmount: 'with <span class="text-info">{$amount}</span>'
 messageTypes:
     send: 'Send'
+    cookbooks: 'Cookbooks'
+    createAccount: 'CreateAccount'
     multiSend: 'Multi Send'
     createValidator: 'Create Validator'
     editValidator: 'Edit Validator'

@@ -38,8 +38,7 @@ export default class Activites extends Component {
         super(props);
     }
 
-    render(){
-        // console.log(this.props);
+    render(){ 
         const msg = this.props.msg;
         const events = [];
         for (let i in this.props.events){

@@ -6,6 +6,12 @@ const T = i18n.createComponent();
 
 export const MsgType = (props) => {
     switch (props.type){
+    //Pylonstech.pylons.pylons.QueryListCookbooksByCreator 
+    case "/Pylonstech.pylons.pylons.QueryListCookbooksByCreator":
+        return <Badge color="success"><T>messageTypes.cookbooks</T></Badge>
+    ///Pylonstech.pylons.pylons.MsgCreateAccount
+    case "/Pylonstech.pylons.pylons.MsgCreateAccount":
+        return <Badge color="success"><T>messageTypes.createAccount</T></Badge>
     // bank
     case "/cosmos.bank.v1beta1.MsgSend":
         return <Badge color="success"><T>messageTypes.send</T></Badge>
