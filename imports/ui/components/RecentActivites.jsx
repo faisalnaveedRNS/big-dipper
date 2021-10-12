@@ -40,6 +40,7 @@ export default class RecentActivites extends Component {
         var isSender = false;
         var imgName = '/img/ico_quest.png'
         console.log('---', props.msg)
+        console.log('chainId = ', Meteor.settings.public.chainId)
         if(props.msg['@type'] == '/pylons.MsgCreateRecipe'){
             strName = props.msg.from_address;
             isSender = true;
