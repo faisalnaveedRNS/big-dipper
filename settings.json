@@ -1,7 +1,7 @@
 {
     "public":{
         "chainName": "Cosmos",
-        "chainId": "pylons-devtestnet",
+        "chainId": "pylons-testnet",
         "gtm": "{Add your Google Tag Manager ID here}",
         "slashingWindow": 10000,
         "uptimeWindow": 250,
@@ -47,12 +47,11 @@
         },
         "coingeckoId": "cosmos",
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
-        "banners": false,
-        "cosmos_sdk": 43
+        "banners": false 
     },
     "remote":{
-        "rpc":"https://rpc.devtestnet.pylons.tech/",   
-        "api":"https://api.devtestnet.pylons.tech/" 
+        "rpc":"https://rpc.testnet.pylons.tech/",   
+        "api":"https://api.testnet.pylons.tech/"    
     },
     "debug": {
         "startTimer": true

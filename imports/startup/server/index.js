@@ -20,8 +20,8 @@ var siteName = 'Big-Dipper';
 var description = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
-var picHeight = IMAGE_HEIGHT;
-var apiUrl = "https://api.devtestnet.pylons.tech/"; 
+var picHeight = IMAGE_HEIGHT; 
+var apiUrl = "https://api.testnet.pylons.tech/";  
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
@@ -218,16 +218,14 @@ Meteor.startup(() => {
                 sink.appendToHead(MetaTags);
             }
             
-        } 
+        }  
         else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
-            var trades = null;
-            const recipe_id = querys['recipe_id']       
+            var trades = null; 
+            const recipe_id = querys['recipe_id']   
+            let getTradeUrl ='https://api.testnet.pylons.tech/custom/pylons/list_trade/';   
             try {
-                trades = Transactions.find({
-                    $or: [
-                        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateTrade"}
-                    ]
-                }).fetch();   
+                let response = HTTP.get(getTradeUrl); 
+                trades = JSON.parse(response.content).trades;   
                 
             } catch (e) {
                 console.log(url);
@@ -357,7 +355,7 @@ Meteor.startup(() => {
 
                 sink.appendToHead(MetaTags);
             }
-        }
+        } 
         else
         { 
             sink.appendToHead(defaultMetaTags); 
