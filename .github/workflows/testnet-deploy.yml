@@ -25,6 +25,6 @@ jobs:
             helm upgrade pylons-big-dipper \
               --install \
               --namespace pylons \
-              --set image=ghcr.io/pylons-tech/big-dipper:${{ github.sha }} \
+              --set image=ghcr.io/pylons-tech/big-dipper:staging \
               --set pullSecret=regcred \
               ./helm/pylons-big-dipper
