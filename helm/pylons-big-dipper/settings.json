@@ -7,12 +7,12 @@
         "uptimeWindow": 250,
         "initialPageSize": 30,
         "secp256k1": false,
-        "bech32PrefixAccAddr": "cosmos",
-        "bech32PrefixAccPub": "cosmospub",
-        "bech32PrefixValAddr": "cosmosvaloper",
-        "bech32PrefixValPub": "cosmosvaloperpub",
-        "bech32PrefixConsAddr": "cosmosvalcons",
-        "bech32PrefixConsPub": "cosmosvalconspub",
+        "bech32PrefixAccAddr": "pylo",
+        "bech32PrefixAccPub": "pylopub",
+        "bech32PrefixValAddr": "pylovaloper",
+        "bech32PrefixValPub": "pylovaloperpub",
+        "bech32PrefixConsAddr": "pylovalcons",
+        "bech32PrefixConsPub": "pylovalconspub",
         "bondDenom": "uatom",
         "powerReduction": 1000000,
         "coins": [
@@ -47,11 +47,11 @@
         },
         "coingeckoId": "cosmos",
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
-        "banners": false
+        "banners": false 
     },
     "remote":{
-        "rpc":"http://pylons-testnet:26657",   
-        "api":"http://pylons-testnet:1317"    
+        "rpc":"https://rpc.testnet.pylons.tech/",   
+        "api":"https://api.testnet.pylons.tech/"    
     },
     "debug": {
         "startTimer": true
@@ -74,5 +74,4 @@
         "delegationInterval": 900000
     }
 }
-
 
