@@ -54,15 +54,15 @@ const ListRow = (props) => {
                 </Row>  
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.sender</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.Sender}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.owner}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.CookbookID}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.cookbookID}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookowner</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.cookbook_owner}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.owner}</Col>
                 </Row> 
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.deeplinks</T></Col>
@@ -90,7 +90,7 @@ const RecipeRow = (props) => {
 
         </td>    
         {props.recipe.nftsExist && <td className="title">
-            <Link to={"/easel_transactions/"+props.recipe.Sender} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}}>{props.recipe.cookbook_owner}</Link>  
+            <Link to={"/easel_transactions/"+props.recipe.creator} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}}>{props.recipe.cookbook_owner}</Link>  
         </td>}
         {!props.recipe.nftsExist && <td className="title" style={{paddingTop:'22px'}}>
             {props.recipe.cookbook_owner}
@@ -133,7 +133,7 @@ const RecipeRow = (props) => {
                 </Row> 
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.sender</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.Sender}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.creator}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
@@ -261,7 +261,7 @@ export default class List extends Component{
                         }  
                         let nfts = null;
                         if(this.props.nfts != null){
-                            nfts = this.props.nfts.filter((nft) => nft.Sender == recipe.Sender); 
+                            nfts = this.props.nfts.filter((nft) => nft.owner == recipe.creator); 
                         }
 
                         recipe.price = price;
@@ -382,7 +382,7 @@ export default class List extends Component{
                         
                         let nfts = null;
                         if(this.props.nfts != null){
-                            nfts = this.props.nfts.filter((nft) => nft.Sender == item.Sender); 
+                            nfts = this.props.nfts.filter((nft) => nft.owner == item.owner); 
                         } 
                         item.price = price;
                         item.copies = copies; 
@@ -435,7 +435,7 @@ export default class List extends Component{
                         
                         let nfts = null;
                         if(this.props.nfts != null){
-                            nfts = this.props.nfts.filter((nft) => nft.Sender == recipe.Sender); 
+                            nfts = this.props.nfts.filter((nft) => nft.owner == recipe.creator); 
                         } 
                         recipe.price = price;
                         recipe.copies = copies; 

@@ -46,11 +46,11 @@ export default HomeContainer = withTracker((props) => {
                 price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
             }
         }
-        const entries = selectedRecipe.Entries;
+        const entries = selectedRecipe.entries;
         if (entries != null) {
-            const itemoutputs = entries.ItemOutputs; 
+            const itemoutputs = entries.itemOutputs; 
             if (itemoutputs.length > 0) {
-                let strings = itemoutputs[0].Strings
+                let strings = itemoutputs[0].strings
                 for (i = 0; i < strings.length; i++) {
                     try {
                         var values = strings[i].Value;

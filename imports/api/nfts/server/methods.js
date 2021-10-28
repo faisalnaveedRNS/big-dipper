@@ -42,7 +42,7 @@ Meteor.methods({
             }
 
             let nfts = items.Items;
-            let finishedNftIds = new Set(Nfts.find({ "Tradable": { $in: [true, false] } }).fetch().map((p) => p.ID)); 
+            let finishedNftIds = new Set(Nfts.find({ }).fetch().map((p) => p.ID)); 
             let activeNfts = new Set(Nfts.find({ "Tradable": { $in: [true] } }).fetch().map((p) => p.ID));
 
             let nftIds = [];
@@ -56,9 +56,12 @@ Meteor.methods({
                         try {
                             let date = new Date();
                             nft.NO = date.getFullYear() * 1000 * 360 * 24 * 30 * 12 + date.getMonth() * 1000 * 360 * 24 * 30 + date.getDay() * 1000 * 360 * 24 + date.getHours() * 1000 * 360 + date.getMinutes() * 1000 * 60 + date.getSeconds() * 1000 + date.getMilliseconds();
+ 
+ 
                             nft.nftId = nft.NO;
-                            let resalelink = 'https://devwallet.pylons.tech?action=resell_nft&recipe_id=' + nft.ID + '&nft_amount=1';  
+                            let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + nft.ID + '&cookbook_id='+ nft.cookbookID + '&nft_amount=1';   
                             nft.resalelink = resalelink; 
+ 
                             bulkNfts.find({ ID: nft.ID }).upsert().updateOne({ $set: nft });
 
                         } catch (e) {

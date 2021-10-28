@@ -15,13 +15,13 @@ export default RecipeContainer = withTracker((props) => {
         loading = !nftsHandle.ready();
 
         if (!loading) {
-            nfts = Nfts.find({Sender: props.match.params.sender}, { sort: { ID: -1 } }).fetch();
+            nfts = Nfts.find({creator: props.match.params.creator}, { sort: { ID: -1 } }).fetch();
             nftsExist = !loading && !!nfts;
         }
     }
 
     if (Meteor.isServer || !loading) {
-        nfts = Nfts.find({Sender: props.match.params.sender}, { sort: { ID: -1 } }).fetch();
+        nfts = Nfts.find({creator: props.match.params.creator}, { sort: { ID: -1 } }).fetch();
         if (Meteor.isServer) {
             loading = false;
             nftsExist = !!nfts;

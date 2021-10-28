@@ -20,8 +20,8 @@ var siteName = 'Big-Dipper';
 var description = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
-var picHeight = IMAGE_HEIGHT;
-var apiUrl = "https://api.devtestnet.pylons.tech/"; 
+var picHeight = IMAGE_HEIGHT; 
+var apiUrl = "https://api.devtestnet.pylons.tech/";  
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
@@ -56,78 +56,77 @@ Meteor.startup(() => {
         var img = ''; 
         var selectedRecipe = null;
         var recipes = null; 
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
-            const recipe_id = querys['recipe_id']    
-             let transactionsHandle, transactions, transactionsExist;
-             let loading = true;
-        
-            try { 
-                if (Meteor.isClient){
-                    transactionsHandle = Meteor.subscribe('transactions.validator', props.validator, props.delegator, props.limit);
-                    loading = !transactionsHandle.ready();
-                }
-            
-                if (Meteor.isServer || !loading){
-                    transactions = Transactions.find({}, {sort:{height:-1}});
-            
-                    if (Meteor.isServer){
-                        loading = false;
-                        transactionsExist = !!transactions;
-                    }
-                    else{
-                        transactionsExist = !loading && !!transactions;
-                    }
-                }
-
-                if(!transactionsExist){
-                    return false;
-                }
-                let recipes = Transactions.find({
-                    $or: [
-                        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
-                    ]
-                }).fetch(); 
-
-                if(recipes == null || recipes.length == 0){
-                    return false;
-                }  
+        if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) { 
+            var selectedItem = null; 
+            const recipe_id = querys['recipe_id']   
+            const cookbook_id = querys['cookbook_id']   
+            let getItemUrl ='https://api.devtestnet.pylons.tech/pylons/item/' + cookbook_id + '/' + recipe_id;   
+            try {
+                let response = HTTP.get(getItemUrl); 
+                selectedItem = JSON.parse(response.content).Item;   
+                
             } catch (e) {
                 console.log(url);
                 console.log(e);
-            }
-            
-            if (recipes != null && recipes.length > 0) {   
-                for (let i in recipes) {
-                    selectedRecipe = recipes[i];
-                    if(selectedRecipe.ID == recipe_id){
-                        break;
+            } 
+             
+            if (selectedItem != undefined && selectedItem != null) {                 
+                const strings = selectedItem.strings; 
+                var priceValue = "";
+                var priceCurrency = "pylon";  
+                if (strings != undefined && strings != null && strings.length > 0) { 
+                    if(strings != null)
+                    {
+                        for (j = 0; j < strings.length; j++) { 
+                            let key = strings[j].Key;
+                            let value = strings[j].Value;
+                            if(key == "Price"){
+                                priceValue = value;
+                            }
+                            else if(key == "Currency"){
+                                priceCurrency = value;
+                            }
+                            else if(key == "NFT_URL"){
+                                img = value;
+                            }
+                            else if(key == "Description"){
+                                description = value;
+                            }  
+                            else if(key == "Name"){
+                                siteName = value;
+                            } 
+                            
+                        } 
                     }
-                    selectedRecipe = null;
-                }
-            }
-            
-            if (selectedRecipe != undefined && selectedRecipe != null) {                 
-                const entries = selectedRecipe.Entries;
-                
-                if(selectedRecipe.Name != undefined && selectedRecipe.Name != ""){
-                    siteName = selectedRecipe.Name; 
-                }
+                    let longs = selectedItem.longs; 
+                    if(longs != null)
+                    {
+                        for (j = 0; j < longs.length; j++) { 
+                            let key = longs[j].Key;
+                            let value = longs[j].Value; 
+                            if(key == "Width"){
+                                picWidth = value; 
+                            }
+                            else if(key == "Height"){
+                                picHeight = value
+                            }
+                        } 
+                        picHeight = IMAGE_WIDTH * picHeight / picWidth;
+                        picWidth = IMAGE_WIDTH;
+                    } 
+                }     
 
-                if(selectedRecipe.Description != undefined && selectedRecipe.Description != ""){ 
-                    description = selectedRecipe.Description;
+                if(description != undefined && description != ""){  
                     if (description.length > 20) {
                         description = description.substring(0, 20) + '...';
                     } 
                 }
 
-                const coinInputs = selectedRecipe.CoinInputs; 
-                if (coinInputs.length > 0) {
-                    if(coinInputs[0].Coin == "USD"){
-                        price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
-                    }
-                    else{
-                        price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
-                    }
+                if(priceCurrency == "USD"){
+                    price = Math.floor(priceValue / 100) + '.' + (priceValue % 100) + ' ' + priceCurrency;
+                }
+                else{
+                    price = priceValue + ' ' + priceCurrency;
                 }
 
                 //slackbot-linkexpanding
@@ -218,38 +217,26 @@ Meteor.startup(() => {
                 sink.appendToHead(MetaTags);
             }
             
-        } 
-        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
-            var trades = null;
-            const recipe_id = querys['recipe_id']       
+        }  
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) { 
+            var selectedItem = null; 
+            const recipe_id = querys['recipe_id']   
+            const cookbook_id = querys['cookbook_id']   
+            let getItemUrl ='https://api.devtestnet.pylons.tech/pylons/item/' + cookbook_id + '/' + recipe_id;   
             try {
-                trades = Transactions.find({
-                    $or: [
-                        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateTrade"}
-                    ]
-                }).fetch();   
+                let response = HTTP.get(getItemUrl); 
+                selectedItem = JSON.parse(response.content).Item;   
                 
             } catch (e) {
                 console.log(url);
                 console.log(e);
-            }
-            
-            if (trades != null && trades.length > 0) {   
-                for (let i in trades) {
-                    selectedTrade = trades[i];
-                    if(selectedTrade.ID == recipe_id){
-                        break;
-                    }
-                    selectedTrade = null;
-                }
-            }
-            
-            if (selectedTrade != undefined && selectedTrade != null) {                 
-                const itemOutputs = selectedTrade.ItemOutputs; 
+            } 
+             
+            if (selectedItem != undefined && selectedItem != null) {                 
+                const strings = selectedItem.strings; 
                 var priceValue = "";
                 var priceCurrency = "pylon";  
-                if (itemOutputs != undefined && itemOutputs != null && itemOutputs.length > 0) {
-                    let strings = itemOutputs[0].Strings; 
+                if (strings != undefined && strings != null && strings.length > 0) { 
                     if(strings != null)
                     {
                         for (j = 0; j < strings.length; j++) { 
@@ -273,7 +260,7 @@ Meteor.startup(() => {
                             
                         } 
                     }
-                    let longs = itemOutputs.Longs; 
+                    let longs = selectedItem.longs; 
                     if(longs != null)
                     {
                         for (j = 0; j < longs.length; j++) { 
@@ -289,14 +276,9 @@ Meteor.startup(() => {
                         picHeight = IMAGE_WIDTH * picHeight / picWidth;
                         picWidth = IMAGE_WIDTH;
                     } 
-                }    
-                
-                if(selectedTrade.Strings != undefined && selectedTrade.Strings != ""){
-                    siteName = selectedTrade.Name; 
-                }
+                }     
 
-                if(selectedTrade.Description != undefined && selectedTrade.Description != ""){ 
-                    description = selectedTrade.Description;
+                if(description != undefined && description != ""){  
                     if (description.length > 20) {
                         description = description.substring(0, 20) + '...';
                     } 
@@ -357,7 +339,7 @@ Meteor.startup(() => {
 
                 sink.appendToHead(MetaTags);
             }
-        }
+        } 
         else
         { 
             sink.appendToHead(defaultMetaTags); 
