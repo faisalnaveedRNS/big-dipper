@@ -42,7 +42,7 @@ Meteor.methods({
             }
 
             let nfts = items.Items;
-            let finishedNftIds = new Set(Nfts.find({ "Tradable": { $in: [true, false] } }).fetch().map((p) => p.ID)); 
+            let finishedNftIds = new Set(Nfts.find({ }).fetch().map((p) => p.ID)); 
             let activeNfts = new Set(Nfts.find({ "Tradable": { $in: [true] } }).fetch().map((p) => p.ID));
 
             let nftIds = [];
@@ -59,7 +59,7 @@ Meteor.methods({
  
  
                             nft.nftId = nft.NO;
-                            let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + nft.ID + '&nft_amount=1';   
+                            let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + nft.ID + '&cookbook_id='+ nft.cookbookID + '&nft_amount=1';   
                             nft.resalelink = resalelink; 
  
                             bulkNfts.find({ ID: nft.ID }).upsert().updateOne({ $set: nft });

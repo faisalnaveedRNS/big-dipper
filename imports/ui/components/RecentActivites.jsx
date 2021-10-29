@@ -59,7 +59,7 @@ export default class RecentActivites extends Component {
             imgName = '/img/ico_sold.png'
         } 
         else{
-            if(props.msg.Sender == null){
+            if(props.msg.creator == null){
                 strName = props.msg.to_address 
             }
             else{

@@ -42,10 +42,10 @@ Meteor.methods({
                 return false;
             }  
 
-            let finishedRecipeIds = new Set(Recipes.find({ "Enabled": { $in: [true, false] } }).fetch().map((p) => p.ID));
+            let finishedRecipeIds = new Set(Recipes.find({ "enabled": { $in: [true, false] } }).fetch().map((p) => p.ID));
 
 
-            let activeRecipes = new Set(Recipes.find({ "Enabled": { $in: [false] } }).fetch().map((p) => p.ID));
+            let activeRecipes = new Set(Recipes.find({ "enabled": { $in: [false] } }).fetch().map((p) => p.ID));
 
             let recipeIds = [];
             if (recipes.length > 0) {
@@ -53,9 +53,9 @@ Meteor.methods({
                 const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp();
                 for (let i in recipes) {
                     let recipe = recipes[i];
-                    let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + '&nft_amount=1';  
+                    let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + "&cookbook_id=" + recipe.cookbookID +  '&nft_amount=1';  
                     recipe.deeplink = deeplink;
-
+                    let cookbook_owner = "", creator = "";
                     try {
                         let cookbooks = Transactions.find({
                             $or: [
@@ -65,8 +65,9 @@ Meteor.methods({
                         if (cookbooks.length > 0) {
                             for (let j in cookbooks) {
                                 let cookbook = cookbooks[j];
-                                if (cookbook.ID == recipe.CookbookID) {
-                                    cookbook_owner = recipe.Sender;
+                                if (cookbook.ID == recipe.cookbookID) {
+                                    cookbook_owner = recipe.ID;
+                                    creator = cookbook.creator;
                                     break;
                                 }
                             }
@@ -75,6 +76,7 @@ Meteor.methods({
                         console.log(e);
                     } 
                     recipe.cookbook_owner = cookbook_owner;
+                    recipe.creator = creator;
                     recipeIds.push(recipe.ID);
                     if (recipe.NO != -1 && !finishedRecipeIds.has(recipe.ID)) {
                         try {
@@ -110,8 +112,8 @@ Meteor.methods({
                     }
                 }
 
-                bulkRecipes.find({ ID: { $nin: recipeIds }, Enabled: { $nin: [true, false] } })
-                    .update({ $set: { Enabled: true } });
+                bulkRecipes.find({ ID: { $nin: recipeIds }, enabled: { $nin: [true, false] } })
+                    .update({ $set: { enabled: true } });
                 bulkRecipes.execute();
             }
             return recipes
@@ -122,7 +124,7 @@ Meteor.methods({
     },
     'recipes.getRecipeResults': function() {
         this.unblock();
-        let recipes = Recipes.find({ "Enabled": { $nin: [true, false] } }).fetch();
+        let recipes = Recipes.find({ "enabled": { $nin: [true, false] } }).fetch();
         if (recipes && (recipes.length > 0)) {
             for (let i in recipes) {
                 if (recipes[i].ID != -1) {

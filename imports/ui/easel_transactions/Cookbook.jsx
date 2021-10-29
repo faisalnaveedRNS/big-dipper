@@ -22,10 +22,10 @@ const CookbookeRow = (props) => {
     return <tr> 
         <td className="d-none d-sm-table-cell counter">{props.cookbook.ID}</td>
         {/* <td className="title">{props.cookbook.Name}</td> */}
-        <td className="title">{props.cookbook.Description}</td>  
-        <td className="title">{props.cookbook.Developer}</td> 
-        <td className="title">{props.cookbook.Sender}</td> 
-        <td className="title">{props.cookbook.SupportEmail}</td>  
+        <td className="title">{props.cookbook.Description ? props.cookbook.Description : props.cookbook.description }</td>  
+        <td className="title">{props.cookbook.Developer ? props.cookbook.Developer : props.cookbook.developer }</td> 
+        <td className="title">{props.cookbook.Creator ? props.cookbook.Creator: props.cookbook.creator}</td> 
+        <td className="title">{props.cookbook.SupportEmail ? props.cookbook.SupportEmail : props.cookbook.supportEmail}</td>  
     </tr>
 }
 
