@@ -47,7 +47,7 @@ async function  getRecipeData(recipe_id){
 Meteor.startup(() => { 
   
     onPageLoad(sink => {  
-        let url = sink.request.url.search;     
+        var url = sink.request.url.search;     
         if(url == null){
             sink.appendToHead(defaultMetaTags); 
             return;
@@ -55,31 +55,38 @@ Meteor.startup(() => {
         const querys = queryString.parse(url); 
         var img = ''; 
         var selectedRecipe = null;
-        var recipes = null; 
-        if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) { 
+        var recipes = null;  
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
             var selectedItem = null; 
             const recipe_id = querys['recipe_id']   
-            const cookbook_id = querys['cookbook_id']   
-            let getItemUrl ='https://api.devtestnet.pylons.tech/pylons/item/' + cookbook_id + '/' + recipe_id;   
-            try {
-                let response = HTTP.get(getItemUrl); 
-                selectedItem = JSON.parse(response.content).Item;   
+            //const cookbook_id = querys['cookbook_id']   
+            let recipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';  
+            try { 
+                let response = HTTP.get(recipesUrl); 
+                //selectedItem = JSON.parse(response.content).CompletedExecutions;   
+                recipes = JSON.parse(response.content).Recipes;   
                 
-            } catch (e) {
-                console.log(url);
+            } catch (e) { 
                 console.log(e);
-            } 
-             
-            if (selectedItem != undefined && selectedItem != null) {                 
-                const strings = selectedItem.strings; 
+            }    
+            for(i = 0; i < recipes.length; i++){
+                selectedRecipe = recipes[i];
+                if(selectedRecipe.ID == recipe_id){
+                    break;
+                }
+            }
+            
+            if (selectedRecipe != undefined && selectedRecipe != null) {                 
+                const strings = selectedRecipe.entries.itemOutputs[0].strings; 
                 var priceValue = "";
-                var priceCurrency = "pylon";  
+                var priceCurrency = "upylon";   
                 if (strings != undefined && strings != null && strings.length > 0) { 
                     if(strings != null)
                     {
+                        
                         for (j = 0; j < strings.length; j++) { 
-                            let key = strings[j].Key;
-                            let value = strings[j].Value;
+                            let key = strings[j].key;
+                            let value = strings[j].value;
                             if(key == "Price"){
                                 priceValue = value;
                             }
@@ -98,12 +105,13 @@ Meteor.startup(() => {
                             
                         } 
                     }
-                    let longs = selectedItem.longs; 
+                    let longs = selectedRecipe.entries.itemOutputs[0].longs; 
+                 
                     if(longs != null)
                     {
                         for (j = 0; j < longs.length; j++) { 
-                            let key = longs[j].Key;
-                            let value = longs[j].Value; 
+                            let key = longs[j].key;
+                            let value = longs[j].weightRanges[0].lower; 
                             if(key == "Width"){
                                 picWidth = value; 
                             }
@@ -160,22 +168,22 @@ Meteor.startup(() => {
                     description = description + "\n\n" + "Price\n" + price;
                 } 
                 
-                if (entries != null) {
-                    const itemoutputs = entries.ItemOutputs; 
+                if (selectedRecipe.entries != null) {
+                    const itemoutputs = selectedRecipe.entries.itemOutputs; 
                     if (itemoutputs.length > 0) {
                         let longs = itemoutputs[0].Longs; 
                         if(longs != null)
                         {
                             for (i = 0; i < longs.length; i++) { 
-                                let weightRanges = longs[i].WeightRanges;
+                                let weightRanges = longs[i].weightRanges;
                                 if(longs[i].Key == "Width"){
                                     if(weightRanges != null){
-                                        picWidth = weightRanges[0].Lower * weightRanges[0].Weight;  
+                                        picWidth = weightRanges[0].lower * weightRanges[0].weight;  
                                     } 
                                 }
                                 else if(longs[i].Key == "Height"){
                                     if(weightRanges != null){
-                                        picHeight = weightRanges[0].Lower * weightRanges[0].Weight;   
+                                        picHeight = weightRanges[0].lower * weightRanges[0].weight;   
                                     } 
                                 }
                             }
@@ -183,7 +191,7 @@ Meteor.startup(() => {
                             picWidth = IMAGE_WIDTH;
                         }
 
-                        let strings = itemoutputs[0].Strings; 
+                        let strings = itemoutputs[0].strings; 
                         for (i = 0; i < strings.length; i++) {
                             try {
                                 var values = strings[i].Value;
@@ -218,30 +226,37 @@ Meteor.startup(() => {
             }
             
         }  
-        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) { 
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
             var selectedItem = null; 
             const recipe_id = querys['recipe_id']   
-            const cookbook_id = querys['cookbook_id']   
-            let getItemUrl ='https://api.devtestnet.pylons.tech/pylons/item/' + cookbook_id + '/' + recipe_id;   
-            try {
-                let response = HTTP.get(getItemUrl); 
-                selectedItem = JSON.parse(response.content).Item;   
+            //const cookbook_id = querys['cookbook_id']   
+            let recipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';  
+            try { 
+                let response = HTTP.get(recipesUrl); 
+                //selectedItem = JSON.parse(response.content).CompletedExecutions;   
+                recipes = JSON.parse(response.content).Recipes;   
                 
-            } catch (e) {
-                console.log(url);
+            } catch (e) { 
                 console.log(e);
-            } 
-             
-            if (selectedItem != undefined && selectedItem != null) {                 
-                const strings = selectedItem.strings; 
+            }    
+            for(i = 0; i < recipes.length; i++){
+                selectedRecipe = recipes[i];
+                if(selectedRecipe.ID == recipe_id){
+                    break;
+                }
+            }
+            
+            if (selectedRecipe != undefined && selectedRecipe != null) {                 
+                const strings = selectedRecipe.entries.itemOutputs[0].strings; 
                 var priceValue = "";
-                var priceCurrency = "pylon";  
+                var priceCurrency = "upylon";   
                 if (strings != undefined && strings != null && strings.length > 0) { 
                     if(strings != null)
                     {
+                        
                         for (j = 0; j < strings.length; j++) { 
-                            let key = strings[j].Key;
-                            let value = strings[j].Value;
+                            let key = strings[j].key;
+                            let value = strings[j].value;
                             if(key == "Price"){
                                 priceValue = value;
                             }
@@ -260,12 +275,13 @@ Meteor.startup(() => {
                             
                         } 
                     }
-                    let longs = selectedItem.longs; 
+                    let longs = selectedRecipe.entries.itemOutputs[0].longs; 
+                 
                     if(longs != null)
                     {
                         for (j = 0; j < longs.length; j++) { 
-                            let key = longs[j].Key;
-                            let value = longs[j].Value; 
+                            let key = longs[j].key;
+                            let value = longs[j].weightRanges[0].lower; 
                             if(key == "Width"){
                                 picWidth = value; 
                             }

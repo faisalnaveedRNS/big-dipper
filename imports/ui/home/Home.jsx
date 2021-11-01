@@ -32,8 +32,7 @@ export default class Home extends Component{
         }
     } 
 
-    render() { 
-        
+    render() {  
         if(this.state.recipeExist){
             return  <EaselBuy recipe_id={this.state.recipe_id} url={'http://devwallet.pylons.tech/' + this.props.location.search}></EaselBuy>
         }

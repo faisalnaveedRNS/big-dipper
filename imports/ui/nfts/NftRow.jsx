@@ -20,25 +20,28 @@ showdown.setFlavor('github');
 
 export const NftRow = (props) => {
     let tx = props.tx; 
-    let homepage = window?.location?.pathname === '/' ? true : false;   
-    let strings = tx.Strings;
-    for(let i = 0; i < strings.length; i++){
-        if(strings[i].Key == 'Name'){
-            tx.Name = strings[i].Value;
-        }
-        else if(strings[i].Key == 'NFT_URL'){
-            tx.NFT_URL = strings[i].Value;
-        }
-        else if(strings[i].Key == 'Description'){
-            tx.Description = strings[i].Value;
-        }
-        else if(strings[i].Key == 'Currency'){
-            tx.Currency = strings[i].Value;
-        }
-        else if(strings[i].Key == 'Price'){
-            tx.Price = strings[i].Value; 
+    let homepage = window?.location?.pathname === '/' ? true : false;    
+    let itemInputs = tx.itemInputs;
+    if(itemInputs != null && itemInputs[0].strings != null){
+        let strings = itemInputs[0].strings;
+        for(let i = 0; i < strings.length; i++){
+            if(strings[i].Key == 'Name'){
+                tx.Name = strings[i].Value;
+            }
+            else if(strings[i].Key == 'NFT_URL'){
+                tx.NFT_URL = strings[i].Value;
+            }
+            else if(strings[i].Key == 'Description'){
+                tx.Description = strings[i].Value;
+            }
+            else if(strings[i].Key == 'Currency'){
+                tx.Currency = strings[i].Value;
+            }
+            else if(strings[i].Key == 'Price'){
+                tx.Price = strings[i].Value; 
+            } 
         } 
-    } 
+    }    
     
     return <SentryBoundary><NftTool msg={tx} /></SentryBoundary>
 }

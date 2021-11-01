@@ -14,8 +14,7 @@ export default RecipesListContainer = withTracker((props) => {
     }
 
     if (Meteor.isServer || !loading) {
-        recipes = Recipes.find({}, { sort: { ID: -1 } }).fetch();
-
+        recipes = Recipes.find({}, { sort: { ID: -1 } }).fetch(); 
         if (Meteor.isServer) {
             loading = false;
             recipesExist = !!recipes;
@@ -45,6 +44,7 @@ export default RecipesListContainer = withTracker((props) => {
             nftsExist = !nftLoading && !!nfts;
         } 
     } 
+    console.log('---------nfts', nfts)
 
     return {
         loading,

@@ -19,11 +19,11 @@ const ListRow = (props) => {
     return <><tr >   
         <td className="title"> 
             <img src={props.item.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/>
-            <Link to={"/easel_transactions"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.item.Name} </Link>
+            <Link to={"/easel_transactions"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.item.name} </Link>
             <Link to="/easel_transactions" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
 
         </td>      
-        <td className="voting-start" style={{paddingTop:'22px'}}>{props.item.Description}</td>
+        <td className="voting-start" style={{paddingTop:'22px'}}>{props.item.description}</td>
         <td className="title" style={{paddingTop:'22px'}}>{props.item.price}</td> 
           
          
@@ -38,15 +38,15 @@ const ListRow = (props) => {
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.recipeID</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.ID}</Col> 
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.recipeID}</Col> 
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.name</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.Name}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.name}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.description</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><Markdown markup={props.item.Description} /></Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><Markdown markup={props.item.description} /></Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.price</T></Col>
@@ -54,7 +54,7 @@ const ListRow = (props) => {
                 </Row>  
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.sender</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.owner}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.creator}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
@@ -62,11 +62,11 @@ const ListRow = (props) => {
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookowner</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.owner}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.item.ID}</Col>
                 </Row> 
                 <Row className="mb-2 border-top">
-                    <Col md={3} className="label"><T>recipes.deeplinks</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><a href={""+props.item.deeplink+""} style={{wordBreak:'break-all'}} target="_blank">{props.item.deeplink}</a></Col>
+                    <Col md={3} className="label"><T>nfts.resalelink</T></Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><a href={""+props.item.resalelink+""} style={{wordBreak:'break-all'}} target="_blank">{props.item.resalelink}</a></Col>
                 </Row>  
             </div>
             <Row className='clearfix' style={{marginTop:'-37px'}}>
@@ -84,7 +84,7 @@ const RecipeRow = (props) => {
         <td className="title">
             {/* <a href={""+props.recipe.deeplink+""} target="_blank"> */} 
             <img src={props.recipe.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/>
-            <Link to={"/easel_transactions"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.recipe.Name} </Link>
+            <Link to={"/easel_transactions"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.recipe.name} </Link>
             {/* </a> */} 
             <Link to="/easel_transactions" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
 
@@ -96,7 +96,7 @@ const RecipeRow = (props) => {
             {props.recipe.cookbook_owner}
         </td>}
         <td className="title" style={{paddingTop:'22px'}}>{props.recipe.price}</td> 
-        <td className="voting-start" style={{paddingTop:'22px'}}>{props.recipe.Description}</td>
+        <td className="voting-start" style={{paddingTop:'22px'}}>{props.recipe.description}</td>
         {window.orientation == undefined && <td className="title" style={{paddingLeft:'36px', paddingTop:'22px'}}>{props.recipe.copies}</td> }
         {window.orientation != undefined && <td className="title" style={{paddingTop:'22px'}}>{props.recipe.copies}</td> } 
         {/* <td className="voting-start text-right"><a href={""+props.recipe.deeplink+""} target="_blank">{props.recipe.deeplink}</a></td>  */}
@@ -116,11 +116,11 @@ const RecipeRow = (props) => {
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.name</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.Name}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.name}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.description</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><Markdown markup={props.recipe.Description} /></Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><Markdown markup={props.recipe.description} /></Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.price</T></Col>
@@ -137,7 +137,7 @@ const RecipeRow = (props) => {
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.CookbookID}</Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.cookbookID}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookowner</T></Col>
@@ -166,114 +166,7 @@ export default class List extends Component{
         super(props);  
         if (Meteor.isServer){ 
             return;
-            if (this.props.recipes.length > 0){ 
-                var _recipes = this.props.recipes.sort(function (a,b) {
-                    const coinInputs1 = a.CoinInputs;
-                    const coinInputs2 = b.CoinInputs;
-                    var price1 = 0, price2 = 0; 
-                    if (coinInputs1.length > 0) {
-                        if(coinInputs1[0].Coin == "USD"){
-                            price1 = coinInputs1[0].Count / 100;
-                        }
-                        else{
-                            price1 = coinInputs1[0].Count * 100;
-                        }
-                    }
-                    else{
-                        return 0;
-                    }
-
-                    if (coinInputs2.length > 0) {
-                        if(coinInputs2[0].Coin == "USD"){
-                            price2 = coinInputs2[0].Count / 100;
-                        }
-                        else{
-                            price2 = coinInputs2[0].Count * 100;
-                        }
-                    }
-                    else{
-                        return 0;
-                    }
-
-                    if (price1 > price2){
-                         return -1;
-                    }
-                    if (price2 < price2){
-                         return 1;
-                    }
-                    return 0;
-                });
-
-                var pos = 0;
-                for (var i = 1; i < _recipes.length; i++) { 
-                    var _recipe = _recipes[i];
-                    let nfts = null;
-                    if(this.props.nfts != null){
-                        nfts = this.props.nfts.filter((nft) => nft.CookbookID == _recipe.CookbookID); 
-                    }
-                    if(nfts != null && nfts.length > 0){ 
-                        _recipes.splice(pos, 0, _recipes.splice(i, 1)[0]);
-                        pos = pos + 1;
-                    }
-                }
-
-                this.state = {
-                    recipes: _recipes.map((recipe, i) => {
-                        const coinInputs = recipe.CoinInputs;
-                        var price = "No Price"
-                        if (coinInputs.length > 0) {
-                            if(coinInputs[0].Coin == "USD"){
-                                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
-                            }
-                            else{
-                                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
-                            }
-                        }
-                        var copies = 0;
-                        var img = "/img/buy_icon.png";
-                        const entries = recipe.Entries;
-                        if(entries != null){
-                            const itemOutputs = entries.ItemOutputs;
-                            if(itemOutputs != null && itemOutputs[0] != null){
-                                const longs = itemOutputs[0].Longs;
-                                if(longs != null && longs[0] != null){
-                                    const quantity = longs[0].WeightRanges;
-                                    if(quantity != null && quantity[0] != null){ 
-                                        copies = quantity[0].Lower * quantity[0].Weight
-                                    }
-                                }
-                            }
-                           
-                            let strings = itemOutputs[0].Strings
-                            for (i = 0; i < strings.length; i++) {
-                                try {
-                                    var values = strings[i].Value;
-                                    if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                        img = values; 
-                                        break;
-                                    }
-                                } catch (e) {
-                                    console.log('strings[i].Value', e)
-                                    break;
-                                }
-
-                            }
-                        }  
-                        let nfts = null;
-                        if(this.props.nfts != null){
-                            nfts = this.props.nfts.filter((nft) => nft.owner == recipe.creator); 
-                        }
-
-                        recipe.price = price;
-                        recipe.copies = copies; 
-                        recipe.img = img;  
-                        recipe.nftsExist = (nfts != null && nfts.length > 0);
-                        
-                        return <RecipeRow key={i} index={i} recipe={recipe}/>
-                    }),
-                    bCollapse: false
-                }
-            }
+            
         }
         else{
             this.state = {
@@ -284,20 +177,20 @@ export default class List extends Component{
         }
     }  
     
-    componentDidUpdate(prevState){   
+    componentDidUpdate(prevState){    
         if (this.props.recipes && this.props.recipes != prevState.recipes){ 
             if (this.props.recipes.length > 0){ 
                 let _recipes = this.props.recipes;
                 _recipes.sort(function (a,b) {
-                    const coinInputs1 = a.CoinInputs;
-                    const coinInputs2 = b.CoinInputs;
+                    const coinInputs1 = a.coinInputs;
+                    const coinInputs2 = b.coinInputs;
                     let price1 = 0, price2 = 0; 
                     if (coinInputs1.length > 0) {
-                        if(coinInputs1[0].Coin == "USD"){
-                            price1 = coinInputs1[0].Count / 100;
+                        if(coinInputs1[0].coins[0].denom == "USD"){
+                            price1 = coinInputs1[0].coins[0].amount / 100;
                         }
                         else{
-                            price1 = coinInputs1[0].Count * 100;
+                            price1 = coinInputs1[0].coins[0].amount * 100;
                         }
                     }
                     else{
@@ -305,11 +198,11 @@ export default class List extends Component{
                     }
 
                     if (coinInputs2.length > 0) {
-                        if(coinInputs2[0].Coin == "USD"){
-                            price2 = coinInputs2[0].Count / 100;
+                        if(coinInputs2[0].coins[0].denom == "USD"){
+                            price2 = coinInputs2[0].coins[0].amount / 100;
                         }
                         else{
-                            price2 = coinInputs2[0].Count * 100;
+                            price2 = coinInputs2[0].coins[0].amount * 100;
                         }
                     }
                     else{
@@ -323,104 +216,109 @@ export default class List extends Component{
                          return 1;
                     }
                     return 0;
-                });
-              
-                let items = [];
-                for (let i = 1; i < _recipes.length; i++) { 
-                    let _recipe = _recipes[i];
-                    let nfts = null;
-                    if(this.props.nfts != null){
-                        nfts = this.props.nfts.filter((nft) => nft.CookbookID == _recipe.CookbookID); 
-                    } 
-                    if(nfts != null && nfts.length > 0){ 
-                        items.push(_recipe);
-                    }
-                } 
-                  
+                }); 
                 this.setState({
-                    items: items.map((item, i) => {
-                        const coinInputs = item.CoinInputs;
+                    items: this.props.nfts.map((item, i) => {
+                        const coinInputs = item.coinInputs;
                         var price = "No Price"
+                        var currency = "upylon" 
+                        var name = "";
+                        var description = "";
+                        var creator = "";
                         if (coinInputs.length > 0) {
-                            if(coinInputs[0].Coin == "USD"){
-                                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+                            if(coinInputs[0].denom == "USD"){
+                                price = Math.floor(coinInputs[0].amount / 100) + '.' + (coinInputs[0].amount % 100) + ' ' + coinInputs[0].denom;
                             }
                             else{
-                                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                                price = coinInputs[0].amount + ' ' + coinInputs[0].denom
                             }
                         }
                         var copies = 0;
                         var img = "/img/buy_icon.png";
-                        const entries = item.Entries;
-                        if(entries != null){
-                            const itemOutputs = entries.ItemOutputs;
-                            if(itemOutputs != null && itemOutputs[0] != null){
-                                const longs = itemOutputs[0].Longs;
-                                if(longs != null && longs[0] != null){
-                                    const quantity = longs[0].WeightRanges;
-                                    if(quantity != null && quantity[0] != null){ 
-                                        copies = quantity[0].Lower * quantity[0].Weight
-                                    }
-                                }
-                            }
-
-                            let strings = itemOutputs[0].Strings
-                            for (i = 0; i < strings.length; i++) {
-                                try {
-                                    var values = strings[i].Value;
-                                    if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                        img = values; 
+                        const itemInputs = item.itemInputs;
+                        if(itemInputs != null){ 
+                            if(itemInputs != null && itemInputs[0] != null){
+                                const longs = itemInputs[0].longs;
+                                for (i = 0; i < longs.length; i++) {
+                                    try {
+                                        var key = longs[i].Key;
+                                        if (key == "Quantity") {
+                                            copies = longs[i].Value; 
+                                            break;
+                                        }
+                                    } catch (e) {
+                                        console.log('longs[i].Value', e)
                                         break;
                                     }
-                                } catch (e) {
-                                    console.log('strings[i].Value', e)
-                                    break;
                                 }
-
-                            }
+                                 
+                                const strings = itemInputs[0].strings;
+                                for (i = 0; i < strings.length; i++) {
+                                    try {
+                                        var key = strings[i].Key;
+                                        if (key == "NFT_URL") {
+                                            img = strings[i].Value;  
+                                        }
+                                        else if (key == "Price") {
+                                            price = strings[i].Value;  
+                                        }
+                                        else if (key == "Currency") {
+                                            currency = strings[i].Value;  
+                                        }
+                                        else if (key == "Name") {
+                                            name = strings[i].Value;  
+                                        }
+                                        else if (key == "Description") {
+                                            description = strings[i].Value;  
+                                        }  
+                                        
+                                    } catch (e) {
+                                        console.log('strings[i].Value', e) 
+                                    }
+    
+                                }
+                            } 
+                            
                         } 
-                        
-                        let nfts = null;
-                        if(this.props.nfts != null){
-                            nfts = this.props.nfts.filter((nft) => nft.owner == item.owner); 
-                        } 
-                        item.price = price;
+                        item.name = name; 
+                        item.description = description; 
+                        item.price = price + ' ' + currency;
                         item.copies = copies; 
                         item.img = img;  
-                        item.nftsExist = (nfts != null && nfts.length > 0); 
+                        item.nftsExist = (this.props.nfts != null && this.props.nfts.length > 0); 
                         return <ListRow key={i} index={i} item={item} />
                     }),
                     bCollapse: false,
                     recipes: this.props.recipes.map((recipe, i) => {
-                        const coinInputs = recipe.CoinInputs;
-                        var price = "No Price"
+                        const coinInputs = recipe.coinInputs;
+                        var price = "No Price" 
                         if (coinInputs.length > 0) {
-                            if(coinInputs[0].Coin == "USD"){
-                                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+                            if(coinInputs[0].coins[0].denom == "USD"){
+                                price = Math.floor(coinInputs[0].coins[0].amount / 100) + '.' + (coinInputs[0].coins[0].amount % 100) + ' ' + coinInputs[0].coins[0].denom;
                             }
                             else{
-                                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                                price = coinInputs[0].coins[0].amount + ' ' + coinInputs[0].coins[0].denom
                             }
                         }
                         var copies = 0;
                         var img = "/img/buy_icon.png";
-                        const entries = recipe.Entries;
+                        const entries = recipe.entries;
                         if(entries != null){
-                            const itemOutputs = entries.ItemOutputs;
+                            const itemOutputs = entries.itemOutputs;
                             if(itemOutputs != null && itemOutputs[0] != null){
-                                const longs = itemOutputs[0].Longs;
+                                const longs = itemOutputs[0].longs;
                                 if(longs != null && longs[0] != null){
-                                    const quantity = longs[0].WeightRanges;
+                                    const quantity = longs[0].weightRanges;
                                     if(quantity != null && quantity[0] != null){ 
-                                        copies = quantity[0].Lower * quantity[0].Weight
+                                        copies = quantity[0].lower * quantity[0].weight
                                     }
                                 }
                             }
 
-                            let strings = itemOutputs[0].Strings
+                            let strings = itemOutputs[0].strings
                             for (i = 0; i < strings.length; i++) {
                                 try {
-                                    var values = strings[i].Value;
+                                    var values = strings[i].value;
                                     if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
                                         img = values; 
                                         break;

@@ -38,45 +38,55 @@ export default class RecentActivites extends Component {
         super(props); 
         var strName = '';
         var isSender = false;
+        var isSigner = false;
         var imgName = '/img/ico_quest.png'
         console.log('---', props.msg)
         console.log('chainId = ', Meteor.settings.public.chainId)
         if(props.msg['@type'] == '/pylons.MsgCreateRecipe'){
-            strName = props.msg.from_address;
+            strName = props.msg.creator;
             isSender = true;
         }
         else if(props.msg['@type'] == '/pylons.MsgCreateCookbook'){
             isSender = true;
-            strName = props.msg.from_address
+            strName = props.msg.creator
             imgName = '/img/ico_artwork.png'
         }
         else if(props.msg['@type'] == '/pylons.MsgCreateAccount'){ 
-            strName = props.msg.to_address
+            strName = props.msg.creator
             imgName = '/img/ico_battleresult.png'
         }
         else if(props.msg['@type'] == '/pylons.MsgGetPylons'){ 
             strName = props.msg.to_address
             imgName = '/img/ico_sold.png'
-        } 
+        }   
         else{
-            if(props.msg.creator == null){
+            if(props.msg.signer != null){
+                strName = props.msg.signer 
+                isSigner = true; 
+                imgName = '/img/ico_battleresult.png'
+            }
+            else if(props.msg.creator == null){
                 strName = props.msg.to_address 
+                imgName = '/img/ico_constuction.png'
             }
             else{
-                strName = props.msg.from_address
+                strName = props.msg.creator
                 isSender = true; 
+                imgName = '/img/ico_quest.png'                
             }
         }
 
         let eventName = this.props.msg.Name;
         if(eventName == null){
             eventName = props.msg['@type'];
-            eventName = eventName.substr(11);
+            let dotPos = eventName.lastIndexOf(".")
+            eventName = eventName.substr(dotPos + 1);
         }
 
         this.state = {
             strName: strName, 
             isSender: isSender,
+            isSigner: isSigner,
             imgName: imgName,
             eventName: eventName,
         }
@@ -93,8 +103,10 @@ export default class RecentActivites extends Component {
                 <span className="address " style={{color:'#ff564f', color:'black', wordBreak:'break-all'}}>{ this.state.eventName} </span>
             </div>
             <div style={{display:'flex', marginLeft:'5px', marginRight:'15px'}}>
-                {this.state.isSender &&<span class="badge badge-success " style={{marginRight:'5px', marginBottom:'1px', alignSelf:'center', height:'20px'}}>Sender</span>}
-                {!this.state.isSender &&<span class="badge badge-warning " style={{marginRight:'5px', marginBottom:'1px', alignSelf:'center', height:'20px'}}>Requester</span>}
+            
+                {this.state.isSigner &&<span class="badge badge-danger " style={{marginRight:'5px', marginBottom:'1px', alignSelf:'center', height:'20px'}}>Signer</span>}
+                {!this.state.isSigner && this.state.isSender &&<span class="badge badge-success " style={{marginRight:'5px', marginBottom:'1px', alignSelf:'center', height:'20px'}}>Creator</span>}
+                {!this.state.isSigner && !this.state.isSender &&<span class="badge badge-warning " style={{marginRight:'5px', marginBottom:'1px', alignSelf:'center', height:'20px'}}>Requester</span>}
                 <span className="address " style={{color:'#ff564f', wordBreak:'break-all'}}>{ this.state.strName} </span>
             </div>
         </div>

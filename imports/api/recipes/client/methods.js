@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import { Recipes } from '../recipes.js';
+import { Cookbooks } from '/imports/api/cookbooks/cookbooks.js'; 
 import { Transactions } from '/imports/api/transactions/transactions.js';
 
 Meteor.methods({
@@ -35,7 +36,7 @@ Meteor.methods({
                 $or: [
                     {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
                 ]
-            }).fetch();
+            }).fetch().map((p) => p.tx.body.messages[0]);; 
 
             if(recipes == null || recipes.length == 0){
                 return false;
@@ -51,25 +52,15 @@ Meteor.methods({
                 const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp();
                 for (let i in recipes) {
                     let recipe = recipes[i];
-                    let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + "&cookbook_id=" + recipe.cookbookID + '&nft_amount=1';  
+                    let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID /*+ "&cookbook_id=" + recipe.cookbookID*/ + '&nft_amount=1';  
                     recipe.deeplink = deeplink; 
                     var cookbook_owner = "", creator = "";
                     if (transactionsExist){  
-                        try {
-                            let cookbooks = Transactions.find({
-                                $or: [
-                                    {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateCookbook"}
-                                ]
-                            }).fetch();
+                        try { 
+                            let cookbooks = Cookbooks.find({ID: recipe.cookbookID}).fetch() 
                             if (cookbooks.length > 0) {
-                                for (let j in cookbooks) {
-                                    let cookbook = cookbooks[j];
-                                    if (cookbook.ID == recipe.cookbookID) {
-                                        cookbook_owner = recipe.ID;
-                                        creator = cookbook.creator;
-                                        break;
-                                    }
-                                }
+                                cookbook_owner = recipe.ID;
+                                creator = cookbooks[0].creator;
                             }
                         } catch (e) {
                             console.log(e);
@@ -78,17 +69,17 @@ Meteor.methods({
                     recipe.cookbook_owner = cookbook_owner;
                     recipe.creator = creator; 
 
-                    const entries = recipe.Entries;  
+                    const entries = recipe.entries;  
                     var picWidth = 1200;
                     var picHeight = 800;
                     if (entries != null) {
-                        const itemoutputs = entries.ItemOutputs; 
+                        const itemoutputs = entries.itemOutputs; 
                         if (itemoutputs.length > 0) {
-                            let strings = itemoutputs[0].Strings;
+                            let strings = itemoutputs[0].strings;
                             
                             for (i = 0; i < strings.length; i++) {
                                 try {
-                                    var values = strings[i].Value;
+                                    var values = strings[i].value;
                                     if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
                                         img = values;  
                                         var refImg = new Image();
@@ -148,8 +139,7 @@ Meteor.methods({
                 bulkRecipes.execute();
             }
             return recipes
-        } catch (e) {
-            console.log(url);
+        } catch (e) { 
             console.log(e);
         }
     }
