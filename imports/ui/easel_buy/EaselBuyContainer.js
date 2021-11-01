@@ -29,21 +29,21 @@ export default HomeContainer = withTracker((props) => {
     }
     else{
         selectedRecipe = Recipes.findOne({ ID: recipe_id });
-    }  
-
+    }   
+ 
     if (selectedRecipe != null) {
-        name = selectedRecipe.Name
-        description = selectedRecipe.Description;
+        name = selectedRecipe.name
+        description = selectedRecipe.description;
         // if (description.length > 15) {
         //     description = description.substring(0, 12) + '...';
         // }
-        const coinInputs = selectedRecipe.CoinInputs;
+        const coinInputs = selectedRecipe.coinInputs;
         if (coinInputs.length > 0) {
-            if(coinInputs[0].Coin == "USD"){
-                price = Math.floor(coinInputs[0].Count / 100) + '.' + (coinInputs[0].Count % 100) + ' ' + coinInputs[0].Coin;
+            if(coinInputs[0].coins[0].denom == "USD"){
+                price = Math.floor(coinInputs[0].coins[0].amount / 100) + '.' + (coinInputs[0].coins[0].amount % 100) + ' ' + coinInputs[0].coins[0].denom;
             }
             else{
-                price = coinInputs[0].Count + ' ' + coinInputs[0].Coin
+                price = coinInputs[0].coins[0].amount + ' ' + coinInputs[0].coins[0].denom
             }
         }
         const entries = selectedRecipe.entries;
@@ -53,7 +53,7 @@ export default HomeContainer = withTracker((props) => {
                 let strings = itemoutputs[0].strings
                 for (i = 0; i < strings.length; i++) {
                     try {
-                        var values = strings[i].Value;
+                        var values = strings[i].value;
                         if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
                             img = values;   
                             break;

@@ -34,7 +34,7 @@ Meteor.methods({
                 $or: [
                     {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateCookbook"}
                 ]
-            }).fetch();
+            }).fetch().map((p) => p.tx.body.messages[0]);
             
             let finishedCookbookIds = new Set(Cookbooks.find({}).fetch().map((p) => p.ID));
 
@@ -71,8 +71,7 @@ Meteor.methods({
                 bulkCookbooks.execute();
             }
             return true
-        } catch (e) {
-            console.log(url);
+        } catch (e) { 
             console.log(e);
         }
     },

@@ -105,7 +105,7 @@ validators:
     validatorInfo: 'Validator Info'
     operatorAddress: 'Operator Address'
     selfDelegationAddress: 'Self-Delegate Address'
-    deeplinks: 'Deeplinks'
+    deeplinks: 'Deeplinks' 
     commissionRate: 'Commission Rate'
     maxRate: 'Max Rate'
     maxChangeRate: 'Max Change Rate'
@@ -150,6 +150,7 @@ nfts:
     name: 'Title'
     nft_rul: 'NFT_URL'
     description: 'Description'
+    resalelink: 'Resalelink'
 transactions:
     transaction: 'Transaction'
     transactions: 'Transactions'
