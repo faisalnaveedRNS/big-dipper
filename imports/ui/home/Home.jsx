@@ -34,7 +34,7 @@ export default class Home extends Component{
 
     render() {  
         if(this.state.recipeExist){
-            return  <EaselBuy recipe_id={this.state.recipe_id} url={'http://devwallet.pylons.tech/' + this.props.location.search}></EaselBuy>
+            return  <EaselBuy recipe_id={this.state.recipe_id} url={'http://wallet.pylons.tech/' + this.props.location.search}></EaselBuy>
         }
         else{
             return <div id="home">

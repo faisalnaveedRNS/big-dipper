@@ -50,8 +50,8 @@
         "banners": false 
     },
 "remote":{
-    "rpc":"http://pylons-testnet:26657",   
-    "api":"http://pylons-testnet:1317"    
+    "rpc":"https://rpc.pylons.smartnodes.co/",   
+    "api":"https://api.pylons.smartnodes.co/"    
 },
     "debug": {
         "startTimer": true
