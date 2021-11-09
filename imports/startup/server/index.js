@@ -21,7 +21,7 @@ var description = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
 var picHeight = IMAGE_HEIGHT; 
-var apiUrl = "https://api.pylons.smartnodes.co/";  
+var apiUrl = "http://api.testnet.pylons.tech:1317/";  
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
@@ -230,7 +230,7 @@ Meteor.startup(() => {
             var selectedItem = null; 
             const recipe_id = querys['recipe_id']   
             //const cookbook_id = querys['cookbook_id']   
-            let recipesUrl ='https://api.pylons.smartnodes.co/pylons/recipes/';  
+            let recipesUrl ='http://api.testnet.pylons.tech:1317/';  
             try { 
                 let response = HTTP.get(recipesUrl); 
                 //selectedItem = JSON.parse(response.content).CompletedExecutions;   

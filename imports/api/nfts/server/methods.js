@@ -54,7 +54,7 @@ Meteor.methods({
                     
                     if (finishedNftIds.NO != -1 && !finishedNftIds.has(trade.itemOutputs[0].itemID)) {
                         try { 
-                            let response = HTTP.get("https://api.pylons.smartnodes.co/pylons/executions/item/" + trade.itemOutputs[0].cookbookID + '/' +  trade.itemOutputs[0].itemID);
+                            let response = HTTP.get("http://api.testnet.pylons.tech:1317/pylons/executions/item/" + trade.itemOutputs[0].cookbookID + '/' +  trade.itemOutputs[0].itemID);
                             let executions = JSON.parse(response.content);
                             let item = executions.CompletedExecutions[0]
                             // let response = HTTP.get("https://api.testnet.pylons.tech/pylons/item/cookbook_for_test5/LQM2cdzDY3");

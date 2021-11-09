@@ -45,3 +45,4 @@ export const NftRow = (props) => {
     
     return <SentryBoundary><NftTool msg={tx} /></SentryBoundary>
 }
+

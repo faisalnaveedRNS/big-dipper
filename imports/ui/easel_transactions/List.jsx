@@ -218,7 +218,7 @@ export default class List extends Component{
                     return 0;
                 }); 
                 this.setState({
-                    items: this.props.nfts.map((item, i) => {
+                    items: this.props.nfts ?  this.props.nfts.map((item, i) => {
                         const coinInputs = item.coinInputs;
                         var price = "No Price"
                         var currency = "upylon" 
@@ -287,7 +287,7 @@ export default class List extends Component{
                         item.img = img;  
                         item.nftsExist = (this.props.nfts != null && this.props.nfts.length > 0); 
                         return <ListRow key={i} index={i} item={item} />
-                    }),
+                    }) : null,
                     bCollapse: false,
                     recipes: this.props.recipes.map((recipe, i) => {
                         const coinInputs = recipe.coinInputs;
