@@ -20,7 +20,12 @@
                 "denom": "uatom",
                 "displayName": "ATOM",
                 "fraction": 1000000
-            }, 
+            },
+             {
+                "denom": "ubedrock",
+                "displayName": "UBEDROCK",
+                "fraction": 1000000
+            },
             {
                 "denom": "umuon",
                 "displayName": "MUON",
@@ -50,8 +55,9 @@
         "banners": false 
     },
 "remote":{
-    "rpc":"https://rpc.pylons.smartnodes.co/",   
-    "api":"https://api.pylons.smartnodes.co/"    
+    
+        "rpc":"http://rpc.testnet.pylons.tech:26657/",   
+        "api":"http://api.testnet.pylons.tech:1317/"    
 },
     "debug": {
         "startTimer": true
