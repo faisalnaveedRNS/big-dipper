@@ -22,6 +22,35 @@ publishComposite('transactions.list', function(limit = 30){
     }
 });
 
+publishComposite('transactions.validlist', function(limit = 30){
+     var needTransactions =  [
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateAccount"}, 
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"},
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateCookbook"},
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgUpdateCookbook"},
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateTrade"},
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgExecuteRecipe"},
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgFulfillTrade"},
+        {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCancelTrade"},
+    ]; 
+    return {
+        find(){
+            return Transactions.find({ $or:needTransactions}, {height: { $exists: true}, processed: {$ne: false}},{sort:{height:-1}, limit:limit})
+        },
+        children: [
+            {
+                find(tx){
+                    if (tx.height)
+                        return Blockscon.find(
+                            {height:tx.height},
+                            {fields:{time:1, height:1}}
+                        )
+                }
+            }
+        ]
+    }
+});
+
 publishComposite('transactions.validator', function(validatorAddress, delegatorAddress, limit=100){
     let query = {};
     if (validatorAddress && delegatorAddress){
