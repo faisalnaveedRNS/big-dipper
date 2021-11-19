@@ -1,6 +1,6 @@
 {
     "public":{
-        "chainName": "Pylons",
+        "chainName": "Cosmos",
         "chainId": "pylons-testnet",
         "gtm": "{Add your Google Tag Manager ID here}",
         "slashingWindow": 10000,
@@ -32,7 +32,7 @@
                 "fraction": 1000000
             },
             {
-                "denom": "upylon",
+                "denom": "pylon",
                 "displayName": "PYLON",
                 "fraction": 1000000
             } 
