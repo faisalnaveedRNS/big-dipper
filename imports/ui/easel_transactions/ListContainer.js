@@ -8,6 +8,8 @@ export default RecipesListContainer = withTracker((props) => {
     let recipesHandle, recipes, recipesExist;
     let loading = true; 
 
+    console.log('------start1-----');
+
     if (Meteor.isClient) {
         recipesHandle = Meteor.subscribe('recipes.list');
         loading = !recipesHandle.ready();
@@ -22,6 +24,8 @@ export default RecipesListContainer = withTracker((props) => {
             recipesExist = !loading && !!recipes;
         }
     }
+
+    console.log('------start2-----');
 
     var nftLoading = false;
     var nftsExist = false;
@@ -44,6 +48,9 @@ export default RecipesListContainer = withTracker((props) => {
             nftsExist = !nftLoading && !!nfts;
         } 
     }  
+
+    console.log('------nfts-----', nfts);
+    console.log('------recipes-----', recipes);
 
     return {
         loading,
