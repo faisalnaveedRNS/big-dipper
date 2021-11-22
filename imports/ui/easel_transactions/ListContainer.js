@@ -6,9 +6,7 @@ import List from './List.jsx';
 
 export default RecipesListContainer = withTracker((props) => {
     let recipesHandle, recipes, recipesExist;
-    let loading = true; 
-
-    console.log('------start1-----');
+    let loading = false;  
 
     if (Meteor.isClient) {
         recipesHandle = Meteor.subscribe('recipes.list');
@@ -23,9 +21,7 @@ export default RecipesListContainer = withTracker((props) => {
         } else {
             recipesExist = !loading && !!recipes;
         }
-    }
-
-    console.log('------start2-----');
+    } 
 
     var nftLoading = false;
     var nftsExist = false;
@@ -48,8 +44,8 @@ export default RecipesListContainer = withTracker((props) => {
             nftsExist = !nftLoading && !!nfts;
         } 
     }  
-
-    console.log('------nfts-----', nfts);
+ 
+    console.log('------nfts-----', nfts);    
     console.log('------recipes-----', recipes);
 
     return {
