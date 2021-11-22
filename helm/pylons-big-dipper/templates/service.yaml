@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "chart.labels" . | indent 4 }}
+     {{- include "chart.labels" . | indent 4 }}
 spec:
   ports:
 {{- include "ports.service" . | indent 2 }}
