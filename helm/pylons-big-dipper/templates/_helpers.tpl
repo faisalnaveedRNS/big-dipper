@@ -9,7 +9,7 @@
 {{- define "ports.pod" }}
 {{- range $key, $value := .Values.ports }}
   - containerPort: {{ $v := $value | toString | splitList ":" }}{{$v | last}}
-    name: {{ $key }}
+     name: {{ $key }}
 {{- end }}
 {{- end }}
 

@@ -16,7 +16,7 @@ spec:
           service:
             name: {{ .Release.Name }}
             port:
-              number: {{ .Values.ports.http }}
+               number: {{ .Values.ports.http }}
         path: /
         pathType: ImplementationSpecific
   tls:

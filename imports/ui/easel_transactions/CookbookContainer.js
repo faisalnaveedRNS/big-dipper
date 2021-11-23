@@ -20,7 +20,7 @@ export default CookbookContainer = withTracker((props) => {
     }
 
     if (Meteor.isServer || !loading) {
-        cookbook = Cookbooks.find({ Sender: cookbook_owner }, { sort: { ID: -1 } }).fetch();
+        cookbook = Cookbooks.find({ Sender: cookbook_owner }, { sort: { ID: 1 } }).fetch();
         cookbookCount = Cookbooks.find({ Sender: cookbook_owner }).count();
 
         if (Meteor.isServer) {

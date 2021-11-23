@@ -12,13 +12,13 @@ export default ValidatorDetailsContainer = withTracker((props) => {
         loading = !nftsHandle.ready();
 
         if (!loading) {
-            nfts = Nfts.find({}, { sort: { ID: -1 } }).fetch();
+            nfts = Nfts.find({}, { sort: { ID: 1 } }).fetch();
             nftsExist = !loading && !!nfts;
         }
     }
 
     if (Meteor.isServer) {
-        nfts = Nfts.find({}, { sort: { ID: -1 } }).fetch();
+        nfts = Nfts.find({}, { sort: { ID: 1 } }).fetch();
         nftsExist = !!nfts;
     }
 

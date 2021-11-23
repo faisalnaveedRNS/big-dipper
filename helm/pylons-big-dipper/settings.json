@@ -56,7 +56,7 @@
     },
 "remote":{
     
-        "rpc":"http://rpc.testnet.pylons.tech:26657/",   
+         "rpc":"http://rpc.testnet.pylons.tech:26657/",   
          "api":"http://api.testnet.pylons.tech:1317/"    
 },
     "debug": {

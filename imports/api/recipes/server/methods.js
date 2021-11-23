@@ -51,7 +51,8 @@ Meteor.methods({
             let recipeIds = [];
             if (recipes.length > 0) {
                  
-                const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp();
+                const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp(); 
+
                 for (let i in recipes) {
                     let recipe = recipes[i];
                     let deeplink = 'https://wallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID /*+ "&cookbook_id=" + recipe.cookbookID */+  '&nft_amount=1';  
