@@ -51,8 +51,7 @@ export default RecipesListContainer = withTracker((props) => {
     console.log('------nfts-----', nfts);    
     console.log('------recipes-----', recipes);
     console.log('------loading-----', loading);    
-    console.log('------recipesExist-----', recipesExist);
-    loading = false;
+    console.log('------recipesExist-----', recipesExist); 
 
     return {
         loading,
