@@ -287,25 +287,25 @@ Meteor.startup(async function() {
             getRecipes();
         }, Meteor.settings.params.recipeInterval);
 
-        timerRecipesResults = Meteor.setInterval(function() {
-            getRecipesResults();
-        }, Meteor.settings.params.recipeInterval);
+        // timerRecipesResults = Meteor.setInterval(function() {
+        //     getRecipesResults();
+        // }, Meteor.settings.params.recipeInterval);
 
         timerNft = Meteor.setInterval(function() {
             getNfts();
         }, Meteor.settings.params.nftInterval);
 
-        timerNftsResults = Meteor.setInterval(function() {
-            getNftsResults();
-        }, Meteor.settings.params.nftInterval);
+        // timerNftsResults = Meteor.setInterval(function() {
+        //     getNftsResults();
+        // }, Meteor.settings.params.nftInterval);
 
         timerCookbook = Meteor.setInterval(function() {
             getCookbooks();
         }, Meteor.settings.params.cookbookInterval);
 
-        timerCookbooksResults = Meteor.setInterval(function() {
-            getCookbooksResults();
-        }, Meteor.settings.params.cookbookInterval);
+        // timerCookbooksResults = Meteor.setInterval(function() {
+        //     getCookbooksResults();
+        // }, Meteor.settings.params.cookbookInterval);
 
         timerMissedBlock = Meteor.setInterval(function() {
             updateMissedBlocks();
