@@ -10,8 +10,7 @@ export default RecipesListContainer = withTracker((props) => {
 
     if (Meteor.isClient) {
         recipesHandle = Meteor.subscribe('recipes.list');
-        loading = !recipesHandle.ready();
-        console.log('------isClient-----', loading);  
+        loading = !recipesHandle.ready(); 
     }
 
     if (Meteor.isServer || !loading) {
@@ -21,9 +20,7 @@ export default RecipesListContainer = withTracker((props) => {
             recipesExist = !!recipes;
         } else {
             recipesExist = !loading && !!recipes;
-        }
-        console.log('------isServer-----', recipesExist); 
-        console.log('------isServer - loading-----', loading); 
+        } 
     } 
 
     var nftLoading = false;
@@ -46,12 +43,7 @@ export default RecipesListContainer = withTracker((props) => {
         } else {
             nftsExist = !nftLoading && !!nfts;
         } 
-    }  
- 
-    console.log('------nfts-----', nfts);    
-    console.log('------recipes-----', recipes);
-    console.log('------loading-----', loading);    
-    console.log('------recipesExist-----', recipesExist); 
+    }   
 
     return {
         loading,

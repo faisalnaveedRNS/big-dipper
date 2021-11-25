@@ -58,12 +58,10 @@ Meteor.startup(() => {
         var recipes = null;  
         if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
             var selectedItem = null; 
-            const recipe_id = querys['recipe_id']   
-            //const cookbook_id = querys['cookbook_id']   
-            let recipesUrl ='https://api.testnet.pylons.tech/pylons/recipes/';  
+            const recipe_id = querys['recipe_id']    
+            let recipesUrl = API + 'pylons/recipes/'  
             try { 
-                let response = HTTP.get(recipesUrl); 
-                //selectedItem = JSON.parse(response.content).CompletedExecutions;   
+                let response = HTTP.get(recipesUrl);    
                 recipes = JSON.parse(response.content).Recipes;   
                 
             } catch (e) { 

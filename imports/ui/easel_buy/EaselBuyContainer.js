@@ -15,7 +15,7 @@ export default HomeContainer = withTracker((props) => {
     var url = props.url;
     var price = '0 Pylon';
     var selectedRecipe = null;
-    recipe_id = props.recipe_id
+    recipe_id = props.recipe_id  
 
     if (Meteor.isClient) {
         recipesHandle = Meteor.subscribe('recipes.list', recipe_id);
@@ -29,8 +29,8 @@ export default HomeContainer = withTracker((props) => {
     }
     else{
         selectedRecipe = Recipes.findOne({ ID: recipe_id });
-    }   
- 
+    }    
+
     if (selectedRecipe != null) {
         name = selectedRecipe.name
         description = selectedRecipe.description;

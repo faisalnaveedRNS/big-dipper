@@ -22,10 +22,10 @@ export default class Home extends Component{
     } 
 
     componentDidMount(){  
-        const querys = queryString.parse(this.props.location.search);
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) {
-            this.state.recipe_id = querys['recipe_id'];
-            this.setState({recipeExist: true});
+        const querys = queryString.parse(this.props.location.search); 
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
+            this.setState({recipeExist: true, recipe_id: querys['recipe_id']});
+            console.log("querys['recipe_id']", querys['recipe_id'])
         }
         else{
             this.setState({recipeExist: false}); 
@@ -33,8 +33,8 @@ export default class Home extends Component{
     } 
 
     render() {  
-        if(this.state.recipeExist){
-            return  <EaselBuy recipe_id={this.state.recipe_id} url={'http://wallet.pylons.tech/' + this.props.location.search}></EaselBuy>
+        if(this.state.recipeExist){ 
+           return  <EaselBuy recipe_id={this.state.recipe_id} url={'http://wallet.pylons.tech/' + this.props.location.search}></EaselBuy>
         }
         else{
             return <div id="home">
