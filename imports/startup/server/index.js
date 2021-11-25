@@ -76,7 +76,7 @@ Meteor.startup(() => {
                 }
             }
             
-            if (selectedRecipe != undefined && selectedRecipe != null) {                 
+            if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
                 const strings = selectedRecipe.entries.itemOutputs[0].strings; 
                 var priceValue = "";
                 var priceCurrency = "upylon";   
@@ -246,7 +246,7 @@ Meteor.startup(() => {
                 }
             }
             
-            if (selectedRecipe != undefined && selectedRecipe != null) {                 
+            if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
                 const strings = selectedRecipe.entries.itemOutputs[0].strings; 
                 var priceValue = "";
                 var priceCurrency = "upylon";   

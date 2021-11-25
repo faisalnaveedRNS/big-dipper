@@ -185,7 +185,7 @@ export default class List extends Component{
                     const coinInputs1 = a.coinInputs;
                     const coinInputs2 = b.coinInputs;
                     let price1 = 0, price2 = 0; 
-                    if (coinInputs1.length > 0 && coinInputs1[0].coins.length > 0) {
+                    if (coinInputs1 && coinInputs1.length > 0 && coinInputs1[0].coins.length > 0) {
                         if(coinInputs1[0].coins[0].denom == "USD"){
                             price1 = coinInputs1[0].coins[0].amount / 100;
                         } 
@@ -197,7 +197,7 @@ export default class List extends Component{
                         return 0;
                     }
 
-                    if (coinInputs2.length > 0 && coinInputs2[0].coins.length > 0) {
+                    if (coinInputs2 && coinInputs2.length > 0 && coinInputs2[0].coins.length > 0) {
                         if(coinInputs2[0].coins[0].denom == "USD"){
                             price2 = coinInputs2[0].coins[0].amount / 100;
                         } 
@@ -292,7 +292,7 @@ export default class List extends Component{
                     recipes: this.props.recipes.map((recipe, i) => {
                         const coinInputs = recipe.coinInputs;
                         var price = "No Price" 
-                        if (coinInputs.length > 0 && coinInputs[0].coins.length > 0) {
+                        if (coinInputs && coinInputs.length > 0 && coinInputs[0].coins.length > 0) {
                             if(coinInputs[0].coins[0].denom == "USD"){
                                 price = Math.floor(coinInputs[0].coins[0].amount / 100) + '.' + (coinInputs[0].coins[0].amount % 100) + ' ' + coinInputs[0].coins[0].denom;
                             } 
@@ -313,22 +313,21 @@ export default class List extends Component{
                                         copies = quantity[0].lower * quantity[0].weight
                                     }
                                 }
-                            }
-
-                            let strings = itemOutputs[0].strings
-                            for (i = 0; i < strings.length; i++) {
-                                try {
-                                    var values = strings[i].value;
-                                    if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                        img = values; 
+                                let strings = itemOutputs[0].strings
+                                for (i = 0; i < strings.length; i++) {
+                                    try {
+                                        var values = strings[i].value;
+                                        if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
+                                            img = values; 
+                                            break;
+                                        }
+                                    } catch (e) {
+                                        console.log('strings[i].Value', e)
                                         break;
                                     }
-                                } catch (e) {
-                                    console.log('strings[i].Value', e)
-                                    break;
+    
                                 }
-
-                            }
+                            } 
                         } 
                         
                         let nfts = null;
