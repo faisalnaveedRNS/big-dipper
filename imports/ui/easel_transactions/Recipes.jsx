@@ -38,9 +38,9 @@ export default class Recipes extends Component{
                 <meta name="description" content="{Meteor.settings.public.chainName} incorporates on-chain governance. Come to see how on-chain governance can be achieved on Big Dipper." />
             </Helmet> 
             <Switch>
-                <Route exact path="/easel_transactions" component={RecipeList}/>
-                {/* <Route path="/easel_transactions/:cookbook_owner" component={Cookbook} /> */}
-                <Route path="/easel_transactions/:sender" component={Recipe}/>
+                <Route exact path="/art_sales" component={RecipeList}/>
+                {/* <Route path="/art_sales/:cookbook_owner" component={Cookbook} /> */}
+                <Route path="/art_sales/:sender" component={Recipe}/>
             </Switch>
         </div>
     }

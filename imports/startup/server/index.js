@@ -20,14 +20,13 @@ var siteName = 'Big-Dipper';
 var description = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
-var picHeight = IMAGE_HEIGHT; 
-var apiUrl = "http://api.testnet.pylons.tech:1317/";  
+var picHeight = IMAGE_HEIGHT;   
 const defaultImage = '/img/buy_icon.png'; 
 const defaultMetaTags = `
 <meta property="og:title"       content="${siteName}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image"       content="${defaultImage}" />
-<meta property="og:url"         content="${apiUrl}" />
+<meta property="og:url"         content="" />
 `;
 
 const BROWSER_BOT = 0;
@@ -59,20 +58,21 @@ Meteor.startup(() => {
         if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
             var selectedItem = null; 
             const recipe_id = querys['recipe_id']    
-            let recipesUrl = API + 'pylons/recipes/'  
+            let recipesUrl = API + 'pylons/recipes/'    
+
             try { 
                 let response = HTTP.get(recipesUrl);    
                 recipes = JSON.parse(response.content).Recipes;   
                 
             } catch (e) { 
                 console.log(e);
-            }    
+            }   
             for(i = 0; i < recipes.length; i++){
                 selectedRecipe = recipes[i];
                 if(selectedRecipe.ID == recipe_id){
                     break;
                 }
-            }
+            }  
             
             if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
                 const strings = selectedRecipe.entries.itemOutputs[0].strings; 
@@ -91,7 +91,7 @@ Meteor.startup(() => {
                             else if(key == "Currency"){
                                 priceCurrency = value;
                             }
-                            else if(key == "NFT_URL"){
+                            else if(key == "NFT_URL" && value.indexOf('http') >= 0){
                                 img = value;
                             }
                             else if(key == "Description"){
@@ -192,8 +192,8 @@ Meteor.startup(() => {
                         let strings = itemoutputs[0].strings; 
                         for (i = 0; i < strings.length; i++) {
                             try {
-                                var values = strings[i].Value;
-                                if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
+                                var values = strings[i].value;
+                                if (strings[i].key = "NFT_URL" && values.indexOf('http') >= 0) { 
                                     img = values;     
                                     break;
                                 }
@@ -227,10 +227,9 @@ Meteor.startup(() => {
         else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
             var selectedItem = null; 
             const recipe_id = querys['recipe_id']   
-            //const cookbook_id = querys['cookbook_id']   
-            let recipesUrl ='http://api.testnet.pylons.tech:1317/';  
+            //const cookbook_id = querys['cookbook_id']     
             try { 
-                let response = HTTP.get(recipesUrl); 
+                let response = HTTP.get(API); 
                 //selectedItem = JSON.parse(response.content).CompletedExecutions;   
                 recipes = JSON.parse(response.content).Recipes;   
                 
@@ -261,7 +260,7 @@ Meteor.startup(() => {
                             else if(key == "Currency"){
                                 priceCurrency = value;
                             }
-                            else if(key == "NFT_URL"){
+                            else if(key == "NFT_URL" && value.indexOf('http') >= 0){
                                 img = value;
                             }
                             else if(key == "Description"){

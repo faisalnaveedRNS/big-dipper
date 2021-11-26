@@ -21,7 +21,7 @@ export default class SearchBar extends Component {
                 this.props.history.push('/transactions/'+query);
             }
             else if (query.match(hashRegEx)){
-                this.props.history.push('/easel_transactions/'+query);
+                this.props.history.push('/art_sales/'+query);
             }
             else if (query.match(validatorRegEx)){
                 this.props.history.push('/validator/'+query);

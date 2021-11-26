@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Recipes } from '/imports/api/recipes/recipes.js'; 
 import { Nfts } from '/imports/api/nfts/nfts.js';
-import List from './List.jsx';
+import List from './List.jsx'; 
 
-export default RecipesListContainer = withTracker((props) => {
+export default RecipesListContainer = withTracker((props) => { 
+     
     let recipesHandle, recipes, recipesExist;
     let loading = false;  
 
@@ -21,7 +22,51 @@ export default RecipesListContainer = withTracker((props) => {
         } else {
             recipesExist = !loading && !!recipes;
         } 
+    }  
+    var newRecipe = [];  
+    for(let index = 0; recipes && index < recipes.length; index++){
+        var selectedRecipe = recipes[index]; 
+        const entries = selectedRecipe.entries; 
+        if(entries != undefined && entries != "" && entries.itemOutputs != undefined){
+            const itemoutputs = entries.itemOutputs;   
+            if (itemoutputs.length > 0 && itemoutputs[0].strings.length > 0) {
+                let strings = itemoutputs[0].strings;
+                var nCanRemove = 0;
+                for (i = 0; i < strings.length; i++) {
+                    if(strings[i].key == "Name"){ 
+                        if(strings[i].value != null &&  strings[i].value != ""){
+                            nCanRemove = nCanRemove + 1;
+                        } 
+                    }
+                    else if(strings[i].key == "Description"){
+                        if(strings[i].value != undefined && strings[i].value != ""){
+                            nCanRemove = nCanRemove + 1;
+                        }
+                    }
+                    else if(strings[i].key == "NFT_URL"){ 
+                        if(strings[i].value != undefined && strings[i].value != "" && strings[i].value.indexOf('http') >= 0){
+                            nCanRemove = nCanRemove + 1;
+                        }
+                    }
+                    else if(strings[i].key == "Currency"){
+                        if(strings[i].value != undefined && strings[i].value != ""){
+                            nCanRemove = nCanRemove + 1;
+                        }
+                    }
+                    else if(strings[i].key == "Price"){
+                        if(strings[i].value != undefined && strings[i].value != ""){
+                            nCanRemove = nCanRemove + 1;
+                        }
+                    } 
+                } 
+                if(nCanRemove == 5){ 
+                    newRecipe.push(selectedRecipe);
+    
+                }
+            } 
+        }  
     } 
+    console.log('------recipes------', newRecipe); 
 
     var nftLoading = false;
     var nftsExist = false;
@@ -48,7 +93,7 @@ export default RecipesListContainer = withTracker((props) => {
     return {
         loading,
         recipesExist,
-        recipes: recipesExist ? recipes : {},
+        recipes: recipesExist ? newRecipe : {},
         history: props.history, 
         nfts: nfts,
     };

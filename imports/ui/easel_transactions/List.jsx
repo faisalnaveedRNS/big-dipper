@@ -19,8 +19,8 @@ const ListRow = (props) => {
     return <><tr >   
         <td className="title"> 
             <img src={props.item.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/>
-            <Link to={"/easel_transactions"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.item.name} </Link>
-            <Link to="/easel_transactions" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
+            <Link to={"/art_sales"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.item.name} </Link>
+            <Link to="/art_sales" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
 
         </td>      
         <td className="voting-start" style={{paddingTop:'22px'}}>{props.item.description}</td>
@@ -70,7 +70,7 @@ const ListRow = (props) => {
                 </Row>  
             </div>
             <Row className='clearfix' style={{marginTop:'-37px'}}>
-                <Link to="/easel_transactions" className="btn btn-primary" style={{margin: 'auto'}} onClick={() => setCollapse(true)}><i className="fas fa-caret-up"></i> <T>common.collapse</T></Link>
+                <Link to="/art_sales" className="btn btn-primary" style={{margin: 'auto'}} onClick={() => setCollapse(true)}><i className="fas fa-caret-up"></i> <T>common.collapse</T></Link>
             </Row>
         </Card> 
         </td>  
@@ -84,16 +84,16 @@ const RecipeRow = (props) => {
         <td className="title">
             {/* <a href={""+props.recipe.deeplink+""} target="_blank"> */} 
             <img src={props.recipe.img} style={{width:'45px', height:'45px', border:'1px solid rgba(0,0,0,.3)', marginRight:'10px', borderRadius:'12px'}} className="moniker-avatar-list img-fluid"/>
-            <Link to={"/easel_transactions"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.recipe.name} </Link>
+            <Link to={"/art_sales"} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}} onClick={() => setCollapse(!bCollapse)}> {props.recipe.name} </Link>
             {/* </a> */} 
-            <Link to="/easel_transactions" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
+            <Link to="/art_sales" className="btn btn-link" style={{margin: 'auto'}} onClick={() => setCollapse(!bCollapse)}><i className={bCollapse ? "fas fa-caret-down" : "fas fa-caret-up"}></i> </Link>
 
         </td>    
         {props.recipe.nftsExist && <td className="title">
-            <Link to={"/easel_transactions/"+props.recipe.creator} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}}>{props.recipe.cookbook_owner}</Link>  
+            <Link to={"/art_sales/"+props.recipe.creator} style={{display:'inline-block', paddingTop:'10px', color:'#444444'}}>{props.recipe.artist}</Link>  
         </td>}
         {!props.recipe.nftsExist && <td className="title" style={{paddingTop:'22px'}}>
-            {props.recipe.cookbook_owner}
+            {props.recipe.artist}
         </td>}
         <td className="title" style={{paddingTop:'22px'}}>{props.recipe.price}</td> 
         <td className="voting-start" style={{paddingTop:'22px'}}>{props.recipe.description}</td>
@@ -132,8 +132,8 @@ const RecipeRow = (props) => {
 
                 </Row> 
                 <Row className="mb-2 border-top">
-                    <Col md={3} className="label"><T>recipes.sender</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.creator}</Col>
+                    <Col md={3} className="label"><T>recipes.artist</T></Col>
+                    <Col md={9} style={{paddingLeft:"40px"}} className="value">{props.recipe.artist}</Col>
                 </Row>
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.cookbookID</T></Col>
@@ -153,7 +153,7 @@ const RecipeRow = (props) => {
                 </Row>
             </div>
             <Row className='clearfix' style={{marginTop:'-37px'}}>
-                <Link to="/easel_transactions" className="btn btn-primary" style={{margin: 'auto'}} onClick={() => setCollapse(true)}><i className="fas fa-caret-up"></i> <T>common.collapse</T></Link>
+                <Link to="/art_sales" className="btn btn-primary" style={{margin: 'auto'}} onClick={() => setCollapse(true)}><i className="fas fa-caret-up"></i> <T>common.collapse</T></Link>
             </Row>
         </Card> 
         </td>  
@@ -256,7 +256,7 @@ export default class List extends Component{
                                 for (i = 0; i < strings.length; i++) {
                                     try {
                                         var key = strings[i].Key;
-                                        if (key == "NFT_URL") {
+                                        if (key == "NFT_URL") {  
                                             img = strings[i].Value;  
                                         }
                                         else if (key == "Price") {
@@ -302,6 +302,7 @@ export default class List extends Component{
                         }
                         var copies = 0;
                         var img = "/img/buy_icon.png";
+                        var artist = '';
                         const entries = recipe.entries;
                         if(entries != null){
                             const itemOutputs = entries.itemOutputs;
@@ -315,14 +316,15 @@ export default class List extends Component{
                                 }
                                 let strings = itemOutputs[0].strings
                                 for (i = 0; i < strings.length; i++) {
-                                    try {
-                                        var values = strings[i].value;
-                                        if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                                            img = values; 
-                                            break;
+                                    try { 
+                                        if (strings[i].key = "NFT_URL" && strings[i].value.indexOf('http') >= 0) {
+                                            img = strings[i].value;  
+                                        }
+                                        else if (strings[i].key = "Creator") {
+                                            artist = strings[i].value;  
                                         }
                                     } catch (e) {
-                                        console.log('strings[i].Value', e)
+                                        console.log('strings[i].value', e)
                                         break;
                                     }
     
@@ -336,6 +338,7 @@ export default class List extends Component{
                         } 
                         recipe.price = price;
                         recipe.copies = copies; 
+                        recipe.artist = artist;
                         recipe.img = img;  
                         recipe.nftsExist = (nfts != null && nfts.length > 0); 
                         return <RecipeRow key={i} index={i} recipe={recipe} />
@@ -372,7 +375,7 @@ export default class List extends Component{
                             <tr>  
                                 <th className="submit-block"><i className="fas fa-gift"></i> <span className="d-none d-sm-inline"><T>recipes.title</T></span></th> 
                                 <th className="submit-block"><i className="fas fa-box"></i> <span className="d-none d-sm-inline"><T>recipes.artist</T></span></th>
-                                {window.orientation == undefined && <th className="submit-block col-4 col-md-2 col-lg-1"><i className="fas fa-box-open"></i> <span className="d-none d-sm-inline"><T>recipes.price</T></span></th>}
+                                {window.orientation == undefined && <th className="submit-block"><i className="fas fa-box-open"></i> <span className="d-none d-sm-inline"><T>recipes.price</T></span></th>}
                                 {window.orientation != undefined && <th className="submit-block"><i className="fas fa-box-open"></i> <span className="d-none d-sm-inline"><T>recipes.price</T></span></th>}
                                 <th className="submit-block" ><i className="fas fa-box"></i> <span className="d-none d-sm-inline"><T>recipes.description</T></span></th>
                                 {window.orientation == undefined && <th className="submit-block col-4 col-md-1 col-lg-1"><i className="fas fa-box-open"></i> <span className="d-none d-sm-inline"><T>recipes.copies</T></span></th>}

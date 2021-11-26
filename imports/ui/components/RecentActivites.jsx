@@ -21,6 +21,7 @@ export default class RecentActivites extends Component {
         var strName = '';
         var method_type = 0; 
         var imgName = '/img/ico_quest.png' 
+        console.log('---', props.msg)
         if(props.msg['@type'] == '/Pylonstech.pylons.pylons.MsgCreateRecipe'){
             strName = props.msg.creator;
             method_type = CREATOR_METHOD;

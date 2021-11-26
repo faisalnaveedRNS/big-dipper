@@ -30,14 +30,18 @@ Meteor.methods({
                 }
             }
 
-            if(!transactionsExist){
-                return false;
-            }
-            let recipes = Transactions.find({
-                $or: [
-                    {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
-                ]
-            }).fetch().map((p) => p.tx.body.messages[0]);; 
+            // if(!transactionsExist){
+            //     return false;
+            // }
+            // let recipes = Transactions.find({
+            //     $or: [
+            //         {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
+            //     ]
+            // }).fetch().map((p) => p.tx.body.messages[0]);; 
+
+            let url = API + '/pylons/recipes/';
+            let response = HTTP.get(url);
+            let recipes = JSON.parse(response.content).Recipes;
 
             if(recipes == null || recipes.length == 0){
                 return false;
@@ -58,19 +62,26 @@ Meteor.methods({
                     let deeplink = 'https://wallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID /*+ "&cookbook_id=" + recipe.cookbookID */+  '&nft_amount=1';  
                     recipe.deeplink = deeplink;
                     var cookbook_owner = "", creator = "";
-                    if (transactionsExist){  
-                        try { 
-                            let cookbooks = Cookbooks.find({ID: recipe.cookbookID}).fetch() 
-                            if (cookbooks.length > 0) {
-                                cookbook_owner = recipe.ID;
-                                creator = cookbooks[0].creator;
-                            }
-                        } catch (e) {
-                            console.log(e);
+                    try {   
+                        let cookbooks = Cookbooks.find({ID: recipe.cookbookID}).fetch() 
+                        if (cookbooks.length > 0) {
+                            cookbook_owner = recipe.ID;
+                            creator = cookbooks[0].creator;
                         }
-                    } 
+                    } catch (e) {
+                        console.log(e);
+                    }
                     recipe.cookbook_owner = cookbook_owner;
                     recipe.creator = creator;
+                    // if(recipe.entries != undefined && recipe.entries.itemOutputs.length > 0 && recipe.entries.itemOutputs[0].strings != undefined){
+                    //     let strings = recipe.entries.itemOutputs[0].strings;
+                    //     for(ni = 0; ni < strings.length; ni ++){
+                    //         if(strings[ni].key == "Creator"){
+                    //             recipe.creator = strings[ni].value;
+                    //         }
+                    //     }
+                    // } 
+                    
                     recipeIds.push(recipe.ID);
                     if (recipe.NO != -1 && !finishedRecipeIds.has(recipe.ID)) {
                         try {

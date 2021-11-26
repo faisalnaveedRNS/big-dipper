@@ -39,7 +39,7 @@ navbar:
     validators: 'Validators'
     blocks: 'Blocks'
     transactions: 'Transactions'
-    easel_transactions: 'Easel transactions'
+    art_sales: 'Art Sales'
     proposals: 'Proposals'
     votingPower: 'Voting Power'
     lang: "ENG"

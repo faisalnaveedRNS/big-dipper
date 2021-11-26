@@ -52,14 +52,13 @@ export default HomeContainer = withTracker((props) => {
             if (itemoutputs.length > 0) {
                 let strings = itemoutputs[0].strings
                 for (i = 0; i < strings.length; i++) {
-                    try {
-                        var values = strings[i].value;
-                        if (values.indexOf('http') >= 0 && (values.indexOf('.png') > 0 || values.indexOf('.jpg') > 0)) {
-                            img = values;   
+                    try { 
+                        if (strings[i].key = "NFT_URL" && strings[i].value.indexOf('http') >= 0) {
+                            img = strings[i].value; 
                             break;
-                        }
+                        } 
                     } catch (e) {
-                        console.log('strings[i].Value', e)
+                        console.log('strings[i].value', e)
                         break;
                     }
 

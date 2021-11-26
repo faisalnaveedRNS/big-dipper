@@ -26,19 +26,19 @@ export const NftRow = (props) => {
         let strings = itemInputs[0].strings;
         for(let i = 0; i < strings.length; i++){
             if(strings[i].Key == 'Name'){
-                tx.Name = strings[i].Value;
+                tx.Name = strings[i].value;
             }
-            else if(strings[i].Key == 'NFT_URL'){
-                tx.NFT_URL = strings[i].Value;
+            else if(strings[i].Key == 'NFT_URL' && strings[i].value.indexOf('http') >= 0){
+                tx.NFT_URL = strings[i].value;
             }
             else if(strings[i].Key == 'Description'){
-                tx.Description = strings[i].Value;
+                tx.Description = strings[i].value;
             }
             else if(strings[i].Key == 'Currency'){
-                tx.Currency = strings[i].Value;
+                tx.Currency = strings[i].value;
             }
             else if(strings[i].Key == 'Price'){
-                tx.Price = strings[i].Value; 
+                tx.Price = strings[i].value; 
             } 
         } 
     }    

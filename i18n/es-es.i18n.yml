@@ -27,7 +27,7 @@ navbar:
     validators: 'Validadores'
     blocks: 'Bloques'
     transactions: 'Transacciones'
-    easel_transactions: 'Easel ransacciones'
+    art_sales: 'Art Sales'
     proposals: 'Propuestas'
     votingPower: 'Poder de voto'
     lang: "ES"
