@@ -54,10 +54,9 @@
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
         "banners": false 
     },
-"remote":{
-    
-        "rpc":"http://161.97.78.75:26657/",   
-        "api":"http://161.97.78.75:1317/"   
+"remote":{  
+    "rpc":"http://rpc.testnet.pylons.tech:26657/",   
+    "api":"http://api.testnet.pylons.tech:1317/"   
 },
     "debug": {
         "startTimer": true
