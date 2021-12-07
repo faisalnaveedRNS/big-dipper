@@ -1,7 +1,7 @@
 {
     "public":{
         "chainName": "Pylons",
-        "chainId": "pylons-testnet",
+        "chainId": "pylons-testnet-2",
         "gtm": "{Add your Google Tag Manager ID here}",
         "slashingWindow": 10000,
         "uptimeWindow": 250,
