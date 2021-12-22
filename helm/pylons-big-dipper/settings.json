@@ -62,10 +62,10 @@
         "startTimer": true
     },
     "params":{
-        "startHeight": 0,
+        "startHeight": 149257,
         "defaultBlockTime": 5000,
         "validatorUpdateWindow": 300,
-        "blockInterval": 15000,
+        "blockInterval": 5000,
         "transactionsInterval": 18000,
         "keybaseFetchingInterval": 18000000,
         "consensusInterval": 1000,
