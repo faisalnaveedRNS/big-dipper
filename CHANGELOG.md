@@ -1,4 +1,6 @@
 # Changelog
+## [v0.41.x-14.3]
+* Added Apple app associate file.
 
 ## [v0.41.x-14.2]
 * Fixes Ledger WebUSB + Chrome 91.x issue (https://github.com/LedgerHQ/ledgerjs/issues/607)
