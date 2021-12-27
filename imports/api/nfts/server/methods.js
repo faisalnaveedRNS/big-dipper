@@ -67,7 +67,7 @@ Meteor.methods({
                             item.NO = date.getFullYear() * 1000 * 360 * 24 * 30 * 12 + date.getMonth() * 1000 * 360 * 24 * 30 + date.getDay() * 1000 * 360 * 24 + date.getHours() * 1000 * 360 + date.getMinutes() * 1000 * 60 + date.getSeconds() * 1000 + date.getMilliseconds();
                             item.tradeable = true;
                             
-                            let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + item.recipeID/* + '&cookbook_id='+ nft.cookbookID*/ + '&nft_amount=1';   
+                            let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + item.recipeID + '&cookbook_id='+ nft.cookbookID + '&nft_amount=1';   
                             item.resalelink = resalelink; 
  
                             bulkNfts.find({ ID: item.ID }).upsert().updateOne({ $set: item });

@@ -66,7 +66,7 @@ const ListRow = (props) => {
                 </Row> 
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>nfts.resalelink</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><a href={""+props.item.resalelink+""} style={{wordBreak:'break-all'}} target="_blank">{props.item.resalelink}</a></Col>
+                    <Col md={9} style={{paddingLeft:"40px", overflow:"hidden"}} className="value"><a href={""+props.item.resalelink+""} style={{wordBreak:'break-all'}} target="_blank">{props.item.resalelink}</a></Col>
                 </Row>  
             </div>
             <Row className='clearfix' style={{marginTop:'-37px'}}>
@@ -145,7 +145,7 @@ const RecipeRow = (props) => {
                 </Row> 
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.deeplinks</T></Col>
-                    <Col md={9} style={{paddingLeft:"40px"}} className="value"><a href={""+props.recipe.deeplink+""} style={{wordBreak:'break-all'}} target="_blank">{props.recipe.deeplink}</a></Col>
+                    <Col md={9} style={{paddingLeft:"40px", overflow:"hidden"}} className="value"><a href={""+props.recipe.deeplink+""} style={{wordBreak:'break-all'}} target="_blank">{props.recipe.deeplink}</a></Col>
                 </Row> 
                 <Row className="mb-2 border-top">
                     <Col md={3} className="label"><T>recipes.total_copies</T></Col>

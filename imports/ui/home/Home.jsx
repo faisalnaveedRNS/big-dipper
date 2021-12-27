@@ -23,7 +23,7 @@ export default class Home extends Component{
 
     componentDidMount(){  
         const querys = queryString.parse(this.props.location.search); 
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1) { 
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['nft_amount'] == 1 && querys['cookbook_id'] != null) { 
             this.setState({recipeExist: true, recipe_id: querys['recipe_id']});
             console.log("querys['recipe_id']", querys['recipe_id'])
         }
