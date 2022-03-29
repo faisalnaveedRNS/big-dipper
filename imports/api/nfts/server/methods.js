@@ -54,7 +54,7 @@ Meteor.methods({
                     
                     if (finishedNftIds.NO != -1 && !finishedNftIds.has(trade.itemOutputs[0].itemID)) {
                         try { 
-                            let response = HTTP.get("http://api.testnet.pylons.tech:1317/pylons/executions/item/" + trade.itemOutputs[0].cookbookID + '/' +  trade.itemOutputs[0].itemID);
+                            let response = HTTP.get(Meteor.settings.remote.api + "/pylons/executions/item/" + trade.itemOutputs[0].cookbookID + '/' +  trade.itemOutputs[0].itemID);
                             let executions = JSON.parse(response.content);
                             let item = executions.CompletedExecutions[0]
                             // let response = HTTP.get("https://api.testnet.pylons.tech/pylons/item/cookbook_for_test5/LQM2cdzDY3");
@@ -67,7 +67,7 @@ Meteor.methods({
                             item.NO = date.getFullYear() * 1000 * 360 * 24 * 30 * 12 + date.getMonth() * 1000 * 360 * 24 * 30 + date.getDay() * 1000 * 360 * 24 + date.getHours() * 1000 * 360 + date.getMinutes() * 1000 * 60 + date.getSeconds() * 1000 + date.getMilliseconds();
                             item.tradeable = true;
                             
-                            let resalelink = 'https://wallet.pylons.tech?action=resell_nft&recipe_id=' + item.recipeID + '&cookbook_id='+ nft.cookbookID + '&nft_amount=1';   
+                            let resalelink = Meteor.settings.public.baseURL + '?action=resell_nft&recipe_id=' + item.recipeID + '&cookbook_id='+ nft.cookbookID + '&nft_amount=1';
                             item.resalelink = resalelink; 
  
                             bulkNfts.find({ ID: item.ID }).upsert().updateOne({ $set: item });

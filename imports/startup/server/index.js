@@ -55,24 +55,18 @@ Meteor.startup(() => {
         var img = ''; 
         var selectedRecipe = null;
         var recipes = null;  
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) { 
-            var selectedItem = null; 
-            const recipe_id = querys['recipe_id']    
-            let recipesUrl = API + 'pylons/recipes/'    
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) {
+            const recipe_id = querys['recipe_id']    ;
+            const cookbook_id = querys['cookbook_id']    ;
+            let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
 
             try { 
-                let response = HTTP.get(recipesUrl);    
-                recipes = JSON.parse(response.content).Recipes;   
+                let response = HTTP.get(recipesUrl);
+                selectedRecipe = JSON.parse(response.content).Recipe;
                 
             } catch (e) { 
                 console.log(e);
-            }   
-            for(i = 0; i < recipes.length; i++){
-                selectedRecipe = recipes[i];
-                if(selectedRecipe.ID == recipe_id){
-                    break;
-                }
-            }  
+            }
             
             if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
                 const strings = selectedRecipe.entries.itemOutputs[0].strings; 
@@ -225,22 +219,17 @@ Meteor.startup(() => {
             
         }  
         else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
-            var selectedItem = null; 
-            const recipe_id = querys['recipe_id']   
-            //const cookbook_id = querys['cookbook_id']     
+            const recipe_id = querys['recipe_id'];
+            const cookbook_id = querys['cookbook_id'];
+            let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
+
             try { 
-                let response = HTTP.get(API); 
+                let response = HTTP.get(recipesUrl);
                 //selectedItem = JSON.parse(response.content).CompletedExecutions;   
-                recipes = JSON.parse(response.content).Recipes;   
+                selectedRecipe = JSON.parse(response.content).Recipe;
                 
             } catch (e) { 
                 console.log(e);
-            }    
-            for(i = 0; i < recipes.length; i++){
-                selectedRecipe = recipes[i];
-                if(selectedRecipe.ID == recipe_id){
-                    break;
-                }
             }
             
             if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
