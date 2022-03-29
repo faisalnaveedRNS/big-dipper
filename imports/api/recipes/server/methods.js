@@ -1,9 +1,7 @@
-import { Meteor } from 'meteor/meteor';
-import { HTTP } from 'meteor/http';
-import { Recipes } from '../recipes.js';
-import { Transactions } from '/imports/api/transactions/transactions.js';
-import { Cookbooks } from '/imports/api/cookbooks/cookbooks.js'; 
-import { image } from 'd3-fetch';
+import {Meteor} from 'meteor/meteor';
+import {Recipes} from '../recipes.js';
+import {Transactions} from '/imports/api/transactions/transactions.js';
+import {Cookbooks} from '/imports/api/cookbooks/cookbooks.js';
 
 Meteor.methods({
     'recipes.getRecipes': function() {
@@ -54,8 +52,7 @@ Meteor.methods({
                 const bulkRecipes = Recipes.rawCollection().initializeUnorderedBulkOp();
                 for (let i in recipes) {
                     let recipe = recipes[i];
-                    let deeplink = 'https://devwallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID /*+ "&cookbook_id=" + recipe.cookbookID */+  '&nft_amount=1';  
-                    recipe.deeplink = deeplink;
+                    recipe.deeplink = Meteor.settings.remote.api + '?action=purchase_nft&recipe_id=' + recipe.ID /*+ "&cookbook_id=" + recipe.cookbookID */ + '&nft_amount=1';
                     var cookbook_owner = "", creator = "";
                     if (transactionsExist){  
                         try { 

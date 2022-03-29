@@ -23,12 +23,7 @@ var picWidth = IMAGE_WIDTH;
 var picHeight = IMAGE_HEIGHT; 
 var apiUrl = "https://api.devtestnet.pylons.tech/";  
 const defaultImage = '/img/buy_icon.png'; 
-const defaultMetaTags = `
-<meta property="og:title"       content="${siteName}" />
-<meta property="og:description" content="${description}" />
-<meta property="og:image"       content="${defaultImage}" />
-<meta property="og:url"         content="${apiUrl}" />
-`;
+const defaultMetaTags = ``
 
 const BROWSER_BOT = 0;
 const SLACK_BOT = 1;
@@ -55,12 +50,12 @@ Meteor.startup(() => {
         const querys = queryString.parse(url); 
         var img = ''; 
         var selectedRecipe = null;
-        var recipes = null;  
+        var recipes = null;
         if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
             var selectedItem = null; 
-            const recipe_id = querys['recipe_id']   
+            const recipe_id = querys['recipe_id']
             //const cookbook_id = querys['cookbook_id']   
-            let recipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';  
+            let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipes/`;
             try { 
                 let response = HTTP.get(recipesUrl); 
                 //selectedItem = JSON.parse(response.content).CompletedExecutions;   
@@ -230,7 +225,7 @@ Meteor.startup(() => {
             var selectedItem = null; 
             const recipe_id = querys['recipe_id']   
             //const cookbook_id = querys['cookbook_id']   
-            let recipesUrl ='https://api.devtestnet.pylons.tech/pylons/recipes/';  
+            let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipes/`;
             try { 
                 let response = HTTP.get(recipesUrl); 
                 //selectedItem = JSON.parse(response.content).CompletedExecutions;   
