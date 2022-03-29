@@ -59,7 +59,7 @@ Meteor.methods({
 
                 for (let i in recipes) {
                     let recipe = recipes[i];
-                    let deeplink = 'https://wallet.pylons.tech?action=purchase_nft&recipe_id=' + recipe.ID + "&cookbook_id=" + recipe.cookbookID +  '&nft_amount=1';  
+                    let deeplink = Meteor.settings.public.baseURL + '?action=purchase_nft&recipe_id=' + recipe.ID + "&cookbook_id=" + recipe.cookbookID +  '&nft_amount=1';
                     recipe.deeplink = deeplink;
                     var cookbook_owner = "", creator = "";
                     try {   
