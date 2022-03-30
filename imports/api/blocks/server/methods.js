@@ -358,6 +358,28 @@ Meteor.methods({
                         console.log("Getting validator set at height %o: %o", height, e)
                     }
 
+                    let genesisTime;
+
+                    try {
+                        let genesisResult;
+
+                        do {
+                            let url = RPC+`/genesis`;
+                            let response = HTTP.get(url);
+                            genesisResult = JSON.parse(response.content).result;
+                            // console.log("========= validator result ==========: %o", result)
+                            genesisTime = genesisResult.genesis.genesis_time;
+
+                            // console.log(validators.length);
+                            // console.log(parseInt(result.total));
+                        }
+                        while (genesisTime)
+
+                    }
+                    catch(e){
+                        console.log("Error getting genesisResult")
+                    }
+
                     // console.log(validators)
 
                     ValidatorSets.insert({
@@ -441,7 +463,7 @@ Meteor.methods({
                     if (lastSyncedTime){
                         let dateLatest = new Date(blockData.time);
                         let dateLast = new Date(lastSyncedTime);
-                        let genesisTime = new Date(Meteor.settings.public.genesisTime);
+                        let genesisTime = new Date(genesisTime);
                         timeDiff = Math.abs(dateLatest.getTime() - dateLast.getTime());
                         // blockTime = (chainStatus.blockTime * (blockData.height - 1) + timeDiff) / blockData.height;
                         blockTime = (dateLatest.getTime() - genesisTime.getTime()) / blockData.height;
