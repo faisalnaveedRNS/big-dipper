@@ -13,6 +13,7 @@ export default class TimeStamp extends Component{
         let format = "D MMM YYYY, h:mm:ssa z";
         let timezone = moment.tz.guess()
         let time = moment.utc(this.props.time);
+
         return <span>
             <span ref={this.ref}>{time.format(format)}</span>
             <UncontrolledTooltip placement='bottom' target={this.ref}>
