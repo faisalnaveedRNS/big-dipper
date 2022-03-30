@@ -34,15 +34,18 @@ export default class EaselBuy extends Component {
       description: this.props.description,
       price: this.props.price,
       img: this.props.img,
+      loading: false,
     };
   }
   componentDidMount() {
     const url = settings.remote.api;
+    this.setState({ loading: true });
     axios
       .get(
         `${url}/pylons/recipe/${this.props.cookbook_id}/${this.props.recipe_id}`
       )
       .then((resp) => {
+        this.setState({ loading: false });
         const selectedRecipe = resp.data.Recipe;
 
         const coinInputs = selectedRecipe.coinInputs;
@@ -92,6 +95,7 @@ export default class EaselBuy extends Component {
         });
       })
       .catch((err) => {
+        this.setState({ loading: false });
         console.log(err);
       });
   }
@@ -119,7 +123,7 @@ export default class EaselBuy extends Component {
   };
 
   render() {
-    if (this.props.loading) {
+    if (this.state.loading) {
       return <Spinner type="grow" color="primary" />;
     } else {
       return (
