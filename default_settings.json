@@ -1,18 +1,18 @@
 {
     "public":{
-        "chainName": "Cosmos",
-        "chainId": "{Chain ID}",
+        "chainName": "Pylons",
+        "chainId": "pylons-testnet-2",
         "gtm": "{Add your Google Tag Manager ID here}",
         "slashingWindow": 10000,
         "uptimeWindow": 250,
         "initialPageSize": 30,
         "secp256k1": false,
-        "bech32PrefixAccAddr": "cosmos",
-        "bech32PrefixAccPub": "cosmospub",
-        "bech32PrefixValAddr": "cosmosvaloper",
-        "bech32PrefixValPub": "cosmosvaloperpub",
-        "bech32PrefixConsAddr": "cosmosvalcons",
-        "bech32PrefixConsPub": "cosmosvalconspub",
+        "bech32PrefixAccAddr": "pylo",
+        "bech32PrefixAccPub": "pylopub",
+        "bech32PrefixValAddr": "pylovaloper",
+        "bech32PrefixValPub": "pylovaloperpub",
+        "bech32PrefixConsAddr": "pylovalcons",
+        "bech32PrefixConsPub": "pylovalconspub",
         "bondDenom": "uatom",
         "powerReduction": 1000000,
         "coins": [
@@ -24,6 +24,11 @@
             {
                 "denom": "umuon",
                 "displayName": "MUON",
+                "fraction": 1000000
+            },
+            {
+                "denom": "pylon",
+                "displayName": "PYLON",
                 "fraction": 1000000
             } 
         ],
@@ -43,29 +48,31 @@
         "coingeckoId": "cosmos",
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
         "banners": false,
-        "baseURL": "http://wallet.pylons.tech"
+	"baseURL": "http://wallet.pylons.tech",
+        "cosmos_sdk": 43
     },
     "remote":{
-        "rpc":"https://rpc.stargate.forbole.com:443/",
-        "api":"https://api.stargate.forbole.com:443"
+        "rpc":"https://rpc.pylons.tech",   
+        "api":"https://lcd.pylons.tech" 
     },
     "debug": {
         "startTimer": true
     },
     "params":{
-        "startHeight": 0,
-        "defaultBlockTime": 5000,
+        "startHeight": 1737710,
+        "defaultBlockTime": 10000,
         "validatorUpdateWindow": 300,
-        "blockInterval": 15000,
-        "transactionsInterval": 18000,
-        "keybaseFetchingInterval": 18000000,
+        "blockInterval": 10000,
+        "transactionsInterval": 1000,
+        "keybaseFetchingInterval": 1000000,
         "consensusInterval": 1000,
         "statusInterval":7500,
         "signingInfoInterval": 1800000,
         "proposalInterval": 5000,
+        "recipeInterval": 5000,
+        "nftInterval": 5000, 
+        "cookbookInterval": 5000,
         "missedBlocksInterval": 60000,
         "delegationInterval": 900000
     }
 }
-
-

@@ -367,13 +367,15 @@ Meteor.methods({
                             let url = RPC+`/genesis`;
                             let response = HTTP.get(url);
                             genesisResult = JSON.parse(response.content).result;
-                            // console.log("========= validator result ==========: %o", result)
-                            genesisTime = genesisResult.genesis.genesis_time;
 
-                            // console.log(validators.length);
-                            // console.log(parseInt(result.total));
+                            //  GenesisTime time at start of chain
+                            console.log("========= genesis time  ==========: %v", genesisResult.genesis.genesis_time)
+                            genesisTime = genesisResult.genesis.genesis_time;
+                            
+                       
+
                         }
-                        while (genesisTime)
+                        while (!genesisTime)
 
                     }
                     catch(e){
@@ -463,10 +465,11 @@ Meteor.methods({
                     if (lastSyncedTime){
                         let dateLatest = new Date(blockData.time);
                         let dateLast = new Date(lastSyncedTime);
-                        let genesisTime = new Date(genesisTime);
+
+                        // calculating time to generate average block time 
+                        let genesisTimeStamp = new Date(genesisTime);
                         timeDiff = Math.abs(dateLatest.getTime() - dateLast.getTime());
-                        // blockTime = (chainStatus.blockTime * (blockData.height - 1) + timeDiff) / blockData.height;
-                        blockTime = (dateLatest.getTime() - genesisTime.getTime()) / blockData.height;
+                        blockTime = (dateLatest.getTime() - genesisTimeStamp.getTime()) / blockData.height;
                     }
 
                     let endGetValidatorsTime = new Date();
