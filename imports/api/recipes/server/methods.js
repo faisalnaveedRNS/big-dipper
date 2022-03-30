@@ -3,7 +3,6 @@ import { HTTP } from "meteor/http";
 import { Recipes } from "../recipes.js";
 import { Transactions } from "/imports/api/transactions/transactions.js";
 import { Cookbooks } from "/imports/api/cookbooks/cookbooks.js";
-import { image } from "d3-fetch";
 
 Meteor.methods({
   "recipes.getRecipes": function () {
@@ -34,15 +33,6 @@ Meteor.methods({
         }
       }
 
-      // if(!transactionsExist){
-      //     return false;
-      // }
-      // let recipes = Transactions.find({
-      //     $or: [
-      //         {"tx.body.messages.@type":"/Pylonstech.pylons.pylons.MsgCreateRecipe"}
-      //     ]
-      // }).fetch().map((p) => p.tx.body.messages[0]);;
-
       let url = API + "/pylons/recipes/";
       let response = HTTP.get(url);
       let recipes = JSON.parse(response.content).Recipes;
@@ -53,12 +43,6 @@ Meteor.methods({
 
       let finishedRecipeIds = new Set(
         Recipes.find({ enabled: { $in: [true, false] } })
-          .fetch()
-          .map((p) => p.ID)
-      );
-
-      let activeRecipes = new Set(
-        Recipes.find({ enabled: { $in: [true] } })
           .fetch()
           .map((p) => p.ID)
       );
@@ -90,14 +74,6 @@ Meteor.methods({
           }
           recipe.cookbook_owner = cookbook_owner;
           recipe.creator = creator;
-          // if(recipe.entries != undefined && recipe.entries.itemOutputs.length > 0 && recipe.entries.itemOutputs[0].strings != undefined){
-          //     let strings = recipe.entries.itemOutputs[0].strings;
-          //     for(ni = 0; ni < strings.length; ni ++){
-          //         if(strings[ni].key == "Creator"){
-          //             recipe.creator = strings[ni].value;
-          //         }
-          //     }
-          // }
 
           recipeIds.push(recipe.ID);
           if (recipe.NO != -1 && !finishedRecipeIds.has(recipe.ID)) {
@@ -112,26 +88,6 @@ Meteor.methods({
                 date.getSeconds() * 1000 +
                 date.getMilliseconds();
               recipe.recipeId = recipe.NO;
-              if (activeRecipes.has(recipe.ID)) {
-                let validators = [];
-                let page = 0;
-
-                // do {
-                //     url = RPC + `/validators?page=${++page}&per_page=100`;
-                //     let response = HTTP.get(url);
-                //     result = JSON.parse(response.content).result;
-                //     validators = [...validators, ...result.validators];
-
-                // }
-                // while (validators.length < parseInt(result.total))
-
-                // let activeVotingPower = 0;
-                // for (v in validators) {
-                //     activeVotingPower += parseInt(validators[v].voting_power);
-                // }
-                // recipe.activeVotingPower = activeVotingPower;
-              }
-              //Recipes.insert(recipe);
               bulkRecipes
                 .find({ ID: recipe.ID })
                 .upsert()
@@ -164,8 +120,6 @@ Meteor.methods({
           let url = "";
           try {
             let recipe = { ID: recipes[i].ID };
-
-            //recipe.updatedAt = new Date();
             Recipes.update({ ID: recipes[i].ID }, { $set: recipe });
           } catch (e) {
             console.log(url);

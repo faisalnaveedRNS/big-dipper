@@ -54,11 +54,6 @@ Meteor.methods({
           .fetch()
           .map((p) => p.ID)
       );
-      let activeNfts = new Set(
-        Nfts.find({ Tradable: { $in: [true] } })
-          .fetch()
-          .map((p) => p.ID)
-      );
 
       let nftIds = [];
 
@@ -82,9 +77,6 @@ Meteor.methods({
               );
               let executions = JSON.parse(response.content);
               let item = executions.CompletedExecutions[0];
-              // let response = HTTP.get("https://api.testnet.pylons.tech/pylons/item/cookbook_for_test5/LQM2cdzDY3");
-              // let executions = JSON.parse(response.content);
-              // let item = executions.Item
               if (item == undefined || item == null || item.length == 0) {
                 continue;
               }
@@ -110,7 +102,6 @@ Meteor.methods({
 
               bulkNfts.find({ ID: item.ID }).upsert().updateOne({ $set: item });
             } catch (e) {
-              //bulkNfts.find({ ID: trade.itemOutputs[0].itemID }).upsert().updateOne({ $set: nft });
             }
           }
         }
@@ -135,7 +126,6 @@ Meteor.methods({
           try {
             let nft = { ID: nfts[i].ID };
 
-            //recipe.updatedAt = new Date();
             Nfts.update({ ID: nfts[i].ID }, { $set: nft });
           } catch (e) {
             console.log(url);

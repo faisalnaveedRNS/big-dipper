@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Table, Spinner, Row, Col, Alert } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Spinner, Row, Col } from "reactstrap";
 import axios from "axios";
-import numbro from "numbro";
 import i18n from "meteor/universe:i18n";
-import { Meteor } from "meteor/meteor";
 import PopupModal from "../popup/popup";
 import settings from "../../../settings.json";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
@@ -110,10 +107,8 @@ export default class EaselBuy extends Component {
     );
   }
 
-  shouldLogin = () => {};
-
   handleLoginConfirmed = (success) => {
-    if (success == true) {
+    if (success) {
       window.location =
         "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
     }
@@ -121,9 +116,6 @@ export default class EaselBuy extends Component {
 
   goPurchaseAlert = () => {
     this.setState({ isPurchaseOpen: true });
-    console.log("test here");
-
-    // href='https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
   };
 
   render() {
@@ -138,7 +130,7 @@ export default class EaselBuy extends Component {
                 <img
                   alt="Easel on Google Play"
                   src={
-                    this.state.img == "" ? "/img/buy_icon.png" : this.state.img
+                    this.state.img === "" ? "/img/buy_icon.png" : this.state.img
                   }
                   style={{
                     width: "auto",

@@ -1,14 +1,11 @@
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
-import { Chain } from "/imports/api/chain/chain.js";
 import { Recipes } from "/imports/api/recipes/recipes.js";
 import EaselBuy from "./EaselBuy.jsx";
-import { string } from "prop-types";
 
 export default HomeContainer = withTracker((props) => {
   return EaselBuy;
   let recipesHandle;
-  let validatorsHandle;
   let loading = true;
   var name = "";
   var description = "";
@@ -23,8 +20,6 @@ export default HomeContainer = withTracker((props) => {
     loading = !recipesHandle.ready();
   }
 
-  let status;
-
   if (Meteor.isServer || !loading) {
     selectedRecipe = Recipes.findOne({ ID: recipe_id });
   } else {
@@ -34,9 +29,6 @@ export default HomeContainer = withTracker((props) => {
   if (selectedRecipe != null) {
     name = selectedRecipe.name;
     description = selectedRecipe.description;
-    // if (description.length > 15) {
-    //     description = description.substring(0, 12) + '...';
-    // }
     const coinInputs = selectedRecipe.coinInputs;
     if (coinInputs.length > 0) {
       if (coinInputs[0].coins[0].denom == "USD") {
