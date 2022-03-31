@@ -111,10 +111,14 @@ export default class EaselBuy extends Component {
     );
   }
 
+
+  // In case IOS will redirect to APP Store if app not installed
+  // In case Android will redirect to Play store if app not installed
+  // In case in Browser will redirect to Play store
   handleLoginConfirmed = (success) => {
     if (success) {
       window.location =
-        "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
+        "https://pylons.page.link/edXKuEX1vC4tjBUD9";
     }
   };
 
