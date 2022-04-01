@@ -3,7 +3,7 @@ name: Deploy for Testnet
 on:
   workflow_run:
     workflows: ["Build Docker Image"]
-    branches: [staging]
+    branches: [master]
     types:
       - completed
 
@@ -14,15 +14,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          ref: staging
 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+          kubeconfig: '${{ secrets.KUBECONFIG_DEV }}'
           exec: |
             helm upgrade pylons-big-dipper \
               --install \
               --namespace pylons \
-            
+              --set image=ghcr.io/pylons-tech/big-dipper:${{ github.sha }} \
+              --set host=wallet.pylons.tech \
+              --set pullSecret=regcred \
+              ./helm/pylons-big-dipper
