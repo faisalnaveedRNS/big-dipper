@@ -35,6 +35,7 @@ export default class EaselBuy extends Component {
       price: this.props.price,
       img: this.props.img,
       loading: false,
+      imageLoading: false,
     };
   }
   componentDidMount() {
@@ -87,11 +88,13 @@ export default class EaselBuy extends Component {
             }
           }
         }
+        console.log("img", img);
         this.setState({
           name: selectedRecipe.name,
           description: selectedRecipe.description,
           price,
           img,
+          imageLoading: img && img !== ""
         });
       })
       .catch((err) => {
@@ -135,19 +138,23 @@ export default class EaselBuy extends Component {
           <Col style={{ marginTop: "auto" }}>
             <Col>
               <Row style={{ margin: "auto", justifyContent: "center" }}>
+                {this.state.imageLoading && <Spinner type="grow" color="primary" />}
+                <div style={{display: this.state.imageLoading ? "none" : "contents"}}>
                 <img
                   alt="Easel on Google Play"
                   src={
                     this.state.img === "" ? "/img/buy_icon.png" : this.state.img
                   }
+                  onLoad={() => this.setState({...this.state, imageLoading: false})}
                   style={{
                     width: "auto",
                     height: "auto",
                     maxWidth: "100%",
                     maxHeight: "25%",
-                    minWidth: "80%",
+                    minWidth: "80%"
                   }}
                 />
+                </div>
               </Row>
               <Col
                 style={{
