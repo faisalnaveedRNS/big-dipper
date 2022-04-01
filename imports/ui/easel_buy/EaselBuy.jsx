@@ -14,7 +14,7 @@ FlowRouter.route("/", {
   action() {
     /* ... */
   },
-  title: "Title",
+  title: "Big Dipper",
   /* ... */
 });
 

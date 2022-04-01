@@ -68,24 +68,22 @@ Meteor.startup(() => {
                 console.log(e);
             }
             
-            if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
+            if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {
                 const strings = selectedRecipe.entries.itemOutputs[0].strings; 
                 var priceValue = "";
-                var priceCurrency = "upylon";   
+                var priceCurrency = "";
+                if (selectedRecipe?.coinInputs?.[0]?.coins?.[0]) {
+                    priceValue = selectedRecipe?.coinInputs?.[0]?.coins?.[0]?.amount || "" ;
+                    priceCurrency = selectedRecipe?.coinInputs?.[0]?.coins?.[0]?.denom || "";
+                }
                 if (strings != undefined && strings != null && strings.length > 0) { 
                     if(strings != null)
                     {
-                        
+                        console.log("strings", strings);
                         for (j = 0; j < strings.length; j++) { 
                             let key = strings[j].key;
                             let value = strings[j].value;
-                            if(key == "Price"){
-                                priceValue = value;
-                            }
-                            else if(key == "Currency"){
-                                priceCurrency = value;
-                            }
-                            else if(key == "NFT_URL" && value.indexOf('http') >= 0){
+                            if(key == "NFT_URL" && value.indexOf('http') >= 0){
                                 img = value;
                             }
                             else if(key == "Description"){
@@ -117,15 +115,15 @@ Meteor.startup(() => {
                 }     
 
                 if(description != undefined && description != ""){  
-                    if (description.length > 20) {
-                        description = description.substring(0, 20) + '...';
+                    if (description.length > 150) {
+                        description = description.substring(0, 150) + '...';
                     } 
                 }
 
                 if(priceCurrency == "USD"){
                     price = Math.floor(priceValue / 100) + '.' + (priceValue % 100) + ' ' + priceCurrency;
                 }
-                else{
+                else if (priceValue !== ""){
                     price = priceValue + ' ' + priceCurrency;
                 }
 
@@ -157,7 +155,7 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = description + "\n\n" + "Price\n" + price;
+                    description = price !== "No Price" ? description + "\n\n" + "Price\n" + price : description;
                 } 
                 
                 if (selectedRecipe.entries != null) {
@@ -235,7 +233,11 @@ Meteor.startup(() => {
             if (selectedRecipe != undefined && selectedRecipe != null && selectedRecipe.entries.itemOutputs.length > 0) {                 
                 const strings = selectedRecipe.entries.itemOutputs[0].strings; 
                 var priceValue = "";
-                var priceCurrency = "upylon";   
+                var priceCurrency = "";
+                if (selectedRecipe?.coinInputs?.[0]?.coins?.[0]) {
+                    priceValue = selectedRecipe?.coinInputs?.[0]?.coins?.[0]?.amount || "" ;
+                    priceCurrency = selectedRecipe?.coinInputs?.[0]?.coins?.[0]?.denom || "";
+                }
                 if (strings != undefined && strings != null && strings.length > 0) { 
                     if(strings != null)
                     {
@@ -243,13 +245,7 @@ Meteor.startup(() => {
                         for (j = 0; j < strings.length; j++) { 
                             let key = strings[j].key;
                             let value = strings[j].value;
-                            if(key == "Price"){
-                                priceValue = value;
-                            }
-                            else if(key == "Currency"){
-                                priceCurrency = value;
-                            }
-                            else if(key == "NFT_URL" && value.indexOf('http') >= 0){
+                            if(key == "NFT_URL" && value.indexOf('http') >= 0){
                                 img = value;
                             }
                             else if(key == "Description"){
@@ -281,15 +277,15 @@ Meteor.startup(() => {
                 }     
 
                 if(description != undefined && description != ""){  
-                    if (description.length > 20) {
-                        description = description.substring(0, 20) + '...';
+                    if (description.length > 150) {
+                        description = description.substring(0, 150) + '...';
                     } 
                 }
 
                 if(priceCurrency == "USD"){
                     price = Math.floor(priceValue / 100) + '.' + (priceValue % 100) + ' ' + priceCurrency;
                 }
-                else{
+                else if (priceValue !== ""){
                     price = priceValue + ' ' + priceCurrency;
                 }
                 //slackbot-linkexpanding
@@ -320,7 +316,7 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = description + "\n\n" + "Price\n" + price;
+                    description = price !== "No Price" ? description + "\n\n" + "Price\n" + price : description
                 } 
                 
                
