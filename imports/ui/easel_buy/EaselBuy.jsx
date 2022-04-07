@@ -60,10 +60,19 @@ export default class EaselBuy extends Component {
               " " +
               coinInputs[0].coins[0].denom;
           } else {
-            price =
-              coinInputs[0].coins[0].amount +
-              " " +
-              coinInputs[0].coins[0].denom;
+            let coins = Meteor.settings.public.coins;
+            let coin = coins?.length ? coins.find(coin => coin.denom.toLowerCase() === coinInputs[0].coins[0].denom.toLowerCase()) : null;
+            if (coin) {
+              price =
+                  coinInputs[0].coins[0].amount / coin.fraction +
+                  " " +
+                  coin.displayName;
+            } else {
+              price =
+                  coinInputs[0].coins[0].amount +
+                  " " +
+                  coinInputs[0].coins[0].denom;
+            }
           }
         }
         const entries = selectedRecipe.entries;
