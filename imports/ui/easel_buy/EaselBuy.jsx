@@ -129,8 +129,12 @@ export default class EaselBuy extends Component {
   // In case in Browser will redirect to Play store
   handleLoginConfirmed = (success) => {
     if (success) {
-      window.location =
-        "https://pylons.page.link/edXKuEX1vC4tjBUD9";
+      const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+      if (isMacLike) {
+        window.location = "https://apps.apple.com/us/app/facebook/id1598732789"
+      } else {
+        window.location = "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
+      }
     }
   };
 
