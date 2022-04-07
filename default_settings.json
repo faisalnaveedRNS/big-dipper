@@ -20,17 +20,32 @@
                 "denom": "uatom",
                 "displayName": "ATOM",
                 "fraction": 1000000
-            }, 
+            },
+            {
+                "denom": "ubedrock",
+                "displayName": "UBEDROCK",
+                "fraction": 1000000
+            },
             {
                 "denom": "umuon",
                 "displayName": "MUON",
                 "fraction": 1000000
             },
             {
-                "denom": "pylon",
-                "displayName": "PYLON",
+                "denom": "ustripeusd",
+                "displayName": "STRIPEUSD",
                 "fraction": 1000000
-            } 
+            },
+            {
+                "denom": "ujunox",
+                "displayName": "JUNO",
+                "fraction": 1000000
+            },
+            {
+                "denom": "upylons",
+                "displayName": "PYLONS",
+                "fraction": 1000000
+            }
         ],
         "ledger":{
             "coinType": 118,
