@@ -60,10 +60,19 @@ export default class EaselBuy extends Component {
               " " +
               coinInputs[0].coins[0].denom;
           } else {
-            price =
-              coinInputs[0].coins[0].amount +
-              " " +
-              coinInputs[0].coins[0].denom;
+            let coins = Meteor.settings.public.coins;
+            let coin = coins?.length ? coins.find(coin => coin.denom.toLowerCase() === coinInputs[0].coins[0].denom.toLowerCase()) : null;
+            if (coin) {
+              price =
+                  coinInputs[0].coins[0].amount / coin.fraction +
+                  " " +
+                  coin.displayName;
+            } else {
+              price =
+                  coinInputs[0].coins[0].amount +
+                  " " +
+                  coinInputs[0].coins[0].denom;
+            }
           }
         }
         const entries = selectedRecipe.entries;
@@ -120,8 +129,12 @@ export default class EaselBuy extends Component {
   // In case in Browser will redirect to Play store
   handleLoginConfirmed = (success) => {
     if (success) {
-      window.location =
-        "https://pylons.page.link/edXKuEX1vC4tjBUD9";
+      const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+      if (isMacLike) {
+        window.location = "https://apps.apple.com/us/app/pylons/id1598732789"
+      } else {
+        window.location = "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
+      }
     }
   };
 
