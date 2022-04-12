@@ -18,6 +18,7 @@ const IMAGE_HEIGHT = 800;
 
 var siteName = 'Big-Dipper';
 var description = 'Wallet deep link';
+var twitterDescription = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
 var picHeight = IMAGE_HEIGHT;   
@@ -161,7 +162,8 @@ Meteor.startup(() => {
                 }
                 else if(botType != SLACK_BOT){
                     description = price !== "No Price" ? description + "\nPrice: " + price : description;
-                } 
+                    twitterDescription = price !== "No Price" ? description + "Price: " + price : description;
+                }
                 
                 if (selectedRecipe.entries != null) {
                     const itemoutputs = selectedRecipe.entries.itemOutputs; 
@@ -214,7 +216,7 @@ Meteor.startup(() => {
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:title"            content="${siteName}" />
-                <meta name="twitter:description"      content="${description}">
+                <meta name="twitter:description"      content="${twitterDescription}">
                 `;
 
                 sink.appendToHead(MetaTags);
@@ -328,7 +330,8 @@ Meteor.startup(() => {
                 }
                 else if(botType != SLACK_BOT){
                     description = price !== "No Price" ? description + "\nPrice: " + price : description
-                } 
+                    twitterDescription = price !== "No Price" ? description + "Price: " + price : description
+                }
                 
                
                 
@@ -343,7 +346,7 @@ Meteor.startup(() => {
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:title"            content="${siteName}" />
-                <meta name="twitter:description"      content="${description}">
+                <meta name="twitter:description"      content="${twitterDescription}">
                 `;                
 
                 sink.appendToHead(MetaTags);
