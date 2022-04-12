@@ -79,7 +79,6 @@ Meteor.startup(() => {
                 if (strings != undefined && strings != null && strings.length > 0) { 
                     if(strings != null)
                     {
-                        console.log("strings", strings);
                         for (j = 0; j < strings.length; j++) { 
                             let key = strings[j].key;
                             let value = strings[j].value;
@@ -124,7 +123,13 @@ Meteor.startup(() => {
                     price = Math.floor(priceValue / 100) + '.' + (priceValue % 100) + ' ' + priceCurrency;
                 }
                 else if (priceValue !== ""){
-                    price = priceValue + ' ' + priceCurrency;
+                    let coins = Meteor.settings.public.coins;
+                    let coin = coins?.length ? coins.find(coin => coin.denom.toLowerCase() === priceCurrency.toLowerCase()) : null;
+                    if (coin) {
+                        price = priceValue / coin.fraction + " " + coin.displayName;
+                    } else {
+                        price = priceValue + ' ' + priceCurrency;
+                    }
                 }
 
                 //slackbot-linkexpanding
@@ -286,7 +291,13 @@ Meteor.startup(() => {
                     price = Math.floor(priceValue / 100) + '.' + (priceValue % 100) + ' ' + priceCurrency;
                 }
                 else if (priceValue !== ""){
-                    price = priceValue + ' ' + priceCurrency;
+                    let coins = Meteor.settings.public.coins;
+                    let coin = coins?.length ? coins.find(coin => coin.denom.toLowerCase() === priceCurrency.toLowerCase()) : null;
+                    if (coin) {
+                        price = priceValue / coin.fraction + " " + coin.displayName;
+                    } else {
+                        price = priceValue + ' ' + priceCurrency;
+                    }
                 }
                 //slackbot-linkexpanding
                 //discordbot
