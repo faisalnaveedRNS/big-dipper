@@ -136,7 +136,7 @@ export default class EaselBuy extends Component {
       }
 
       ofl = encodeURIComponent(ofl);
-      const baseURL = `https://pylons.page.link/?amv=1&apn=tech.pylons.wallet&ibi=xyz.pylons.wallet&imv=1&`;
+      const baseURL = `https://pylons.page.link/?amv=1&apn=tech.pylons.wallet&ibi=xyz.pylons.wallet&imv=1&efr=1&isi=1598732789&`;
       window.location = `${baseURL}ofl=${ofl}&link=${encodeURIComponent(window.location.href)}`;
     }
   };
