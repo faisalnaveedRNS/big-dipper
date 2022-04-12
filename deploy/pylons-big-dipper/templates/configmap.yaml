@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-archive
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "chart.labels" . | indent 4 }}

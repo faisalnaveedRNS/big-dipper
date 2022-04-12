@@ -27,11 +27,11 @@ spec:
 {{- include "ports.pod" . | indent 8 }}
           env:
             - name: ROOT_URL
-              value: https://{{ .Values.host }}
+              value: http://explore.pylons.tech
             - name: MONGO_URL
               value: {{ .Values.mongoURL }}
             - name: PORT
-              value: "{{ .Values.ports.http }}"
+              value: "80"
             - name: METEOR_SETTINGS
               valueFrom:
                 configMapKeyRef:
