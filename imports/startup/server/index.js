@@ -160,8 +160,8 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "\n\n" + "Price\n" + price : description;
-                } 
+                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
+                }
                 
                 if (selectedRecipe.entries != null) {
                     const itemoutputs = selectedRecipe.entries.itemOutputs; 
@@ -213,9 +213,9 @@ Meteor.startup(() => {
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
-                <meta name="twitter:label1"           content="Price" />
-                <meta name="twitter:data1"            content="${price}">
-                `;                
+                <meta name="twitter:title"            content="${siteName}" />
+                <meta name="twitter:description"      content="${description}">
+                `;
 
                 sink.appendToHead(MetaTags);
             }
@@ -327,8 +327,8 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "\n\n" + "Price\n" + price : description
-                } 
+                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
+                }
                 
                
                 
@@ -342,8 +342,8 @@ Meteor.startup(() => {
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
-                <meta name="twitter:label1"           content="Price" />
-                <meta name="twitter:data1"            content="${price}">
+                <meta name="twitter:title"            content="${siteName}" />
+                <meta name="twitter:description"      content="${description}">
                 `;                
 
                 sink.appendToHead(MetaTags);
