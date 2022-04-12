@@ -161,8 +161,7 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
-                    twitterDescription = price !== "No Price" ? description + "Price: " + price : description;
+                    description = price !== "No Price" ? description + "Price: " + price : description;
                 }
                 
                 if (selectedRecipe.entries != null) {
@@ -216,7 +215,7 @@ Meteor.startup(() => {
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:title"            content="${siteName}" />
-                <meta name="twitter:description"      content="${twitterDescription}">
+                <meta name="twitter:description"      content="${description}">
                 `;
 
                 sink.appendToHead(MetaTags);
@@ -329,8 +328,7 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "\nPrice: " + price : description
-                    twitterDescription = price !== "No Price" ? description + "Price: " + price : description
+                    description = price !== "No Price" ? description + "Price: " + price : description;
                 }
                 
                
@@ -346,7 +344,7 @@ Meteor.startup(() => {
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
                 <meta name="twitter:title"            content="${siteName}" />
-                <meta name="twitter:description"      content="${twitterDescription}">
+                <meta name="twitter:description"      content="${description}">
                 `;                
 
                 sink.appendToHead(MetaTags);
