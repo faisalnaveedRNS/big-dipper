@@ -18,7 +18,6 @@ const IMAGE_HEIGHT = 800;
 
 var siteName = 'Big-Dipper';
 var description = 'Wallet deep link';
-var twitterDescription = 'Wallet deep link';
 var price = "No Price"
 var picWidth = IMAGE_WIDTH;
 var picHeight = IMAGE_HEIGHT;   
@@ -161,7 +160,7 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "Price: " + price : description;
+                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
                 }
                 
                 if (selectedRecipe.entries != null) {
@@ -328,7 +327,7 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "Price: " + price : description;
+                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
                 }
                 
                
