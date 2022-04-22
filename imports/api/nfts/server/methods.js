@@ -96,8 +96,7 @@ Meteor.methods({
                 "?action=resell_nft&recipe_id=" +
                 item.recipeID +
                 "&cookbook_id=" +
-                nft.cookbookID +
-                "&nft_amount=1";
+                nft.cookbookID;
               item.resalelink = resalelink;
 
               bulkNfts.find({ ID: item.ID }).upsert().updateOne({ $set: item });

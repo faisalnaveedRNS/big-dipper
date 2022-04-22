@@ -58,8 +58,7 @@ Meteor.methods({
             "?action=purchase_nft&recipe_id=" +
             recipe.ID +
             "&cookbook_id=" +
-            recipe.cookbookID +
-            "&nft_amount=1";
+            recipe.cookbookID;
           recipe.deeplink = deeplink;
           var cookbook_owner = "",
             creator = "";

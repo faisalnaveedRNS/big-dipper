@@ -55,7 +55,7 @@ Meteor.startup(() => {
         var img = ''; 
         var selectedRecipe = null;
         var recipes = null;  
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) {
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null) {
             const recipe_id = querys['recipe_id']    ;
             const cookbook_id = querys['cookbook_id']    ;
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
@@ -221,7 +221,7 @@ Meteor.startup(() => {
             }
             
         }  
-        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/) {
             const recipe_id = querys['recipe_id'];
             const cookbook_id = querys['cookbook_id'];
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;

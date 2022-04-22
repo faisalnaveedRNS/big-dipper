@@ -401,7 +401,7 @@ Meteor.methods({
                         validators[v].valconsAddress = Meteor.call('hexToBech32', validators[v].address, Meteor.settings.public.bech32PrefixConsAddr);
                         // validators[v].address = Meteor.call('getAddressFromPubkey', validators[v].pubKey);
                         // tempValidators[validators[v].pubKey.value] = validators[v];
-                        //validators[v].deeplink_url = 'http://wallet.pylons.tech/?action=purchase_nft&recipe_id=' + validators[v].valconsAddress + '&nft_amount=' + ntf_amount; //20210612
+                        //validators[v].deeplink_url = 'http://wallet.pylons.tech/?action=purchase_nft&recipe_id=' + validators[v].valconsAddress; //20210612
                         tempValidators[validators[v].address] = validators[v];
                     }
                     console.log("hexToBech32 post");

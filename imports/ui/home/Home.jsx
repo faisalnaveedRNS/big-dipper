@@ -25,7 +25,6 @@ export default class Home extends Component {
     if (
       querys["?action"] == "purchase_nft" &&
       querys["recipe_id"] != null &&
-      querys["nft_amount"] == 1 &&
       querys["cookbook_id"] != null
     ) {
       this.setState({
