@@ -27,9 +27,7 @@ export default class EaselBuy extends Component {
   constructor(props) {
     super(props);
     console.log("[EasyBuy]: props in constructor", this.props);
-    this.toggle = this.toggle.bind(this);
     this.state = {
-      isPurchaseOpen: "",
       name: this.props.name,
       description: this.props.description,
       price: this.props.price,
@@ -112,23 +110,11 @@ export default class EaselBuy extends Component {
       });
   }
 
-  toggle() {
-    this.setState(
-      {
-        isPurchaseOpen: !this.state.isPurchaseOpen,
-      },
-      () => {
-        // console.log(this.state.isOpen);
-      }
-    );
-  }
-
-
   // In case IOS will redirect to APP Store if app not installed
   // In case Android will redirect to Play store if app not installed
   // In case in Browser will redirect to Play store
-  handleLoginConfirmed = (success) => {
-    if (success) {
+  handleLoginConfirmed = () => {
+    // if (success) {
       const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
       let ofl = "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
       if (isMacLike) {
@@ -138,11 +124,7 @@ export default class EaselBuy extends Component {
       ofl = encodeURIComponent(ofl);
       const baseURL = `https://pylons.page.link/?amv=1&apn=tech.pylons.wallet&ibi=xyz.pylons.wallet&imv=1&efr=1&isi=1598732789&`;
       window.location = `${baseURL}ofl=${ofl}&link=${encodeURIComponent(window.location.href)}`;
-    }
-  };
-
-  goPurchaseAlert = () => {
-    this.setState({ isPurchaseOpen: true });
+    // }
   };
 
   render() {
@@ -197,18 +179,12 @@ export default class EaselBuy extends Component {
               </Col>
             </Col>
             <Row style={{ marginTop: "10px" }}>
-              <PopupModal
-                isOpen={this.state.isPurchaseOpen}
-                toggle={this.toggle}
-                handleLoginConfirmed={this.handleLoginConfirmed}
-              />
-
               <a
                 className="btn btn-primary"
-                onClick={this.goPurchaseAlert}
+                onClick={this.handleLoginConfirmed}
                 style={{ margin: "auto", width: "120px" }}
               >
-                <i className="fas"></i>
+                <i className="fas"/>
                 {"    BUY    "}
               </a>
             </Row>
