@@ -221,7 +221,7 @@ Meteor.startup(() => {
             }
             
         }  
-        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/) {
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null) {
             const recipe_id = querys['recipe_id'];
             const cookbook_id = querys['cookbook_id'];
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
@@ -352,7 +352,6 @@ Meteor.startup(() => {
         else
         { 
             sink.appendToHead(defaultMetaTags); 
-        } 
-        // sink.appendToHead(sheet.getStyleTags());
+        }
     });
 });

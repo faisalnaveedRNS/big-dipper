@@ -1,21 +1,20 @@
-import React, { Component } from "react";
-import { Spinner, Row, Col } from "reactstrap";
+import React, {Component} from "react";
+import {Spinner, Row, Col} from "reactstrap";
 import axios from "axios";
 import i18n from "meteor/universe:i18n";
-import PopupModal from "../popup/popup";
 import settings from "../../../settings.json";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import {FlowRouter} from "meteor/ostrio:flow-router-extra";
 import {
-  FlowRouterMeta,
-  FlowRouterTitle,
+    FlowRouterMeta,
+    FlowRouterTitle,
 } from "meteor/ostrio:flow-router-meta";
 
 FlowRouter.route("/", {
-  action() {
+    action() {
+        /* ... */
+    },
+    title: "Big Dipper",
     /* ... */
-  },
-  title: "Big Dipper",
-  /* ... */
 });
 
 new FlowRouterMeta(FlowRouter);
@@ -24,201 +23,200 @@ new FlowRouterTitle(FlowRouter);
 const T = i18n.createComponent();
 
 export default class EaselBuy extends Component {
-  constructor(props) {
-    super(props);
-    console.log("[EasyBuy]: props in constructor", this.props);
-    this.state = {
-      name: this.props.name,
-      description: this.props.description,
-      price: this.props.price,
-      img: this.props.img,
-      loading: false,
-      imageLoading: false,
-    };
-  }
-  componentDidMount() {
-    const url = settings.remote.api;
-    this.setState({ loading: true });
-    axios
-      .get(
-        `${url}/pylons/recipe/${this.props.cookbook_id}/${this.props.recipe_id}`
-      )
-      .then((resp) => {
-        this.setState({ loading: false });
-        const selectedRecipe = resp.data.Recipe;
-
-        const coinInputs = selectedRecipe.coinInputs;
-        let price;
-        if (coinInputs.length > 0) {
-          if (coinInputs[0].coins[0].denom == "USD") {
-            price =
-              Math.floor(coinInputs[0].coins[0].amount / 100) +
-              "." +
-              (coinInputs[0].coins[0].amount % 100) +
-              " " +
-              coinInputs[0].coins[0].denom;
-          } else {
-            let coins = Meteor.settings.public.coins;
-            let coin = coins?.length ? coins.find(coin => coin.denom.toLowerCase() === coinInputs[0].coins[0].denom.toLowerCase()) : null;
-            if (coin) {
-              price =
-                  coinInputs[0].coins[0].amount / coin.fraction +
-                  " " +
-                  coin.displayName;
-            } else {
-              price =
-                  coinInputs[0].coins[0].amount +
-                  " " +
-                  coinInputs[0].coins[0].denom;
-            }
-          }
-        }
-        const entries = selectedRecipe.entries;
-        let img;
-        if (entries != null) {
-          const itemoutputs = entries.itemOutputs;
-          if (itemoutputs.length > 0) {
-            let strings = itemoutputs[0].strings;
-            for (let i = 0; i < strings.length; i++) {
-              try {
-                if (
-                  (strings[i].key =
-                    "NFT_URL" && strings[i].value.indexOf("http") >= 0)
-                ) {
-                  img = strings[i].value;
-                  break;
-                }
-              } catch (e) {
-                console.log("strings[i].value", e);
-                break;
-              }
-            }
-          }
-        }
-        console.log("img", img);
-        this.setState({
-          name: selectedRecipe.name,
-          description: selectedRecipe.description,
-          price,
-          img,
-          imageLoading: img && img !== ""
-        });
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-        console.log(err);
-      });
-  }
-
-  // In case IOS will redirect to APP Store if app not installed
-  // In case Android will redirect to Play store if app not installed
-  // In case in Browser will redirect to Play store
-  handleLoginConfirmed = () => {
-    // if (success) {
-      const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
-      let ofl = "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
-      if (isMacLike) {
-        ofl = "https://apps.apple.com/us/app/pylons/id1598732789";
-      }
-
-      ofl = encodeURIComponent(ofl);
-      const baseURL = `https://pylons.page.link/?amv=1&apn=tech.pylons.wallet&ibi=xyz.pylons.wallet&imv=1&efr=1&isi=1598732789&`;
-      window.location = `${baseURL}ofl=${ofl}&link=${encodeURIComponent(window.location.href)}`;
-    // }
-  };
-
-  render() {
-    if (this.state.loading) {
-      return <Spinner type="grow" color="primary" />;
-    } else {
-      return (
-        <div id="home">
-          <Col style={{ marginTop: "auto" }}>
-            <Col>
-              <Row style={{ margin: "auto", justifyContent: "center" }}>
-                {this.state.imageLoading && <Spinner type="grow" color="primary" />}
-                <div style={{display: this.state.imageLoading ? "none" : "contents"}}>
-                <img
-                  alt="Easel on Google Play"
-                  src={
-                    this.state.img === "" ? "/img/buy_icon.png" : this.state.img
-                  }
-                  onLoad={() => this.setState({...this.state, imageLoading: false})}
-                  style={{
-                    width: "auto",
-                    height: "auto",
-                    maxWidth: "100%",
-                    maxHeight: "25%",
-                    minWidth: "80%"
-                  }}
-                />
-                </div>
-              </Row>
-              <Col
-                style={{
-                  alignSelf: "center",
-                  marginTop: "20px",
-                  width: "100%",
-                }}
-              >
-                <Row style={{ justifyContent: "center" }}>
-                  <a style={{ fontSize: "1.5em" }}>
-                    <b>{this.state.name}</b>
-                  </a>
-                </Row>
-                <Row style={{ justifyContent: "center" }}>
-                  <a style={{ wordBreak: "break-all" }}>
-                    {this.state.description}
-                  </a>
-                </Row>
-                <Row style={{ justifyContent: "center" }}>
-                  <p style={{ marginTop: "7px", fontWeight: "500" }}>
-                    {this.state.price}
-                  </p>
-                </Row>
-              </Col>
-            </Col>
-            <Row style={{ marginTop: "10px" }}>
-              <a
-                className="btn btn-primary"
-                onClick={this.handleLoginConfirmed}
-                style={{ margin: "auto", width: "120px" }}
-              >
-                <i className="fas"/>
-                {"    BUY    "}
-              </a>
-            </Row>
-            <Row style={{ margin: "auto", marginTop: "25px" }}>
-              <Row
-                style={{
-                  margin: "auto",
-                  alignSelf: "center",
-                  marginRight: "20px",
-                }}
-              >
-                <img
-                  alt="Easel on Google Play"
-                  src="/img/easel.png"
-                  style={{ width: "60px", height: "70px" }}
-                />
-              </Row>
-              <Row
-                style={{
-                  margin: "auto",
-                  alignSelf: "center",
-                  marginLeft: "15px",
-                }}
-              >
-                <img
-                  alt="Easel on Google Play"
-                  src="/img/wallet.png"
-                  style={{ width: "60px", height: "70px" }}
-                />
-              </Row>
-            </Row>
-          </Col>
-        </div>
-      );
+    constructor(props) {
+        super(props);
+        console.log("[EasyBuy]: props in constructor", this.props);
+        this.state = {
+            name: this.props.name,
+            description: this.props.description,
+            price: this.props.price,
+            img: this.props.img,
+            loading: false,
+            imageLoading: false,
+        };
     }
-  }
+
+    componentDidMount() {
+        const url = settings.remote.api;
+        this.setState({loading: true});
+        axios
+            .get(
+                `${url}/pylons/recipe/${this.props.cookbook_id}/${this.props.recipe_id}`
+            )
+            .then((resp) => {
+                this.setState({loading: false});
+                const selectedRecipe = resp.data.Recipe;
+
+                const coinInputs = selectedRecipe.coinInputs;
+                let price;
+                if (coinInputs.length > 0) {
+                    if (coinInputs[0].coins[0].denom == "USD") {
+                        price =
+                            Math.floor(coinInputs[0].coins[0].amount / 100) +
+                            "." +
+                            (coinInputs[0].coins[0].amount % 100) +
+                            " " +
+                            coinInputs[0].coins[0].denom;
+                    } else {
+                        let coins = Meteor.settings.public.coins;
+                        let coin = coins?.length ? coins.find(coin => coin.denom.toLowerCase() === coinInputs[0].coins[0].denom.toLowerCase()) : null;
+                        if (coin) {
+                            price =
+                                coinInputs[0].coins[0].amount / coin.fraction +
+                                " " +
+                                coin.displayName;
+                        } else {
+                            price =
+                                coinInputs[0].coins[0].amount +
+                                " " +
+                                coinInputs[0].coins[0].denom;
+                        }
+                    }
+                }
+                const entries = selectedRecipe.entries;
+                let img;
+                if (entries != null) {
+                    const itemoutputs = entries.itemOutputs;
+                    if (itemoutputs.length > 0) {
+                        let strings = itemoutputs[0].strings;
+                        for (let i = 0; i < strings.length; i++) {
+                            try {
+                                if (
+                                    (strings[i].key =
+                                        "NFT_URL" && strings[i].value.indexOf("http") >= 0)
+                                ) {
+                                    img = strings[i].value;
+                                    break;
+                                }
+                            } catch (e) {
+                                console.log("strings[i].value", e);
+                                break;
+                            }
+                        }
+                    }
+                }
+                console.log("img", img);
+                this.setState({
+                    name: selectedRecipe.name,
+                    description: selectedRecipe.description,
+                    price,
+                    img,
+                    imageLoading: img && img !== ""
+                });
+            })
+            .catch((err) => {
+                this.setState({loading: false});
+                console.log(err);
+            });
+    }
+
+    // In case IOS will redirect to APP Store if app not installed
+    // In case Android will redirect to Play store if app not installed
+    // In case in Browser will redirect to Play store
+    handleLoginConfirmed = () => {
+        const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+        let ofl = "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
+        if (isMacLike) {
+            ofl = "https://apps.apple.com/us/app/pylons/id1598732789";
+        }
+
+        ofl = encodeURIComponent(ofl);
+        const baseURL = `https://pylons.page.link/?amv=1&apn=tech.pylons.wallet&ibi=xyz.pylons.wallet&imv=1&efr=1&isi=1598732789&`;
+        window.location = `${baseURL}ofl=${ofl}&link=${encodeURIComponent(window.location.href)}`;
+    };
+
+    render() {
+        if (this.state.loading) {
+            return <Spinner type="grow" color="primary"/>;
+        } else {
+            return (
+                <div id="home">
+                    <Col style={{marginTop: "auto"}}>
+                        <Col>
+                            <Row style={{margin: "auto", justifyContent: "center"}}>
+                                {this.state.imageLoading && <Spinner type="grow" color="primary"/>}
+                                <div style={{display: this.state.imageLoading ? "none" : "contents"}}>
+                                    <img
+                                        alt="Easel on Google Play"
+                                        src={
+                                            this.state.img === "" ? "/img/buy_icon.png" : this.state.img
+                                        }
+                                        onLoad={() => this.setState({...this.state, imageLoading: false})}
+                                        style={{
+                                            width: "auto",
+                                            height: "auto",
+                                            maxWidth: "100%",
+                                            maxHeight: "25%",
+                                            minWidth: "80%"
+                                        }}
+                                    />
+                                </div>
+                            </Row>
+                            <Col
+                                style={{
+                                    alignSelf: "center",
+                                    marginTop: "20px",
+                                    width: "100%",
+                                }}
+                            >
+                                <Row style={{justifyContent: "center"}}>
+                                    <a style={{fontSize: "1.5em"}}>
+                                        <b>{this.state.name}</b>
+                                    </a>
+                                </Row>
+                                <Row style={{justifyContent: "center"}}>
+                                    <a style={{wordBreak: "break-all"}}>
+                                        {this.state.description}
+                                    </a>
+                                </Row>
+                                <Row style={{justifyContent: "center"}}>
+                                    <p style={{marginTop: "7px", fontWeight: "500"}}>
+                                        {this.state.price}
+                                    </p>
+                                </Row>
+                            </Col>
+                        </Col>
+                        <Row style={{marginTop: "10px"}}>
+                            <a
+                                className="btn btn-primary"
+                                onClick={this.handleLoginConfirmed}
+                                style={{margin: "auto", width: "120px"}}
+                            >
+                                <i className="fas"/>
+                                {"    BUY    "}
+                            </a>
+                        </Row>
+                        <Row style={{margin: "auto", marginTop: "25px"}}>
+                            <Row
+                                style={{
+                                    margin: "auto",
+                                    alignSelf: "center",
+                                    marginRight: "20px",
+                                }}
+                            >
+                                <img
+                                    alt="Easel on Google Play"
+                                    src="/img/easel.png"
+                                    style={{width: "60px", height: "70px"}}
+                                />
+                            </Row>
+                            <Row
+                                style={{
+                                    margin: "auto",
+                                    alignSelf: "center",
+                                    marginLeft: "15px",
+                                }}
+                            >
+                                <img
+                                    alt="Easel on Google Play"
+                                    src="/img/wallet.png"
+                                    style={{width: "60px", height: "70px"}}
+                                />
+                            </Row>
+                        </Row>
+                    </Col>
+                </div>
+            );
+        }
+    }
 }
