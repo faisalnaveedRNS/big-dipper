@@ -526,8 +526,8 @@ Meteor.methods({
                                 try{
                                     valData.profile_url = getValidatorProfileUrl(valData.description.identity)
                                 }
-                                catch (e){
-                                    console.log("Error fetching keybase: %o", e)
+                                catch (error){
+                                    console.log("Error fetching keybase: %o", error)
                                 }
                             }
                                     
