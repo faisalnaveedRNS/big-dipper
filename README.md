@@ -1,6 +1,6 @@
 # Big Dipper :sparkles:
 
-Cosmos Explorer presented by Forbole
+Built on Pylons
 
 ## Projects running on mainnets
 
