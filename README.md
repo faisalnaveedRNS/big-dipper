@@ -1,6 +1,6 @@
 # Big Dipper :sparkles:
 
-Block Explorer for Cosmos
+Built on Pylons
 
 ## Projects running on mainnets
 
