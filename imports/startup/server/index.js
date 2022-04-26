@@ -7,6 +7,7 @@ import queryString from 'querystring';
 import { HTTP } from 'meteor/http';
 import { onPageLoad } from 'meteor/server-render'; 
 import { Meteor } from 'meteor/meteor';  
+import { sanitizeUrl } from '@braintree/sanitize-url';
 import { Transactions } from '/imports/api/transactions/transactions.js';
  
 // import { ServerStyleSheet } from "styled-components"
@@ -54,10 +55,10 @@ Meteor.startup(() => {
         const querys = queryString.parse(url); 
         var img = ''; 
         var selectedRecipe = null;
-        var recipes = null;  
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) {
-            const recipe_id = querys['recipe_id']    ;
-            const cookbook_id = querys['cookbook_id']    ;
+        var recipes = null;
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null) {
+            const recipe_id = sanitizeUrl(querys['recipe_id']);
+            const cookbook_id = sanitizeUrl(querys['cookbook_id']);
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
 
             try { 
@@ -221,9 +222,9 @@ Meteor.startup(() => {
             }
             
         }  
-        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
-            const recipe_id = querys['recipe_id'];
-            const cookbook_id = querys['cookbook_id'];
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null) {
+            const recipe_id = sanitizeUrl(querys['recipe_id']);
+            const cookbook_id = sanitizeUrl(querys['cookbook_id']);
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
 
             try { 
@@ -352,7 +353,6 @@ Meteor.startup(() => {
         else
         { 
             sink.appendToHead(defaultMetaTags); 
-        } 
-        // sink.appendToHead(sheet.getStyleTags());
+        }
     });
 });

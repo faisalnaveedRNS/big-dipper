@@ -1,7 +1,8 @@
-import { Meteor } from "meteor/meteor";
-import { HTTP } from "meteor/http";
-import { Nfts } from "../nfts.js";
-import { Transactions } from "/imports/api/transactions/transactions.js";
+import {Meteor} from "meteor/meteor";
+import {HTTP} from "meteor/http";
+import {Nfts} from "../nfts.js";
+import {Transactions} from "/imports/api/transactions/transactions.js";
+import {sanitizeUrl} from "@braintree/sanitize-url";
 
 Meteor.methods({
   "nfts.getNfts": function () {
@@ -69,11 +70,7 @@ Meteor.methods({
           ) {
             try {
               let response = HTTP.get(
-                Meteor.settings.remote.api +
-                  "/pylons/executions/item/" +
-                  trade.itemOutputs[0].cookbookID +
-                  "/" +
-                  trade.itemOutputs[0].itemID
+                  sanitizeUrl(`${Meteor.settings.remote.api}/pylons/executions/item/${trade.itemOutputs[0].cookbookID}/${trade.itemOutputs[0].itemID}`)
               );
               let executions = JSON.parse(response.content);
               let item = executions.CompletedExecutions[0];
@@ -91,14 +88,7 @@ Meteor.methods({
                 date.getMilliseconds();
               item.tradeable = true;
 
-              let resalelink =
-                Meteor.settings.public.baseURL +
-                "?action=resell_nft&recipe_id=" +
-                item.recipeID +
-                "&cookbook_id=" +
-                nft.cookbookID +
-                "&nft_amount=1";
-              item.resalelink = resalelink;
+              item.resalelink = sanitizeUrl(`${Meteor.settings.public.baseURL}?action=resell_nft&recipe_id=${item.recipeID}&cookbook_id=${nft.cookbookID}`);
 
               bulkNfts.find({ ID: item.ID }).upsert().updateOne({ $set: item });
             } catch (e) {
