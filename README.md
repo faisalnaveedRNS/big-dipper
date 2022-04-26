@@ -1,6 +1,6 @@
 # Big Dipper :sparkles:
 
-Block Explorer for Cosmos
+Cosmos Explorer presented by Forbole
 
 ## Projects running on mainnets
 
