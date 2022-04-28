@@ -9,7 +9,7 @@ steps:
     args: 
       - -c
       - |
-        sed -i s/mongoUrlVal/$$(gcloud beta secrets versions access --secret=mongourl latest)/g ./deploy/pylons-big-dipper/values.yaml
+        sed -i 's/mongoUrlVal/$$(gcloud beta secrets versions access --secret=mongourl latest)/g' ./deploy/pylons-big-dipper/values.yaml
     # secretEnv: ['MONGO_URL']
   # availableSecrets:
   #   secretManager:
