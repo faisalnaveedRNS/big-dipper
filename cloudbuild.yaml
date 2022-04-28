@@ -11,7 +11,7 @@ steps:
        sed -i s/mongoUrlVal/$MONGO_URL/g ./deploy/pylons-big-dipper-values.yaml
 availableSecrets:
   secretManager:
-  - versionName: projects/430696988038/secrets/mongourl/versions/1
+  - versionName: projects/430696988038/secrets/mongourl/versions/latest
     env: 'MONGO_URL'
 - name: gcr.io/cloud-builders/docker
   id: Build
