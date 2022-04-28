@@ -7,6 +7,7 @@ import queryString from 'querystring';
 import { HTTP } from 'meteor/http';
 import { onPageLoad } from 'meteor/server-render'; 
 import { Meteor } from 'meteor/meteor';  
+import { sanitizeUrl } from '@braintree/sanitize-url';
 import { Transactions } from '/imports/api/transactions/transactions.js';
  
 // import { ServerStyleSheet } from "styled-components"
@@ -54,10 +55,10 @@ Meteor.startup(() => {
         const querys = queryString.parse(url); 
         var img = ''; 
         var selectedRecipe = null;
-        var recipes = null;  
-        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null && querys['nft_amount'] == 1) {
-            const recipe_id = querys['recipe_id']    ;
-            const cookbook_id = querys['cookbook_id']    ;
+        var recipes = null;
+        if (querys['?action'] == "purchase_nft" && querys['recipe_id'] != null && querys['cookbook_id'] != null) {
+            const recipe_id = sanitizeUrl(querys['recipe_id']);
+            const cookbook_id = sanitizeUrl(querys['cookbook_id']);
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
 
             try { 
@@ -160,8 +161,8 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "\n\n" + "Price\n" + price : description;
-                } 
+                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
+                }
                 
                 if (selectedRecipe.entries != null) {
                     const itemoutputs = selectedRecipe.entries.itemOutputs; 
@@ -213,17 +214,17 @@ Meteor.startup(() => {
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
-                <meta name="twitter:label1"           content="Price" />
-                <meta name="twitter:data1"            content="${price}">
-                `;                
+                <meta name="twitter:title"            content="${siteName}" />
+                <meta name="twitter:description"      content="${description}">
+                `;
 
                 sink.appendToHead(MetaTags);
             }
             
         }  
-        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null /*&& querys['cookbook_id'] != null*/ && querys['nft_amount'] == 1) { 
-            const recipe_id = querys['recipe_id'];
-            const cookbook_id = querys['cookbook_id'];
+        else if (querys['?action'] == "resell_nft" && querys['recipe_id'] != null) {
+            const recipe_id = sanitizeUrl(querys['recipe_id']);
+            const cookbook_id = sanitizeUrl(querys['cookbook_id']);
             let recipesUrl =`${Meteor.settings.remote.api}/pylons/recipe/${cookbook_id}/${recipe_id}`;
 
             try { 
@@ -327,8 +328,8 @@ Meteor.startup(() => {
                     siteName = siteName + "<h4>" + price + "</h4>";
                 }
                 else if(botType != SLACK_BOT){
-                    description = price !== "No Price" ? description + "\n\n" + "Price\n" + price : description
-                } 
+                    description = price !== "No Price" ? description + "\nPrice: " + price : description;
+                }
                 
                
                 
@@ -342,8 +343,8 @@ Meteor.startup(() => {
                 <meta property="og:image:width"       content="${picWidth}" />
                 <meta property="og:image:height"      content="${picHeight}" />   
                 <meta name="twitter:card"             content="summary_large_image" />
-                <meta name="twitter:label1"           content="Price" />
-                <meta name="twitter:data1"            content="${price}">
+                <meta name="twitter:title"            content="${siteName}" />
+                <meta name="twitter:description"      content="${description}">
                 `;                
 
                 sink.appendToHead(MetaTags);
@@ -352,7 +353,6 @@ Meteor.startup(() => {
         else
         { 
             sink.appendToHead(defaultMetaTags); 
-        } 
-        // sink.appendToHead(sheet.getStyleTags());
+        }
     });
 });

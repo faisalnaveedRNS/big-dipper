@@ -25,7 +25,6 @@ export default class Home extends Component {
     if (
       querys["?action"] == "purchase_nft" &&
       querys["recipe_id"] != null &&
-      querys["nft_amount"] == 1 &&
       querys["cookbook_id"] != null
     ) {
       this.setState({
@@ -54,7 +53,7 @@ export default class Home extends Component {
       return (
         <div id="home">
           <Helmet>
-            <title>Big Dipper | Cosmos Explorer presented by Forbole</title>
+            <title>Big Dipper | Built on Pylons</title>
             <meta
               name="description"
               content="Cosmos is a decentralized network of independent parallel blockchains, each powered by BFT consensus algorithms like Tendermint consensus."
