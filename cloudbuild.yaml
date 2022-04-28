@@ -8,7 +8,7 @@ steps:
   args: 
     - -c
     - |
-       sed -i s/mongoUrlVal/$MONGO_URL/g ./deploy/pylons-big-dipper-values.yaml
+       sed -i s/mongoUrlVal/$$MONGO_URL/g ./deploy/pylons-big-dipper-values.yaml
 availableSecrets:
   secretManager:
   - versionName: projects/430696988038/secrets/mongourl/versions/latest
