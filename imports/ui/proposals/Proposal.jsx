@@ -173,7 +173,7 @@ export default class Proposal extends Component{
             scaleId: 'colorScale',
             type: 'Color',
             domain: ['VOTE_OPTION_YES', 'VOTE_OPTION_ABSTAIN', 'VOTE_OPTION_NO', 'VOTE_OPTION_NO_WITH_VETO', 'N/A'],
-            range: ['#4CAF50', '#ff9800', '#e51c23', '#9C27B0', '#BDBDBD']
+            range: ['#4CAF50', '#ff9800', '#EF4421', '#9C27B0', '#BDBDBD']
         }];
         let isDataEmtpy = votesByOptions[this.state.breakDownSelection] && votesByOptions[this.state.breakDownSelection].length==0;
         let tooltip = (component, point, data, ds) => {
