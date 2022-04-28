@@ -13,6 +13,10 @@ availableSecrets:
   secretManager:
   - versionName: projects/430696988038/secrets/mongourl/versions/1
     env: 'MONGO_URL'
+# availableSecrets:
+#   secretManager:
+#   - versionName: projects/430696988038/secrets/mongourl/versions/1
+#     env: 'MONGO_URL'
 - name: gcr.io/cloud-builders/docker
   id: Build
   args:
