@@ -49,5 +49,5 @@ steps:
       - KUBECONFIG=/workspace/.kube/config
       - TILLERLESS=true
 options:
-  logging: GCS_ONLY
+  logging: NONE
 
