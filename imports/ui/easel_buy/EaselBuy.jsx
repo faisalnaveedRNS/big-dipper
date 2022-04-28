@@ -114,14 +114,15 @@ export default class EaselBuy extends Component {
     // In case Android will redirect to Play store if app not installed
     // In case in Browser will redirect to Play store
     handleLoginConfirmed = () => {
+        const {apn, ibi, isi, oflIOS, oflPlay} = Meteor.settings.public.dynamicLink;
         const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
-        let ofl = "https://play.google.com/store/apps/details?id=tech.pylons.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1";
+        let ofl = oflPlay;
         if (isMacLike) {
-            ofl = "https://apps.apple.com/us/app/pylons/id1598732789";
+            ofl = oflIOS;
         }
 
         ofl = encodeURIComponent(ofl);
-        const baseURL = `https://pylons.page.link/?amv=1&apn=tech.pylons.wallet&ibi=xyz.pylons.wallet&imv=1&efr=1&isi=1598732789&`;
+        const baseURL = `https://pylons.page.link/?amv=1&apn=${apn}&ibi=${ibi}&imv=1&efr=1&isi=${isi}&`;
         window.location = `${baseURL}ofl=${ofl}&link=${encodeURIComponent(window.location.href)}`;
     };
 
