@@ -3,7 +3,7 @@ substitutions:
   _CUSTOM_REGION: us-west2-a
   _CUSTOM_CLUSTER: hasura-k8s
 steps:
-  - name: "gcr.io/cloud-builders/docker"
+  - name: "gcr.io/cloud-builders/gcloud"
     id: Write Secrets to Env
     entrypoint: bash
     args: 
