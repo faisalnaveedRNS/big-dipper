@@ -48,6 +48,7 @@ steps:
     env:
       - KUBECONFIG=/workspace/.kube/config
       - TILLERLESS=true
+logsBucket: 'pipelines'
 options:
-  logging: NONE
+  logging: GCS_ONLY
 
