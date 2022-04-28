@@ -35,5 +35,5 @@ resources: {}
 #     cert-manager.io/cluster-issuer: letsencrypt-prod
 
 host: explore.pylons.tech
-mongoURL: mongodb+srv://mongod:xMOp8icapKbGhfUy@big-dipper-v1.4j7qm.mongodb.net/big-dipper-v1?retryWrites=true&w=majority
+mongoURL: mongoUrlVal
 settings: settings.json

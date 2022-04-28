@@ -1,9 +1,51 @@
+timeout: 1200s
+substitutions:
+  _CUSTOM_REGION: us-west2-a
+  _CUSTOM_CLUSTER: hasura-k8s
 steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'sed -i 's/mongoUrlVal/$mongourl/g' ./deploy/pylons-big-dipper-values.yaml']
+    secretEnv: ['mongourl']
+  availableSecrets:
+    secretManager:
+    - versionName: projects/430696988038/secrets/mongourl/versions/1
+      env: 'mongourl'
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
         "build",
         ".",
+        "-t",
+        "gcr.io/hasura-342723/big-dipper-v1"
       ]
-    timeout: 2000s
-timeout: 3000s
+  - name: gcr.io/cloud-builders/docker
+    id: Push
+    args:
+      - push
+      - gcr.io/$PROJECT_ID/go-nihao:$COMMIT_SHA
+  - name: gcr.io/cloud-builders/kubectl
+    id: Configure kubectl
+    args:
+      - cluster-info
+    env:
+      - CLOUDSDK_COMPUTE_REGION=$_CUSTOM_REGION
+      - CLOUDSDK_CONTAINER_CLUSTER=$_CUSTOM_CLUSTER
+      - KUBECONFIG=/workspace/.kube/config
+
+  - name: gcr.io/$PROJECT_ID/helm
+    id: Deploy chart
+    args:
+      - upgrade
+      - -i
+      - big-dipper-v1
+      - ./deploy/pylons-big-dipper
+      - -f
+      - ./deploy/pylons-big-dipper/values.yaml
+    env:
+      - KUBECONFIG=/workspace/.kube/config
+      - TILLERLESS=true
+
+
+
+      
