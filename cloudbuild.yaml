@@ -1,7 +1,14 @@
-timeout: 1200s
+timeout: 120000s
 substitutions:
   _CUSTOM_REGION: us-west2-a
   _CUSTOM_CLUSTER: hasura-k8s
+- name: gcr.io/cloud-builders/docker
+  entrypoint: bash
+  args:
+    - '-c'
+    - >-
+      docker pull gcr.io/hasura-342723/big-dipper-v1:latest
+      || exit 0
 steps:
   - name: "gcr.io/cloud-builders/gcloud"
     id: Write Secrets to Env
@@ -22,11 +29,11 @@ steps:
       - .
       - -t
       - gcr.io/hasura-342723/big-dipper-v1
-  - name: gcr.io/cloud-builders/docker
-    id: Push
-    args:
-      - push
-      - gcr.io/$PROJECT_ID/go-nihao:$COMMIT_SHA
+- name: gcr.io/cloud-builders/docker
+  args:
+    - push
+    - 'gcr.io/hasura-342723/big-dipper-v1'
+  id: PushLatest
   - name: gcr.io/cloud-builders/kubectl
     id: Configure kubectl
     args:
