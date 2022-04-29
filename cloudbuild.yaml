@@ -1,4 +1,4 @@
-timeout: 120000s
+timeout: 12000s
 substitutions:
   _CUSTOM_REGION: us-west2-a
   _CUSTOM_CLUSTER: hasura-k8s
