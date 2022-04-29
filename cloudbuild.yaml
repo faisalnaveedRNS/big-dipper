@@ -2,14 +2,14 @@ timeout: 120000s
 substitutions:
   _CUSTOM_REGION: us-west2-a
   _CUSTOM_CLUSTER: hasura-k8s
-- name: gcr.io/cloud-builders/docker
-  entrypoint: bash
-  args:
-    - '-c'
-    - >-
-      docker pull gcr.io/hasura-342723/big-dipper-v1:latest
-      || exit 0
 steps:
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - '-c'
+      - >-
+        docker pull gcr.io/hasura-342723/big-dipper-v1:latest
+        || exit 0
   - name: "gcr.io/cloud-builders/gcloud"
     id: Write Secrets to Env
     entrypoint: bash
