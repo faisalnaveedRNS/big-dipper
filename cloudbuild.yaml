@@ -17,23 +17,18 @@ steps:
       - -c
       - |
         sed -i 's/mongoUrlVal/$$(gcloud beta secrets versions access --secret=mongourl latest)/g' ./deploy/pylons-big-dipper/values.yaml
-    # secretEnv: ['MONGO_URL']
-  # availableSecrets:
-  #   secretManager:
-  #   - versionName: 'projects/430696988038/secrets/mongourl/versions/latest'
-  #     env: MONGO_URL
-- name: gcr.io/cloud-builders/docker
-  id: Build
-  args:
-    - build
-    - .
-    - -t
-    - gcr.io/hasura-342723/big-dipper-v1
-- name: gcr.io/cloud-builders/docker
-  args:
-    - push
-    - 'gcr.io/hasura-342723/big-dipper-v1'
-  id: PushLatest
+  - name: gcr.io/cloud-builders/docker
+    id: Build
+    args:
+      - build
+      - .
+      - -t
+      - gcr.io/hasura-342723/big-dipper-v1
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - 'gcr.io/hasura-342723/big-dipper-v1'
+    id: PushLatest
   - name: gcr.io/cloud-builders/kubectl
     id: Configure kubectl
     args:
