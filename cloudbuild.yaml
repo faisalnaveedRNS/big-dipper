@@ -38,10 +38,9 @@ steps:
       - CLOUDSDK_CONTAINER_CLUSTER=$_CUSTOM_CLUSTER
       - KUBECONFIG=/workspace/.kube/config
 
-  - name: gcr.io/$PROJECT_ID/helm
+  - name: gcr.io/hasura-342723/helm
     id: Deploy chart
     args:
-      - helm
       - upgrade
       - -i
       - big-dipper-v1
