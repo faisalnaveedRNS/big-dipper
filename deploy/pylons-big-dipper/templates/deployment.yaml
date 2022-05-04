@@ -35,7 +35,7 @@ spec:
             - name: METEOR_SETTINGS
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}
+                  name: big-dipper-v1
                   key: settings.json
           resources:
 {{ toYaml .Values.resources | indent 12 }}
