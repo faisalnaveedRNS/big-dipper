@@ -32,6 +32,7 @@ steps:
     args:
       - push
       - 'gcr.io/hasura-342723/big-dipper-v1'
+      - --all-tags
     id: PushLatest
   - name: gcr.io/cloud-builders/kubectl
     id: Configure kubectl
