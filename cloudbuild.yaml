@@ -41,6 +41,7 @@ steps:
   - name: gcr.io/$PROJECT_ID/helm
     id: Deploy chart
     args:
+      - helm
       - upgrade
       - -i
       - big-dipper-v1
