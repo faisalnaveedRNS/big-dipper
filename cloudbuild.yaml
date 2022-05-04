@@ -24,15 +24,10 @@ steps:
       - .
       - -t
       - gcr.io/hasura-342723/big-dipper-v1
-      - -t
-      - latest
-      - -t
-      - 1.16.0
   - name: gcr.io/cloud-builders/docker
     args:
       - push
       - 'gcr.io/hasura-342723/big-dipper-v1'
-      - --all-tags
     id: PushLatest
   - name: gcr.io/cloud-builders/kubectl
     id: Configure kubectl
@@ -57,4 +52,4 @@ steps:
       - TILLERLESS=true
 options:
   logging: CLOUD_LOGGING_ONLY
-  machineType: 'N1_HIGHCPU_8'
+  machineType: 'E2_HIGHCPU_8'
