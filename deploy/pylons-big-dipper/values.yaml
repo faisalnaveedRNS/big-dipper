@@ -35,4 +35,4 @@ resources: {}
 #     cert-manager.io/cluster-issuer: letsencrypt-prod
 
 host: wallet.pylons.tech
-mongoURL: mongodb://big-dipper-v1:wxp0lKzHXf2kmyyG@34.102.122.21:27017/big-dipper-v1?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256
+mongoURL: mongoUrlVal
