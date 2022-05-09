@@ -25,7 +25,7 @@ app.kubernetes.io/version: {{ .Chart.AppVersion }}
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "bigdipper.name" -}}
+{{- define "big-dipper-v1.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -34,7 +34,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "bigdipper.fullname" -}}
+{{- define "big-dipper-v1.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -50,16 +50,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "bigdipper.chart" -}}
+{{- define "big-dipper-v1.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "bigdipper.labels" -}}
-helm.sh/chart: {{ include "bigdipper.chart" . }}
-{{ include "bigdipper.selectorLabels" . }}
+{{- define "big-dipper-v1.labels" -}}
+helm.sh/chart: {{ include "big-dipper-v1.chart" . }}
+{{ include "big-dipper-v1.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -69,7 +69,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "bigdipper.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "bigdipper.name" . }}
+{{- define "big-dipper-v1.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "big-dipper-v1.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "big-dipper-v1.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "big-dipper-v1.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
 {{- end }}
