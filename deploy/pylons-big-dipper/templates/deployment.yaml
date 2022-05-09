@@ -27,7 +27,7 @@ spec:
 {{- include "ports.pod" . | indent 8 }}
           env:
             - name: ROOT_URL
-              value: http://explore.pylons.tech
+              value: http://wallet.pylons.tech
             - name: MONGO_URL
               value: {{ .Values.mongoURL }}
             - name: PORT
