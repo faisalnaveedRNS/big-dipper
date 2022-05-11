@@ -35,7 +35,7 @@ spec:
             - name: METEOR_SETTINGS
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Relase.Name }}
+                  name: {{ .Release.Name }}
                   key: settings.json
           resources:
 {{ toYaml .Values.resources | indent 12 }}
