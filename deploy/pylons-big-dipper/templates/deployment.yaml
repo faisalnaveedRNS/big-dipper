@@ -17,19 +17,19 @@ spec:
       labels:
         {{- include "chart.labels" . | indent 8 }}
     spec:
-      volumes:
-      - configMap:
-          name: {{ .Release.Name }}
-        name: {{ .Release.Name }}
+      # volumes:
+      # - configMap:
+      #     name: {{ .Release.Name }}
+      #   name: {{ .Release.Name }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       containers:
         - name: {{ .Release.Name }}
           image: {{ .Values.image }}
-          volumeMounts:
-          - name: {{ .Release.Name }}
-            mountPath: /docker/settings.json
-            readOnly: false
+          # volumeMounts:
+          # - name: {{ .Release.Name }}
+          #   mountPath: /settings.json
+          #   readOnly: false
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
 {{- include "ports.pod" . | indent 8 }}
