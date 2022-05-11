@@ -16,7 +16,8 @@ steps:
     args: 
       - -c
       - |
-        sed -i "s#mongoUrlVal#$(gcloud beta secrets versions access --secret=mongourl latest)#g" ./deploy/pylons-big-dipper/values.yaml
+        sed -i "s#mongoUrlVal#$(gcloud beta secrets versions access --secret=mongourl latest)#g" ./deploy/pylons-big-dipper/values.yaml && \
+        cp ./default_settings.json ./settings.json
   - name: gcr.io/cloud-builders/docker
     id: Build
     args:
