@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-archive
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "chart.labels" . | indent 4 }}
 data:
   settings.json: |-
-{{ .Files.Get .Values.settings | indent 4}}
+{{ .Values.applicationSettingsJson | indent 4}}
 {{- end }}

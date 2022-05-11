@@ -47,6 +47,8 @@ steps:
       - ./deploy/pylons-big-dipper
       - -f
       - ./deploy/pylons-big-dipper/values.yaml
+      - --set-file 
+      - applicationSettingsJson="./default_settings.json"
     env:
       - KUBECONFIG=/workspace/.kube/config
       - TILLERLESS=true
