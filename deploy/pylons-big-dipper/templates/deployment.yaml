@@ -17,11 +17,20 @@ spec:
       labels:
         {{- include "chart.labels" . | indent 8 }}
     spec:
+      volumes:
+      - configMap:
+          name: {{ .Release.Name }}
+        name: {{ .Release.Name }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       containers:
         - name: {{ .Release.Name }}
           image: {{ .Values.image }}
+          volumeMounts:
+          - name: {{ .Release.Name }}
+            mountPath: /docker/settings.json
+            subpath: settings.json
+            readOnly: false
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
 {{- include "ports.pod" . | indent 8 }}
@@ -32,11 +41,11 @@ spec:
               value: {{ .Values.mongoURL }}
             - name: PORT
               value: "80"
-            - name: METEOR_SETTINGS
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}
-                  key: settings.json
+            # - name: METEOR_SETTINGS
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: {{ .Release.Name }}
+            #       key: settings.json
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       terminationGracePeriodSeconds: 10
