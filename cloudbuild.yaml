@@ -1,7 +1,7 @@
 timeout: 12000s
 substitutions:
   _CUSTOM_REGION: us-west2-a
-  _CUSTOM_CLUSTER: hasura-k8s
+  _CUSTOM_CLUSTER: cluster-1
 steps:
   - name: gcr.io/cloud-builders/docker
     entrypoint: bash

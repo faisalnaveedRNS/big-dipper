@@ -1,4 +1,4 @@
-image: gcr.io/hasura-342723/big-dipper-v1
+image: gcr.io/zinc-interface-241613/big-dipper-v1
 imagePullPolicy: Always
 
 replicas: 1
