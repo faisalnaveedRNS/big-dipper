@@ -8,7 +8,7 @@ steps:
     args:
       - '-c'
       - >-
-        docker pull gcr.io/hasura-342723/big-dipper-v1:latest
+        docker pull gcr.io/zinc-interface-241613/big-dipper-v1:latest
         || exit 0
   - name: "gcr.io/cloud-builders/gcloud"
     id: Write Secrets to Env
@@ -16,19 +16,18 @@ steps:
     args: 
       - -c
       - |
-        sed -i "s#mongoUrlVal#$(gcloud beta secrets versions access --secret=mongourl latest)#g" ./deploy/pylons-big-dipper/values.yaml && \
-        cp ./default_settings.json ./settings.json
+        sed -i "s#mongoUrlVal#$(gcloud beta secrets versions access --secret=mongourl latest)#g" ./deploy/pylons-big-dipper/values.yaml
   - name: gcr.io/cloud-builders/docker
     id: Build
     args:
       - build
       - .
       - -t
-      - gcr.io/hasura-342723/big-dipper-v1
+      - gcr.io/zinc-interface-241613/big-dipper-v1
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - 'gcr.io/hasura-342723/big-dipper-v1'
+      - 'gcr.io/zinc-interface-241613/big-dipper-v1'
     id: PushLatest
   - name: gcr.io/cloud-builders/kubectl
     id: Configure kubectl
@@ -39,7 +38,7 @@ steps:
       - CLOUDSDK_CONTAINER_CLUSTER=$_CUSTOM_CLUSTER
       - KUBECONFIG=/workspace/.kube/config
 
-  - name: gcr.io/hasura-342723/helm
+  - name: gcr.io/zinc-interface-241613/helm
     id: Deploy chart
     args:
       - upgrade
