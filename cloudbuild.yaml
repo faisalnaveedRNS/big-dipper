@@ -41,7 +41,7 @@ steps:
   - name: gcr.io/zinc-interface-241613/helm
     id: Deploy chart
     args:
-      - upgrade
+      - install
       - -i
       - big-dipper-v1
       - ./deploy/pylons-big-dipper
