@@ -6,7 +6,6 @@ metadata:
     {{- include "big-dipper-v1.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
-  # loadBalancerIP: 34.98.124.184
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 80

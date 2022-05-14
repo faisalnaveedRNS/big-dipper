@@ -21,6 +21,10 @@ spec:
       # - configMap:
       #     name: {{ .Release.Name }}
       #   name: {{ .Release.Name }}
+      hostAliases:
+      - ip: "34.105.11.201"
+        hostnames:
+        - "mongodb-1-servers-vm-0"
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       containers:

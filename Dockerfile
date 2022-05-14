@@ -38,8 +38,6 @@ COPY --from=1 $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
 
 COPY --from=1 $APP_BUNDLE_FOLDER/bundle $APP_BUNDLE_FOLDER/bundle/
 
-RUN echo "34.105.11.201 mongodb-1-servers-vm-0" >> /etc/hosts
-
 ENTRYPOINT ["/docker/entrypoint.sh"]
 
 CMD ["node", "main.js"]
