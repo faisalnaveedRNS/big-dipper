@@ -53,4 +53,4 @@ steps:
       - TILLERLESS=true
 options:
   logging: CLOUD_LOGGING_ONLY
-  machineType: 'e2-highcpu-32'
+  machineType: e2-highcpu-32
