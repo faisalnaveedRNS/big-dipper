@@ -27,7 +27,7 @@ timerDelegation = 0;
 timerAggregate = 0;
 timerFetchKeybase = 0;
 
-// const DEFAULTSETTINGS = '/settings.json';
+const DEFAULTSETTINGS = '/settings.json';
 
 updateChainStatus = () => {
     Meteor.call('chain.updateStatus', (error, result) => {
@@ -241,12 +241,19 @@ aggregateDaily = () => {
 Meteor.startup(async function() {
     if (Meteor.isDevelopment) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = 1;
-        // read environment variables from Meteor.settings
-        if(Meteor.settings && _.isObject(Meteor.settings)) {
-            for(let variableName in Meteor.settings) {
-                process.env[variableName] = Meteor.settings[variableName];
+        import DEFAULTSETTINGSJSON from '../settings.json'
+        Object.keys(DEFAULTSETTINGSJSON).forEach((key) => {
+            if (Meteor.settings[key] == undefined) {
+                console.warn(`CHECK SETTINGS JSON: ${key} is missing from settings`)
+                Meteor.settings[key] = {};
             }
-        }
+            Object.keys(DEFAULTSETTINGSJSON[key]).forEach((param) => {
+                if (Meteor.settings[key][param] == undefined) {
+                    console.warn(`CHECK SETTINGS JSON: ${key}.${param} is missing from settings`)
+                    Meteor.settings[key][param] = DEFAULTSETTINGSJSON[key][param]
+                }
+            })
+        })
     }  
 
     if (Meteor.settings.debug.startTimer) {

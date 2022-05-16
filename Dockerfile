@@ -1,7 +1,8 @@
-FROM geoffreybooth/meteor-base:2.6.1
+FROM geoffreybooth/meteor-base:1.12.1
 
 COPY package*.json $APP_SOURCE_FOLDER/
 COPY default_settings.json $APP_SOURCE_FOLDER/settings.json
+
 
 RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 
@@ -38,6 +39,8 @@ RUN apk --no-cache add \
 COPY --from=1 $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
 
 COPY --from=1 $APP_BUNDLE_FOLDER/bundle $APP_BUNDLE_FOLDER/bundle/
+
+COPY default_settings.json /opt/bundle/bundle/settings.json
 
 ENTRYPOINT ["/docker/entrypoint.sh"]
 
