@@ -1,6 +1,7 @@
-FROM geoffreybooth/meteor-base:1.12.1
+FROM geoffreybooth/meteor-base:2.6.1
 
 COPY package*.json $APP_SOURCE_FOLDER/
+COPY default_settings.json $APP_SOURCE_FOLDER/settings.json
 
 RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 
