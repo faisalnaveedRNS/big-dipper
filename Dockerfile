@@ -10,7 +10,7 @@ COPY . $APP_SOURCE_FOLDER/
 
 RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
 
-FROM node:12.16.1-alpine
+FROM node:14.19.1-alpine
 
 ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
@@ -27,7 +27,7 @@ COPY --from=0 $APP_BUNDLE_FOLDER/bundle $APP_BUNDLE_FOLDER/bundle/
 
 RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh --build-from-source
 
-FROM node:12.16.1-alpine
+FROM node:14.19.1-alpine
 
 ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
