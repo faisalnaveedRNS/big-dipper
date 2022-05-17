@@ -39,6 +39,8 @@ COPY --from=1 $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
 COPY --from=1 $APP_BUNDLE_FOLDER/bundle $APP_BUNDLE_FOLDER/bundle/
 COPY default_settings.json $APP_BUNDLE_FOLDER/bundle/settings.json
 
+
 ENTRYPOINT ["/docker/entrypoint.sh"]
 
-CMD ["node", "main.js"]
+CMD ["node","--max-old-space-size=4096", "main.js"]
+
