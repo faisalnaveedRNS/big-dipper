@@ -1021,21 +1021,31 @@ div#voting-power-dist .card {
 
 .buy-page {
   background: url(https://i.imgur.com/S4IInYS.png) repeat;
-  padding: 5rem 0;
+  padding: 5rem 0 8rem;
+  width: 100%;
+  left: 0;
+  position: absolute;
   .mob-img {
     align-items: center;
     display: flex;
     justify-content: center;
-    border: 2rem solid #ef4421;
-    border-radius: 5rem;
+    // border: 2rem solid #ef4421;
     overflow: hidden;
-    height: 826px;
+    position: relative;
+    .mob-frame {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .mobin-img {
+      border-radius: 8rem;
+      overflow: hidden;
+    }
   }
   @media (max-width: 767px) {
     .mob-img {
-      border: 0.5rem solid #ef4421;
-      border-radius: 2.5rem;
-      height: 650px;
       margin: 0 auto;
     }
   }

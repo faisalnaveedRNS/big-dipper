@@ -179,6 +179,13 @@ export default class EaselBuy extends Component {
               <Row>
                 <Col xl={5} lg={5} md={12} sm={12}>
                   <div className="mob-img">
+                    <img
+                      alt="frame"
+                      src="/img/frame.png"
+                      width="100%"
+                      height="100%"
+                      className="mob-frame"
+                    />
                     {this.state.imageLoading && (
                       <Spinner type="grow" color="primary" />
                     )}
@@ -204,6 +211,7 @@ export default class EaselBuy extends Component {
                           maxHeight: "100%",
                           minWidth: "80%",
                         }}
+                        className="mobin-img"
                       />
                     </div>
                   </div>
