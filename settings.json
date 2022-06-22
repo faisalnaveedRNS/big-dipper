@@ -1,7 +1,7 @@
 {
     "public":{
-        "chainName": "Cosmos",
-        "chainId": "pylons-devtestnet",
+        "chainName": "Pylons",
+        "chainId": "pylons",
         "gtm": "{Add your Google Tag Manager ID here}",
         "slashingWindow": 10000,
         "uptimeWindow": 250,
@@ -13,8 +13,15 @@
         "bech32PrefixValPub": "pylovaloperpub",
         "bech32PrefixConsAddr": "pylovalcons",
         "bech32PrefixConsPub": "pylovalconspub",
-        "bondDenom": "uatom",
+        "bondDenom": "upylon",
         "powerReduction": 1000000,
+        "dynamicLink": {
+            "apn": "tech.pylons.wallet.develop",
+            "ibi": "xyz.pylons.wallet.develop",
+            "isi": "1620931213",
+            "oflPlay": "https://play.google.com/store/apps/details?id=tech.pylons.wallet.develop&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1",
+            "oflIOS": "https://apps.apple.com/us/app/pylons/id1620931213"
+        },
         "coins": [
             {
                 "denom": "uatom",
@@ -27,10 +34,15 @@
                 "fraction": 1000000
             },
             {
-                "denom": "pylon",
+                "denom": "upylon",
                 "displayName": "PYLON",
                 "fraction": 1000000
-            } 
+            },
+            {
+                "denom": "ustripeusd",
+                "displayName": "STRIPEUSD",
+                "fraction": 1000000
+            }
         ],
         "ledger":{
             "coinType": 118,
@@ -48,22 +60,23 @@
         "coingeckoId": "cosmos",
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
         "banners": false,
+	"baseURL": "https://devwallet.pylons.tech",
         "cosmos_sdk": 43
     },
     "remote":{
-        "rpc":"https://rpc.devtestnet.pylons.tech/",   
-        "api":"https://api.devtestnet.pylons.tech/" 
+        "rpc":"http://35.188.86.73:36657",   
+        "api":"http://35.188.86.73:2317" 
     },
     "debug": {
         "startTimer": true
     },
     "params":{
         "startHeight": 0,
-        "defaultBlockTime": 5000,
+        "defaultBlockTime": 10000,
         "validatorUpdateWindow": 300,
-        "blockInterval": 15000,
-        "transactionsInterval": 18000,
-        "keybaseFetchingInterval": 18000000,
+        "blockInterval": 10000,
+        "transactionsInterval": 1000,
+        "keybaseFetchingInterval": 1000000,
         "consensusInterval": 1000,
         "statusInterval":7500,
         "signingInfoInterval": 1800000,
@@ -75,5 +88,3 @@
         "delegationInterval": 900000
     }
 }
-
-

@@ -1,20 +1,27 @@
 {
     "public":{
-        "chainName": "Cosmos",
-        "chainId": "{Chain ID}",
+        "chainName": "Pylons",
+        "chainId": "pylons",
         "gtm": "{Add your Google Tag Manager ID here}",
         "slashingWindow": 10000,
         "uptimeWindow": 250,
         "initialPageSize": 30,
         "secp256k1": false,
-        "bech32PrefixAccAddr": "cosmos",
-        "bech32PrefixAccPub": "cosmospub",
-        "bech32PrefixValAddr": "cosmosvaloper",
-        "bech32PrefixValPub": "cosmosvaloperpub",
-        "bech32PrefixConsAddr": "cosmosvalcons",
-        "bech32PrefixConsPub": "cosmosvalconspub",
-        "bondDenom": "uatom",
+        "bech32PrefixAccAddr": "pylo",
+        "bech32PrefixAccPub": "pylopub",
+        "bech32PrefixValAddr": "pylovaloper",
+        "bech32PrefixValPub": "pylovaloperpub",
+        "bech32PrefixConsAddr": "pylovalcons",
+        "bech32PrefixConsPub": "pylovalconspub",
+        "bondDenom": "upylon",
         "powerReduction": 1000000,
+        "dynamicLink": {
+            "apn": "tech.pylons.wallet.develop",
+            "ibi": "xyz.pylons.wallet.develop",
+            "isi": "1620931213",
+            "oflPlay": "https://play.google.com/store/apps/details?id=tech.pylons.wallet.develop&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1",
+            "oflIOS": "https://apps.apple.com/us/app/pylons/id1620931213"
+        },
         "coins": [
             {
                 "denom": "uatom",
@@ -25,7 +32,17 @@
                 "denom": "umuon",
                 "displayName": "MUON",
                 "fraction": 1000000
-            } 
+            },
+            {
+                "denom": "upylon",
+                "displayName": "PYLON",
+                "fraction": 1000000
+            },
+            {
+                "denom": "ustripeusd",
+                "displayName": "STRIPEUSD",
+                "fraction": 1000000
+            }
         ],
         "ledger":{
             "coinType": 118,
@@ -42,29 +59,32 @@
         },
         "coingeckoId": "cosmos",
         "networks": "https://gist.githubusercontent.com/kwunyeung/8be4598c77c61e497dfc7220a678b3ee/raw/bd-networks.json",
-        "banners": false
+        "banners": false,
+	"baseURL": "https://devwallet.pylons.tech",
+        "cosmos_sdk": 43
     },
     "remote":{
-        "rpc":"https://rpc.stargate.forbole.com:443",
-        "api":"https://api.stargate.forbole.com:443"
+        "rpc":"http://35.188.86.73:36657",   
+        "api":"http://35.188.86.73:2317" 
     },
     "debug": {
         "startTimer": true
     },
     "params":{
         "startHeight": 0,
-        "defaultBlockTime": 5000,
+        "defaultBlockTime": 10000,
         "validatorUpdateWindow": 300,
-        "blockInterval": 15000,
-        "transactionsInterval": 18000,
-        "keybaseFetchingInterval": 18000000,
+        "blockInterval": 10000,
+        "transactionsInterval": 1000,
+        "keybaseFetchingInterval": 1000000,
         "consensusInterval": 1000,
         "statusInterval":7500,
         "signingInfoInterval": 1800000,
         "proposalInterval": 5000,
+        "recipeInterval": 5000,
+        "nftInterval": 5000, 
+        "cookbookInterval": 5000,
         "missedBlocksInterval": 60000,
         "delegationInterval": 900000
     }
 }
-
-
